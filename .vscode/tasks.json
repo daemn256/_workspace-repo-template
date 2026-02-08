@@ -1,0 +1,138 @@
+{
+  // Developer Workspace Tasks
+  // Run projects from the Developer root
+  // Use: Ctrl+Shift+P → "Tasks: Run Task"
+
+  "version": "2.0.0",
+  "tasks": [
+    // ─────────────────────────────────────────────────────────────
+    // Generic Project Tasks (prompts for project)
+    // ─────────────────────────────────────────────────────────────
+    {
+      "label": "📦 npm install",
+      "type": "shell",
+      "command": "npm install",
+      "options": {
+        "cwd": "${workspaceFolder}/repos/${input:projectName}"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always"
+      }
+    },
+    {
+      "label": "▶️ npm start",
+      "type": "shell",
+      "command": "npm start",
+      "options": {
+        "cwd": "${workspaceFolder}/repos/${input:projectName}"
+      },
+      "problemMatcher": [],
+      "isBackground": true,
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "🧪 npm test",
+      "type": "shell",
+      "command": "npm test",
+      "options": {
+        "cwd": "${workspaceFolder}/repos/${input:projectName}"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always"
+      }
+    },
+    {
+      "label": "🔨 npm build",
+      "type": "shell",
+      "command": "npm run build",
+      "options": {
+        "cwd": "${workspaceFolder}/repos/${input:projectName}"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always"
+      }
+    },
+
+    // ─────────────────────────────────────────────────────────────
+    // .NET Tasks
+    // ─────────────────────────────────────────────────────────────
+    {
+      "label": "🔨 dotnet build",
+      "type": "shell",
+      "command": "dotnet build",
+      "options": {
+        "cwd": "${workspaceFolder}/repos/${input:projectName}"
+      },
+      "problemMatcher": "$msCompile",
+      "presentation": {
+        "reveal": "always"
+      }
+    },
+    {
+      "label": "▶️ dotnet run",
+      "type": "shell",
+      "command": "dotnet run",
+      "options": {
+        "cwd": "${workspaceFolder}/repos/${input:projectName}"
+      },
+      "problemMatcher": [],
+      "isBackground": true,
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "🧪 dotnet test",
+      "type": "shell",
+      "command": "dotnet test",
+      "options": {
+        "cwd": "${workspaceFolder}/repos/${input:projectName}"
+      },
+      "problemMatcher": "$msCompile",
+      "presentation": {
+        "reveal": "always"
+      }
+    },
+
+    // ─────────────────────────────────────────────────────────────
+    // Utility Tasks
+    // ─────────────────────────────────────────────────────────────
+    {
+      "label": "📂 List Repos",
+      "type": "shell",
+      "command": "ls -la ${workspaceFolder}/repos/",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always"
+      }
+    },
+    {
+      "label": "🔄 Git Status (all repos)",
+      "type": "shell",
+      "command": "for dir in ${workspaceFolder}/repos/*/; do echo \"\\n=== $dir ===\"; git -C \"$dir\" status -s 2>/dev/null || echo 'Not a git repo'; done",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always"
+      }
+    }
+  ],
+
+  // ─────────────────────────────────────────────────────────────────
+  // Input Variables
+  // ─────────────────────────────────────────────────────────────────
+  "inputs": [
+    {
+      "id": "projectName",
+      "type": "promptString",
+      "description": "Project folder name (under repos/)",
+      "default": ""
+    }
+  ]
+}

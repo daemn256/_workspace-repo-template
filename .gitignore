@@ -1,0 +1,36 @@
+# Individual Project Repositories
+# Each project under repos/ is its own independent git repository
+repos/*
+!repos/README.md
+
+# Experiments and Scratch Work
+sandbox/*
+!sandbox/README.md
+
+# Archives (not tracked)
+archive/*
+!archive/README.md
+
+# Copilot Workspace (transient session data)
+.tmp/sessions/*
+!.tmp/sessions/README.md
+.tmp/scratch/*
+!.tmp/scratch/README.md
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+logs/
+
+# Environment files
+.env
+.env.local
+*.local

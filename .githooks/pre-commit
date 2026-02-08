@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# pre-commit: Block direct commits on protected branches
+# Satellites should work on feature branches and merge via PR.
+
+branch=$(git rev-parse --abbrev-ref HEAD)
+if [[ "$branch" == "main" || "$branch" == "master" ]]; then
+  echo "✋ Blocked: direct commits on '$branch' are not allowed."
+  echo "➡️  Create a feature branch and commit there:"
+  echo "   git switch -c <type>/<issue>-<desc>"
+  echo "   Types: feat, fix, docs, chore, refactor, test, perf, ci, build"
+  echo "   Example: git switch -c feat/12-add-api-docs"
+  echo ""
+  echo "   To override in emergencies: git commit --no-verify (not recommended)"
+  exit 1
+fi
+
+exit 0

@@ -1,0 +1,39 @@
+{
+  // Recommended extensions for the Developer workspace
+  // VS Code will prompt to install these when opening the workspace
+
+  "recommendations": [
+    // ─────────────────────────────────────────────────────────────
+    // AI / Copilot
+    // ─────────────────────────────────────────────────────────────
+    "github.copilot-chat",
+
+    // ─────────────────────────────────────────────────────────────
+    // Git
+    // ─────────────────────────────────────────────────────────────
+    "eamodio.gitlens",
+    "mhutchie.git-graph",
+
+    // ─────────────────────────────────────────────────────────────
+    // Formatting / Linting
+    // ─────────────────────────────────────────────────────────────
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint",
+
+    // ─────────────────────────────────────────────────────────────
+    // Languages (add as needed)
+    // ─────────────────────────────────────────────────────────────
+    "ms-dotnettools.csharp",
+    "ms-python.python",
+    "ms-python.debugpy",
+
+    // ─────────────────────────────────────────────────────────────
+    // Productivity
+    // ─────────────────────────────────────────────────────────────
+    "streetsidesoftware.code-spell-checker",
+    "usernamehw.errorlens",
+    "gruntfuggly.todo-tree"
+  ],
+
+  "unwantedRecommendations": []
+}

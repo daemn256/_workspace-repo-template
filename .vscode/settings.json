@@ -1,0 +1,46 @@
+{
+  // Developer Workspace Settings
+  // These apply when opening ~/Developer as a folder
+  // Personal preferences (theme, font) should stay in User Settings (Settings Sync)
+
+  // ─────────────────────────────────────────────────────────────────
+  // File Management
+  // ─────────────────────────────────────────────────────────────────
+  "files.exclude": {
+    "**/.git": true,
+    "**/.DS_Store": true,
+    "**/node_modules": true,
+    "**/bin": true,
+    "**/obj": true
+  },
+
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/dist": true,
+    "**/build": true,
+    "**/bin": true,
+    "**/obj": true,
+    "**/.git": true,
+    "**/coverage": true
+  },
+
+  // ─────────────────────────────────────────────────────────────────
+  // Editor Behavior (Workspace-specific)
+  // ─────────────────────────────────────────────────────────────────
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit",
+    "source.organizeImports": "explicit"
+  },
+  "explorer.compactFolders": false,
+
+  // ─────────────────────────────────────────────────────────────────
+  // Copilot
+  // ─────────────────────────────────────────────────────────────────
+  "github.copilot.chat.codeGeneration.useInstructionFiles": true,
+
+  // ─────────────────────────────────────────────────────────────────
+  // Terminal
+  // ─────────────────────────────────────────────────────────────────
+  "terminal.integrated.cwd": "${workspaceFolder}"
+}

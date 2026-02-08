@@ -1,0 +1,15 @@
+# .gitconfig.example
+# Copy to .gitconfig and include in your local git config.
+# This file is safe to reference; DO NOT commit personal .gitconfig files.
+#
+# Usage:
+#   cp .gitconfig.example .gitconfig
+#   git config --local include.path ../.gitconfig
+#
+# Or run: tools/setup.sh
+
+[core]
+    hooksPath = .githooks
+
+# Add other repo-safe config below.
+# Never commit user identity, signing keys, or credentials.

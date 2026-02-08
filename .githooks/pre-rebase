@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# pre-rebase: Block rebasing on or while checked out on protected branches
+# Protects branch history from being rewritten.
+
+current=$(git rev-parse --abbrev-ref HEAD || echo "")
+
+# Block rebasing while on main/master
+if [[ "$current" == "main" || "$current" == "master" ]]; then
+  echo "✋ Blocked: rebasing while on '$current' is not allowed."
+  echo "➡️  Work on a feature branch instead."
+  exit 1
+fi
+
+# Block rebasing onto main/master (e.g., 'git rebase main')
+if [[ "${1:-}" == "main" || "${1:-}" == "master" ]]; then
+  echo "✋ Blocked: rebasing onto '$1' is not allowed."
+  echo "   This protects the branch from history rewrites."
+  exit 1
+fi
+
+exit 0

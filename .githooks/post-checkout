@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# post-checkout: Warn when checking out protected branches
+# Educational reminder, does not block.
+
+# Args: $1 (prev HEAD), $2 (new HEAD), $3 (flag: 1 if branch checkout, 0 if file checkout)
+branch=$(git rev-parse --abbrev-ref HEAD || echo "")
+
+if [[ "${3:-0}" == "1" ]]; then
+  if [[ "$branch" == "main" || "$branch" == "master" ]]; then
+    echo ""
+    echo "⚠️  You are on '$branch'. This workspace blocks commits/pushes to protected branches."
+    echo "    Create a feature branch before making changes:"
+    echo "    git switch -c <type>/<issue>-<desc>"
+    echo ""
+  fi
+fi
+
+exit 0

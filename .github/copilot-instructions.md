@@ -4,6 +4,16 @@
 
 ---
 
+## Template Identity
+
+This repository was created from the **workspace-repo** template (`_workspace-repo-template`).
+
+- **Type:** Single-repository workspace (one repo = one project)
+- **Upstream:** `_workspace-repo-template` → `_repo-template`
+- **Metadata:** See `.template.yaml` for machine-readable template info
+
+---
+
 ## Core Philosophy
 
 **The AI assists; the human decides.**

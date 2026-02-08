@@ -1,8 +1,14 @@
-# Developer Workspace Template
+# Workspace Repository Template
 
-> A portable, multi-IDE developer workspace with integrated AI assistance.
+> **Template Type:** `workspace-repo` — Repo-scoped development workspace  
+> **Upstream:** [`_workspace-repo-template`](https://github.com/daemn256/_workspace-repo-template)  
+> **Parent:** [`_repo-template`](https://github.com/daemn256/_repo-template)
 
 **Click "Use this template" to create your own workspace.**
+
+---
+
+⚠️ **RESTRUCTURING IN PROGRESS** — This template is being refined for single-repo workspaces. See `.template.yaml` for current identity.
 
 ---
 

@@ -1,0 +1,21 @@
+# .template.yaml — Template identity and metadata
+# This file identifies the type and origin of this repository's template.
+# Do not remove; downstream tooling and agents use it for context.
+
+type: workspace-repo
+name: Workspace Repository Template
+description: >
+  Repo-scoped development workspace template.
+  Includes editor/workspace configuration (VS Code, Copilot agents/prompts)
+  for working inside a single repository.
+  Does not include multi-repo aggregation.
+
+upstream: https://github.com/daemn256/_workspace-repo-template
+version: 1.0.0
+
+# Inherits from:
+parent: https://github.com/daemn256/_repo-template
+
+# Remote configuration for this template:
+# - origin: this template's repo
+# - upstream-repo: _repo-template (for syncing repo scaffold updates)

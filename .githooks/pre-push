@@ -1,8 +1,27 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# pre-push: Block pushes to protected branches
-# Ensures feature branch workflow is followed.
+# pre-push: Block pushes to protected branches AND to the template repository
+# This is the primary protection for the satellite model.
+
+remote="$1"
+url="$2"
+
+# Patterns to identify template repositories (both direct and parent templates)
+TEMPLATE_PATTERNS=("_workspace-repo-template" "_repo-template")
+
+# Check if pushing to the template repository
+for pattern in "${TEMPLATE_PATTERNS[@]}"; do
+  if [[ "$url" == *"$pattern"* ]]; then
+    echo "✋ Blocked: pushing to the template repository is not allowed."
+    echo "   Remote '$remote' points to: $url"
+    echo ""
+    echo "   This workspace is a satellite of the template."
+    echo "   Push to 'origin' (your workspace repo) only."
+    echo "   Use 'git fetch upstream' to pull template updates."
+    exit 1
+  fi
+done
 
 # Block pushes to protected branches
 blocked=false

@@ -32,7 +32,7 @@ git diff HEAD..upstream/main --stat
 ### Step 3: Merge Changes
 
 ```bash
-git merge upstream/main --no-ff -m "chore: sync with dev-workspace-template"
+git merge upstream/main --no-ff -m "chore: sync with _workspace-repo-template"
 ```
 
 The `--no-ff` creates a merge commit even if fast-forward is possible, making the sync point visible in history.
@@ -53,19 +53,19 @@ When merging template updates, conflicts typically occur in files you've customi
 
 ### Ownership Model
 
-| File | Owner | Resolution Strategy |
-|------|-------|---------------------|
-| `.github/workspace.md` | **Satellite** | Keep your version |
-| `.github/AGENTS.md` | **Satellite** | Keep your version |
-| `README.md` | **Satellite** | Keep your version |
-| `docs/**` (your docs) | **Satellite** | Keep your version |
-| `.github/copilot-instructions.md` | **Template** | Usually take template, merge carefully |
-| `.github/agents/*` | **Template** | Usually take template |
-| `.github/instructions/*` | **Template** | Usually take template |
-| `.github/prompts/*` | **Template** | Usually take template |
-| `.githooks/*` | **Template** | Usually take template |
-| `.vscode/*` | **Mixed** | Merge — template structure + your customizations |
-| `.gitignore` | **Mixed** | Merge — template patterns + your additions |
+| File                              | Owner         | Resolution Strategy                              |
+| --------------------------------- | ------------- | ------------------------------------------------ |
+| `.github/workspace.md`            | **Satellite** | Keep your version                                |
+| `.github/AGENTS.md`               | **Satellite** | Keep your version                                |
+| `README.md`                       | **Satellite** | Keep your version                                |
+| `docs/**` (your docs)             | **Satellite** | Keep your version                                |
+| `.github/copilot-instructions.md` | **Template**  | Usually take template, merge carefully           |
+| `.github/agents/*`                | **Template**  | Usually take template                            |
+| `.github/instructions/*`          | **Template**  | Usually take template                            |
+| `.github/prompts/*`               | **Template**  | Usually take template                            |
+| `.githooks/*`                     | **Template**  | Usually take template                            |
+| `.vscode/*`                       | **Mixed**     | Merge — template structure + your customizations |
+| `.gitignore`                      | **Mixed**     | Merge — template patterns + your additions       |
 
 ### Resolving Common Conflicts
 
@@ -108,7 +108,7 @@ Merge both — take template patterns AND your additions:
 
 ```bash
 git add .
-git commit -m "chore: sync with dev-workspace-template
+git commit -m "chore: sync with _workspace-repo-template
 
 Resolved conflicts:
 - Kept workspace.md (satellite-owned)
@@ -139,7 +139,7 @@ git config merge.ours.driver true
 
 - [ ] `git fetch upstream`
 - [ ] Review changes: `git log HEAD..upstream/main --oneline`
-- [ ] Merge: `git merge upstream/main --no-ff -m "chore: sync with dev-workspace-template"`
+- [ ] Merge: `git merge upstream/main --no-ff -m "chore: sync with _workspace-repo-template"`
 - [ ] Resolve conflicts (if any)
 - [ ] Test workspace: Open in VS Code, verify Copilot works
 - [ ] Commit and push: `git push origin main`

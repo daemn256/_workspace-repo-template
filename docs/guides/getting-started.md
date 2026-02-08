@@ -113,8 +113,6 @@ git remote -v
 # origin       git@github.com:you/your-project.git (fetch/push)
 # upstream     https://github.com/.../workspace-repo-template.git (fetch)
 # upstream     no_push (push)
-# upstream-repo https://github.com/.../repo-template.git (fetch)
-# upstream-repo no_push (push)
 
 # Verify hooks
 git config core.hooksPath

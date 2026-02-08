@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Added
 
-- Initial workspace setup from dev-workspace-template
+- Initial workspace setup from \_workspace-repo-template
 
 ### Changed
 
@@ -24,9 +24,9 @@ _No removals yet._
 
 Track when you sync with the upstream template:
 
-| Date | Template Version | Notes |
-|------|-----------------|-------|
-| YYYY-MM-DD | Initial | Created from template |
+| Date       | Template Version | Notes                 |
+| ---------- | ---------------- | --------------------- |
+| YYYY-MM-DD | Initial          | Created from template |
 
 ---
 
@@ -44,17 +44,22 @@ Track when you sync with the upstream template:
 ## [YYYY-MM-DD]
 
 ### Added
+
 - New feature or capability
 
 ### Changed
+
 - Modifications to existing functionality
 
 ### Removed
+
 - Removed features or deprecated items
 
 ### Fixed
+
 - Bug fixes
 
 ### Security
+
 - Security-related changes
 ```

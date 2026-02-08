@@ -18,6 +18,8 @@ A single-repository development workspace with integrated AI assistance. This te
 
 Use this template when you want a **single repository** with full workspace tooling. For managing **multiple repositories**, see [`_workspace-root-template`](https://github.com/daemn256/_workspace-root-template).
 
+**Not sure which to choose?** See [Choosing a Template](https://github.com/daemn256/template-workspace/blob/main/docs/guides/choosing-a-template.md).
+
 ---
 
 ## Quick Start

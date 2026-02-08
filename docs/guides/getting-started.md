@@ -1,6 +1,6 @@
 # Getting Started
 
-After creating your workspace from the dev-workspace-template, follow these steps to complete setup.
+After creating your project from the workspace-repo-template, follow these steps to complete setup.
 
 ## Prerequisites
 
@@ -10,59 +10,60 @@ After creating your workspace from the dev-workspace-template, follow these step
 
 ## Step 1: Run Setup Script
 
-From your workspace root:
+From your project root:
 
 ```bash
 ./tools/setup.sh
 ```
 
 This configures:
+
 - Git hooks for branch protection
-- Upstream remote pointing to the template
+- Upstream remotes pointing to the templates
 - Push protection to prevent accidental template changes
 
 ## Step 2: Create Your GitHub Repository
 
-If you haven't already, create a GitHub repo for your workspace:
+If you haven't already, create a GitHub repo:
 
 ```bash
 # Create a private repo (recommended)
-gh repo create your-username/your-workspace-name --private --source=. --push
+gh repo create your-username/your-project-name --private --source=. --push
 
 # Or public
-gh repo create your-username/your-workspace-name --public --source=. --push
+gh repo create your-username/your-project-name --public --source=. --push
 ```
 
 ## Step 3: Customize Workspace Context
 
-Edit `.github/workspace.md` with your specific context:
+Edit `.github/workspace.md` with your project's context:
 
 ```markdown
 # Workspace Context
 
 ## Project
 
-**Name:** Your Workspace Name
+**Name:** Your Project Name
 **Purpose:** What you're building
 
 ## Domain Terminology
 
 | Term | Definition |
-|------|------------|
-| ... | ... |
+| ---- | ---------- |
+| ...  | ...        |
 
 ## Conventions
 
-- Your workspace-specific patterns
+- Your project-specific patterns
 - Branch naming conventions
 - etc.
 ```
 
-This file helps GitHub Copilot understand your workspace.
+This file helps GitHub Copilot understand your project.
 
 ## Step 4: Replace the README
 
-The template's `README.md` describes the template itself. Replace it with your workspace's README:
+The template's `README.md` describes the template itself. Replace it with your project's README:
 
 ```bash
 # Backup template README if you want to reference it
@@ -70,40 +71,34 @@ mv README.md README.template.md
 
 # Create your own
 cat > README.md << 'EOF'
-# My Developer Workspace
+# My Project
 
-Description of your workspace and projects.
+Description of your project.
 
-## Projects
+## Quick Start
 
-- `repos/project-1/` — Description
-- `repos/project-2/` — Description
+...
 
-## Setup
+## Development
 
 ...
 EOF
 ```
 
-## Step 5: Add Your Projects
+## Step 5: Start Building
 
-Clone or create projects in the `repos/` directory:
+Your project structure is ready. Key directories:
 
-```bash
-cd repos/
-
-# Clone existing repos
-git clone git@github.com:your-org/your-project.git
-
-# Or create new ones
-mkdir new-project && cd new-project && git init
-```
+- `src/` — Your source code (create as needed)
+- `docs/` — Project documentation
+- `sandbox/` — Exploration and scratch space
+- `tools/` — Development utilities
 
 ## Step 6: Commit Your Customizations
 
 ```bash
 git add .
-git commit -m "chore: customize workspace"
+git commit -m "chore: customize project"
 git push
 ```
 
@@ -115,9 +110,11 @@ Check that your setup is correct:
 # Verify remotes
 git remote -v
 # Should show:
-# origin    git@github.com:you/your-workspace.git (fetch/push)
-# upstream  https://github.com/.../dev-workspace-template.git (fetch)
-# upstream  no_push (push)
+# origin       git@github.com:you/your-project.git (fetch/push)
+# upstream     https://github.com/.../workspace-repo-template.git (fetch)
+# upstream     no_push (push)
+# upstream-repo https://github.com/.../repo-template.git (fetch)
+# upstream-repo no_push (push)
 
 # Verify hooks
 git config core.hooksPath
@@ -131,6 +128,6 @@ git commit --allow-empty -m "test"
 
 ## Next Steps
 
-- Review [Remote Management](remote-management.md) to understand the satellite model
 - See [Upstream Sync](upstream-sync.md) when you want to pull template updates
 - Explore `.github/` to understand AI assistant configuration
+- Review VS Code tasks (`Cmd+Shift+P` → "Tasks: Run Task")

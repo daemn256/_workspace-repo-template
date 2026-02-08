@@ -1,13 +1,8 @@
-# Individual Project Repositories
-# Each project under repos/ is its own independent git repository
-repos/*
-!repos/README.md
-
 # Experiments and Scratch Work
 sandbox/*
 !sandbox/README.md
 
-# Archives (not tracked)
+# Archives (not tracked by default)
 archive/*
 !archive/README.md
 
@@ -21,16 +16,26 @@ archive/*
 .DS_Store
 Thumbs.db
 
-# IDE
+# IDE (generic patterns)
 *.swp
 *.swo
 *~
+.idea/
+*.iml
 
 # Logs
 *.log
 logs/
 
-# Environment files
+# Environment files (never commit secrets)
 .env
 .env.local
 *.local
+
+# Build outputs (language-specific patterns added as needed)
+dist/
+build/
+out/
+node_modules/
+bin/
+obj/

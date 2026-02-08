@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# setup.sh — Configure a satellite workspace after cloning from the template
+# setup.sh — Configure a workspace repository after cloning from the template
 #
 # This script:
 # 1. Configures git to use the .githooks/ directory
@@ -12,11 +12,11 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 WORKSPACE_DIR="$(dirname "$SCRIPT_DIR")"
-TEMPLATE_URL="https://github.com/daemn256/dev-workspace-template.git"
+TEMPLATE_URL="https://github.com/daemn256/_workspace-repo-template.git"
 
 cd "$WORKSPACE_DIR"
 
-echo "🔧 Setting up workspace..."
+echo "🔧 Setting up workspace repository..."
 echo ""
 
 # 1. Configure githooks
@@ -54,9 +54,9 @@ echo "Remotes configured:"
 git remote -v
 echo ""
 echo "Next steps:"
-echo "  1. Customize .github/workspace.md with your context"
-echo "  2. Replace README.md with your workspace description"
-echo "  3. Add projects to repos/"
+echo "  1. Customize .github/AGENTS.md with your project context"
+echo "  2. Review .github/copilot-instructions.md"
+echo "  3. Replace README.md with your project description"
 echo ""
 echo "To sync template updates later:"
 echo "  git fetch upstream"

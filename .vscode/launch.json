@@ -1,6 +1,6 @@
 {
-  // Developer Workspace Launch Configurations
-  // Debug projects from the Developer root
+  // Workspace Repository Launch Configurations
+  // Debug configurations for the workspace
   // Use: F5 or Run → Start Debugging
 
   "version": "0.2.0",
@@ -9,11 +9,10 @@
     // Node.js
     // ─────────────────────────────────────────────────────────────
     {
-      "name": "Node: Launch (select project)",
+      "name": "Node: Launch",
       "type": "node",
       "request": "launch",
-      "program": "${workspaceFolder}/repos/${input:projectName}/index.js",
-      "cwd": "${workspaceFolder}/repos/${input:projectName}",
+      "program": "${workspaceFolder}/index.js",
       "skipFiles": ["<node_internals>/**"],
       "console": "integratedTerminal"
     },
@@ -29,12 +28,12 @@
     // .NET
     // ─────────────────────────────────────────────────────────────
     {
-      "name": ".NET: Launch (select project)",
+      "name": ".NET: Launch",
       "type": "coreclr",
       "request": "launch",
-      "program": "${workspaceFolder}/repos/${input:projectName}/bin/Debug/net8.0/${input:projectName}.dll",
+      "program": "${workspaceFolder}/bin/Debug/net8.0/${workspaceFolderBasename}.dll",
       "args": [],
-      "cwd": "${workspaceFolder}/repos/${input:projectName}",
+      "cwd": "${workspaceFolder}",
       "stopAtEntry": false,
       "console": "integratedTerminal"
     },
@@ -48,11 +47,10 @@
     // Python
     // ─────────────────────────────────────────────────────────────
     {
-      "name": "Python: Launch (select project)",
+      "name": "Python: Launch",
       "type": "debugpy",
       "request": "launch",
-      "program": "${workspaceFolder}/repos/${input:projectName}/main.py",
-      "cwd": "${workspaceFolder}/repos/${input:projectName}",
+      "program": "${workspaceFolder}/main.py",
       "console": "integratedTerminal"
     },
     {
@@ -71,26 +69,14 @@
       "type": "chrome",
       "request": "launch",
       "url": "http://localhost:3000",
-      "webRoot": "${workspaceFolder}/repos/${input:projectName}"
+      "webRoot": "${workspaceFolder}"
     },
     {
       "name": "Chrome: Launch localhost:4200",
       "type": "chrome",
       "request": "launch",
       "url": "http://localhost:4200",
-      "webRoot": "${workspaceFolder}/repos/${input:projectName}"
-    }
-  ],
-
-  // ─────────────────────────────────────────────────────────────────
-  // Input Variables
-  // ─────────────────────────────────────────────────────────────────
-  "inputs": [
-    {
-      "id": "projectName",
-      "type": "promptString",
-      "description": "Project folder name (under repos/)",
-      "default": ""
+      "webRoot": "${workspaceFolder}"
     }
   ]
 }

@@ -1,29 +1,26 @@
 # Documentation
 
-Central documentation for the workspace and its projects.
-
-> **Scope:** This `docs/` folder documents the enclosing workspace. Each repository under `repos/` maintains its own documentation for its own concerns.
+Central documentation for this project.
 
 ## Structure
 
 ```
 docs/
-├── guides/                 # Operational guides for workspace setup and maintenance
+├── guides/                 # Operational guides for setup and maintenance
 ├── adr/                    # Architecture Decision Records
 ├── architecture/           # System architecture documentation
 ├── observations/           # Learnings and behavioral notes
 ├── proposals/              # Pre-ADR ideas and proposals
-└── workspace/              # Workspace context and Copilot working space
+└── workspace/              # Copilot context and working space
 ```
 
 ## Directory Purposes
 
 ### guides/ — Operational Guides
 
-How-to documentation for workspace setup and maintenance:
+How-to documentation for project setup and maintenance:
 
 - [Getting Started](guides/getting-started.md) — Post-template setup checklist
-- [Remote Management](guides/remote-management.md) — Understanding origin vs upstream
 - [Upstream Sync](guides/upstream-sync.md) — How to pull template updates
 
 ### adr/ — Architecture Decision Records
@@ -61,7 +58,7 @@ Behavioral observations, patterns discovered, things learned during development.
 ```
 observations/
 ├── 2026-02-07-copilot-instruction-layering.md
-└── 2026-02-10-task-runner-optimization.md
+└── 2026-02-10-build-optimization.md
 ```
 
 ### proposals/ — Pre-ADR Ideas
@@ -70,8 +67,8 @@ Ideas and proposals that haven't yet been formalized into ADRs. Use numbered pre
 
 ```
 proposals/
-├── P001-migrate-to-microservices.md
-├── P002-implement-api-gateway.md
+├── P001-api-versioning-strategy.md
+├── P002-implement-caching-layer.md
 └── P003-adopt-event-sourcing.md
 ```
 
@@ -79,12 +76,12 @@ When a proposal is accepted, promote it to an ADR.
 
 ### workspace/ — Copilot Context
 
-Context that helps GitHub Copilot understand the workspace:
+Context that helps GitHub Copilot understand the project:
 
-- `context.md` — Workspace-specific terminology, patterns, conventions
+- `context.md` — Project-specific terminology, patterns, conventions
 - `goals.md` — Current objectives and priorities
 
-For session continuity and temporary files, see [.tmp/](./../.tmp/README.md).
+For session continuity and temporary files, see [.tmp/](../.tmp/README.md).
 
 ---
 

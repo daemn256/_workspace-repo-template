@@ -19,7 +19,7 @@ From your project root:
 This configures:
 
 - Git hooks for branch protection
-- Upstream remotes pointing to the templates
+- Upstream remote pointing to the template
 - Push protection to prevent accidental template changes
 
 ## Step 2: Create Your GitHub Repository

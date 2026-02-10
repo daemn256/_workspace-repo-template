@@ -1,3 +1,6 @@
+<!-- Source: _workspace-repo-template | File: AGENTS.template.md -->
+<!-- Copy to AGENTS.md and fill in your project details. -->
+
 # AI Agent Onboarding
 
 > README for AI agents. Project context and quick-start information.

@@ -1,3 +1,6 @@
+<!-- Source: _workspace-repo-template | File: copilot-instructions.template.md -->
+<!-- Copy to copilot-instructions.md and update the Template Identity section. -->
+
 # Repository Instructions
 
 > Cross-cutting rules applied to ALL Copilot interactions in this workspace.
@@ -6,10 +9,10 @@
 
 ## Template Identity
 
-This repository was created from the **workspace-repo** template (`_workspace-repo-template`).
+This repository was created from the **{template-type}** template (`{template-repo}`).
 
-- **Type:** Single-repository workspace (one repo = one project)
-- **Upstream:** `_workspace-repo-template` → `_repo-template`
+- **Type:** {workspace-type-description}
+- **Upstream:** `{template-repo}` → `_repo-template`
 - **Metadata:** See `.template.yaml` for machine-readable template info
 
 ---

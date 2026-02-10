@@ -96,6 +96,31 @@ your-project/
 
 ---
 
+## `.template` File Convention
+
+This template uses `.template.` variants for files that downstream consumers must customize:
+
+| Template File                                | Creates                       | Consumer Action                          |
+| -------------------------------------------- | ----------------------------- | ---------------------------------------- |
+| `README.template.md`                         | `README.md`                   | Replace with project description         |
+| `CHANGELOG.template.md`                      | `CHANGELOG.md`                | Update with project-specific entry       |
+| `LICENSE.template`                            | `LICENSE`                     | Set copyright holder and year            |
+| `.gitconfig.template`                         | `.gitconfig`                  | Add repo-safe git configuration          |
+| `.github/AGENTS.template.md`                  | `.github/AGENTS.md`           | Fill in project context placeholders     |
+| `.github/copilot-instructions.template.md`    | `copilot-instructions.md`     | Update Template Identity section         |
+| `docs/workspace/context.template.md`          | `docs/workspace/context.md`   | Fill in project details                  |
+| `docs/workspace/goals.template.md`            | `docs/workspace/goals.md`     | Set current priorities                   |
+
+**Lifecycle:**
+
+1. **First init** — `tools/setup.sh` copies each `.template` file to its real filename (skips if real already exists)
+2. **Template sync** — `git merge upstream/main` updates `.template` files but never overwrites your real copies
+3. **Consumer ownership** — You own the real files; the template owns the `.template` references
+
+Each `.template` file includes a source header identifying which template it came from.
+
+---
+
 ## AI Assistance
 
 ### GitHub Copilot Configuration

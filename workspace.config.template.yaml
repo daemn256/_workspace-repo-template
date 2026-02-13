@@ -1,0 +1,70 @@
+# Source: _workspace-repo-template | File: workspace.config.template.yaml
+# Copy to workspace.config.yaml and fill in real values.
+# This file is template-owned. Sync updates it but NEVER overwrites your real config.
+#
+# Schema: https://github.com/daemn256/_agentic-system/blob/main/src/workspace/workspace-config-schema.md
+
+# ─── Identity ──────────────────────────────────────────────
+workspace:
+  name: "{workspace-name}"
+  description: "{workspace-description}"
+
+# ─── Agentic System ───────────────────────────────────────
+agentic-system:
+  version: "1.0.0"
+  # source: "https://github.com/your-org/_agentic-system.git"
+
+# ─── Forge Topology ───────────────────────────────────────
+# Which provider handles each concern.
+# Supports split topologies (e.g., repos on GitHub, boards on ADO).
+forge:
+  topology:
+    repos: github # github | ado | gitlab
+    boards: github # github | ado | jira
+    ci: github-actions # github-actions | ado-pipelines | gitlab-ci
+    releases: github # github | ado | gitlab
+
+# ─── AI Runtimes ──────────────────────────────────────────
+# Which AI assistants are active in this workspace.
+adapters:
+  ai-runtimes:
+    - github-copilot
+    # - claude-code
+    # - jetbrains-ai
+
+# ─── Process Profile ─────────────────────────────────────
+# lightweight — minimal ceremony, self-merge allowed
+# standard    — balanced process, 1 reviewer, CI required (default)
+# regulated   — full audit trail, 2 reviewers, no self-merge
+process:
+  profile: standard
+
+# ─── Board Configuration ─────────────────────────────────
+# Provider-specific wiring. Fill in your board's real IDs.
+board:
+  provider: "github-projects-v2"
+  url: "" # e.g., https://github.com/users/you/projects/1
+  project_id: "" # e.g., PVT_kwHO...
+
+  fields:
+    status: { field_id: "" } # Single-select field for status
+    priority: { field_id: "" } # Single-select field for priority
+    size: { field_id: "" } # Single-select field for size
+
+  status_options:
+    backlog: { option_id: "" }
+    ready: { option_id: "" }
+    in-progress: { option_id: "" }
+    in-review: { option_id: "" }
+    done: { option_id: "" }
+
+  # Override standard profile defaults (uncomment to customize):
+  # status_columns:
+  #   - { name: To Do, maps_to_phase: not-started }
+  #   - { name: Doing, maps_to_phase: active }
+  #   - { name: Done, maps_to_phase: completed }
+  #
+  # priority:
+  #   - { name: High, description: Must address now }
+  #   - { name: Medium, description: Address this milestone }
+  #   - { name: Low, description: Address when convenient }

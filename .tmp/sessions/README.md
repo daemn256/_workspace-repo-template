@@ -1,12 +1,14 @@
 # Session Files
 
-> Ephemeral session context for GitHub Copilot continuity.
+> Ephemeral session context for AI assistant continuity.
 
-This directory contains session tracking files that help maintain context across GitHub Copilot conversations within a workspace.
+This directory contains session tracking files that help maintain context across AI assistant conversations within a workspace.
+
+For the full protocol, see [session tracking protocol](https://github.com/daemn256/_agentic-system/blob/main/src/process/session-tracking-protocol.md).
 
 ## Purpose
 
-When working on complex tasks that span multiple Copilot sessions, session files provide continuity:
+When working on complex tasks that span multiple sessions, session files provide continuity:
 
 - Track what was discussed and decided
 - Document work-in-progress state
@@ -36,7 +38,7 @@ Session files are:
 - **Gitignored** — They contain ephemeral working state
 - **Local to your machine** — Not shared with collaborators
 - **Disposable** — Can be deleted when no longer needed for context
-- **Copilot-friendly** — Written in a format that helps AI assistants understand workspace state
+- **AI-friendly** — Written in a format that helps AI assistants understand workspace state
 
 ## Attachment Pattern
 

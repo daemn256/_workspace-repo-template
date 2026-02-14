@@ -1,40 +1,45 @@
 # Temporary Files Directory
 
-This folder is designated for transient, working files that support development and exploration activities within the workspace.
+This folder is designated for transient, working files that support development and exploration activities within the workspace. All contents are gitignored.
 
 ## Purpose
 
 The `.tmp` directory serves as a sandbox for:
 
-- **Experiment notebooks** - Jupyter notebooks, Python scripts, or other explorations
-- **Scratch work** - Quick testing grounds that don't belong in permanent storage
-- **Generated artifacts** - Build outputs, logs, or test data
-- **Process files** - Utilities created during active development sessions
-- **Documentation drafts** - Work-in-progress files before integration into main docs
+- **Scratch work** — Quick testing, drafts, and operational working files
+- **Session context** — Continuity across AI assistant sessions
+- **Generated scripts** — Helper scripts created during workflow automation
+- **Generated artifacts** — Build outputs, logs, or test data
+- **Documentation drafts** — Work-in-progress files before integration into main docs
 
 ## Subdirectories
 
 ### `sessions/`
 
-Session context tracking for GitHub Copilot. This directory maintains continuity between Copilot sessions by storing:
+Session context tracking for AI assistant continuity. See the [session tracking protocol](https://github.com/daemn256/_agentic-system/blob/main/src/process/session-tracking-protocol.md) for conventions.
 
-- Session state and context snapshots
-- Active work summaries
-- References useful across sessions
-- Progress checkpoints
-
-These files help Copilot understand what has been accomplished and what remains to be done when resuming work.
+Files here track what was accomplished, decisions made, and next steps across multi-turn sessions.
 
 ### `scratch/`
 
-Working space for temporary files that Copilot needs to create during operations. This includes:
+Working space for temporary files created during operations. This includes:
 
+- Issue and PR body drafts
+- Planning documents
 - Intermediate processing files
-- Temporary data structures
 - Quick validation scripts
-- Files created during analysis or code generation
 
-Files here are truly ephemeral and can be deleted immediately after the operation completes.
+See [scratch/README.md](scratch/README.md) for recognized patterns.
+
+### `scripts/`
+
+Generated helper scripts for workspace automation. Examples:
+
+- `set-project-fields.sh` — Batch-update project board fields
+- `sync-labels.sh` — Label synchronization helpers
+- `migrate-*.sh` — One-off migration scripts
+
+These are operational scripts generated during sessions, not permanent tooling (which belongs in `tools/`).
 
 ## Guidelines
 
@@ -43,27 +48,29 @@ Files here are truly ephemeral and can be deleted immediately after the operatio
 - Active exploration and spike work
 - One-off scripts or test files
 - Temporary build/test artifacts
-- Session-specific notebooks or analysis
+- Session-specific analysis
 - Drafts awaiting review or integration
-- Copilot session context (in `sessions/`)
-- Copilot-generated temporary files (in `scratch/`)
+- AI assistant session context (in `sessions/`)
+- Generated temporary files (in `scratch/`)
+- Generated automation scripts (in `scripts/`)
 
 ❌ **What does NOT belong here:**
 
-- Source code that should be in `repos/`
+- Source code that should be in `src/` or project directories
 - Architecture decisions (use `docs/adr/`)
 - Finalized documentation (use `docs/`)
 - Permanent project assets
 - Sensitive credentials or private data
+- Permanent tooling (use `tools/`)
 
 ## Lifecycle
 
-- **No guarantees** - Files may be deleted without notice during cleanup
-- **Sessions exception** - The `sessions/` directory should persist across Copilot sessions but may be archived periodically
-- **Scratch is truly temporary** - The `scratch/` directory can be cleaned aggressively and frequently
-- **Best effort archival** - Important findings should be migrated to appropriate permanent locations
-- **Regular maintenance** - Old/stale files should be cleaned up proactively
-- **Not version controlled** - The `.tmp` folder should not be committed to git
+- **Not version controlled** — The `.tmp` folder is gitignored
+- **Sessions persist** — The `sessions/` directory should persist across sessions but may be archived periodically
+- **Scratch is truly temporary** — The `scratch/` directory can be cleaned aggressively
+- **Scripts are regenerable** — The `scripts/` directory can be rebuilt from session context
+- **Best effort archival** — Important findings should be migrated to appropriate permanent locations
+- **Regular maintenance** — Old/stale files should be cleaned up proactively
 
 ## Recommended Practices
 
@@ -75,4 +82,4 @@ Files here are truly ephemeral and can be deleted immediately after the operatio
 
 ---
 
-**Last updated:** February 7, 2026
+**Last updated:** February 14, 2026

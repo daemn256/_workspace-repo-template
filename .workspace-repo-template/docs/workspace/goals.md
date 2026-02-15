@@ -1,5 +1,4 @@
-<!-- Source: _workspace-repo-template | File: goals.template.md -->
-<!-- Copy to goals.md and update with your current priorities. -->
+<!-- Source: _workspace-repo-template | File: goals.md -->
 
 # Current Goals
 

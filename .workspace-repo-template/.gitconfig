@@ -1,9 +1,8 @@
-# Source: _workspace-repo-template | File: .gitconfig.template
-# Copy to .gitconfig and include in your local git config.
+# Source: _workspace-repo-template | File: .gitconfig
+# Include in your local git config.
 # This file is safe to reference; DO NOT commit personal .gitconfig files.
 #
 # Usage:
-#   cp .gitconfig.template .gitconfig
 #   git config --local include.path ../.gitconfig
 #
 # Or run: tools/setup.sh

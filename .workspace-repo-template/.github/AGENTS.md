@@ -1,5 +1,4 @@
-<!-- Source: _workspace-repo-template | File: AGENTS.template.md -->
-<!-- Copy to AGENTS.md and fill in your project details. -->
+<!-- Source: _workspace-repo-template | File: AGENTS.md -->
 
 # AI Agent Onboarding
 
@@ -51,12 +50,12 @@
 
 ## Tech Stack
 
-| Layer    | Technology             |
-| -------- | ---------------------- |
-| Backend  | {{{backend_stack}}}    |
-| Frontend | {{{frontend_stack}}}   |
-| Database | {{{database}}}         |
-| CI/CD    | {{{ci_cd_platform}}}   |
+| Layer    | Technology           |
+| -------- | -------------------- |
+| Backend  | {{{backend_stack}}}  |
+| Frontend | {{{frontend_stack}}} |
+| Database | {{{database}}}       |
+| CI/CD    | {{{ci_cd_platform}}} |
 
 ---
 
@@ -85,11 +84,11 @@
 
 ## Key Documentation
 
-| Document              | Location                     | Purpose                        |
-| --------------------- | ---------------------------- | ------------------------------ |
+| Document               | Location                    | Purpose                        |
+| ---------------------- | --------------------------- | ------------------------------ |
 | Architecture Decisions | `docs/adr/`                 | Design decisions and rationale |
-| API Documentation     | {{{api_docs_location}}}      | API contracts and usage        |
-| Testing Strategy      | {{{testing_docs_location}}}  | Test patterns and coverage     |
+| API Documentation      | {{{api_docs_location}}}     | API contracts and usage        |
+| Testing Strategy       | {{{testing_docs_location}}} | Test patterns and coverage     |
 
 ---
 

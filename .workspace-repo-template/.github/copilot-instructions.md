@@ -1,5 +1,4 @@
-<!-- Source: _workspace-repo-template | File: copilot-instructions.template.md -->
-<!-- Copy to copilot-instructions.md and update the Template Identity section. -->
+<!-- Source: _workspace-repo-template | File: copilot-instructions.md -->
 
 # Repository Instructions
 

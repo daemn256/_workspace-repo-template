@@ -42,6 +42,27 @@ Called by `initialize-workspace.sh`. Not typically run standalone.
 - Migrates legacy `upstream` remotes to `upstream-workspace`
 - Idempotent — safe to re-run at any time
 
+## Maintenance Scripts
+
+### sync-upstream.sh
+
+**Safely sync the containment directory from upstream template.**
+
+```bash
+# Preview changes (dry run)
+./tools/sync-upstream.sh
+
+# Apply changes
+./tools/sync-upstream.sh --apply
+```
+
+- Selective extraction — only updates the containment directory, never touches root files
+- Dry run by default — shows what would change before applying
+- Auto-detects containment directory name and upstream remote
+- See [Upstream Sync](../docs/guides/upstream-sync.md) for full guide
+
+> **Important:** Never use `git merge upstream-workspace/main` on a containment-model workspace. See the sync guide for why.
+
 ---
 
 ## Purpose

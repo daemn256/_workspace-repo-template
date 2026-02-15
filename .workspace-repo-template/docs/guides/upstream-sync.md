@@ -2,6 +2,14 @@
 
 Periodically sync your workspace with the template to get improvements, new features, and bug fixes.
 
+## Important: Why `git merge` Doesn't Work
+
+> **Never run `git merge upstream-workspace/main` on a workspace created from a containment-model template.**
+
+The template repository's root is bare — it contains only the containment directory (`.workspace-repo-template/`). Your workspace root has customized files (`README.md`, `CHANGELOG.md`, etc.) that don't exist in upstream. A standard merge would interpret this as "upstream deleted all root files" and try to remove them.
+
+Instead, use **selective extraction** — pulling only the containment directory from upstream while leaving your workspace root untouched.
+
 ## When to Sync
 
 - **After template releases** — Check the template repo for new versions
@@ -10,155 +18,115 @@ Periodically sync your workspace with the template to get improvements, new feat
 
 ## The Sync Workflow
 
-### Step 1: Fetch Template Changes
+### Option A: Use the Sync Script (Recommended)
 
 ```bash
-git fetch upstream
+# Preview changes (dry run)
+tools/sync-upstream.sh
+
+# Apply changes
+tools/sync-upstream.sh --apply
+
+# Review and commit
+git diff --cached --stat
+git commit -m "chore: sync containment from upstream"
+git push origin main
 ```
 
-### Step 2: Review What's New
+The script handles fetching, comparing, extracting, and staging automatically.
+
+### Option B: Manual Sync
+
+If you prefer manual control:
+
+#### Step 1: Fetch Template Changes
+
+```bash
+git fetch upstream-workspace
+```
+
+#### Step 2: Review What's New
 
 ```bash
 # See commit summary
-git log HEAD..upstream/main --oneline
+git log HEAD..upstream-workspace/main --oneline
 
-# See detailed changes
-git log HEAD..upstream/main
-
-# See file diff
-git diff HEAD..upstream/main --stat
+# See file changes in containment
+git diff HEAD upstream-workspace/main -- .workspace-repo-template/ --stat
 ```
 
-### Step 3: Merge Changes
+#### Step 3: Extract Containment Directory
 
 ```bash
-git merge upstream/main --no-ff -m "chore: sync with _workspace-repo-template"
+git checkout upstream-workspace/main -- .workspace-repo-template/
 ```
 
-The `--no-ff` creates a merge commit even if fast-forward is possible, making the sync point visible in history.
+This replaces your local `.workspace-repo-template/` with the exact upstream version. Your workspace root files are **completely unaffected**.
 
-### Step 4: Resolve Conflicts
+#### Step 4: Stage and Commit
 
-If conflicts occur, resolve them following the [Conflict Resolution](#conflict-resolution) guide below.
+```bash
+git add .workspace-repo-template/
+git commit -m "chore: sync containment from upstream"
+```
 
-### Step 5: Push to Your Repo
+#### Step 5: Apply Changes to Your Workspace (Optional)
+
+After syncing the containment directory, compare it with your root to see if you want to adopt any changes:
+
+```bash
+# See differences between containment reference and your workspace
+diff -r .workspace-repo-template/ ./ --exclude=.git --exclude=.workspace-repo-template
+```
+
+For template-owned files (agents, instructions, prompts, hooks), you'll typically want to copy the updated versions:
+
+```bash
+# Example: update agents from containment
+cp -r .workspace-repo-template/.github/agents/ .github/agents/
+```
+
+For mixed-ownership files (`.gitignore`, `.vscode/`), review and merge manually.
+
+For satellite-owned files (`README.md`, `docs/`), keep your versions.
+
+#### Step 6: Push
 
 ```bash
 git push origin main
 ```
 
-## Conflict Resolution
+## Ownership Model
 
-When merging template updates, conflicts typically occur in files you've customized.
+The containment directory preserves the complete upstream reference. Your workspace root contains your customized versions.
 
-### Ownership Model
-
-| File                              | Owner         | Resolution Strategy                              |
-| --------------------------------- | ------------- | ------------------------------------------------ |
-| `.github/workspace.md`            | **Satellite** | Keep your version                                |
-| `.github/AGENTS.md`               | **Satellite** | Keep your version                                |
-| `README.md`                       | **Satellite** | Keep your version                                |
-| `docs/**` (your docs)             | **Satellite** | Keep your version                                |
-| `.github/copilot-instructions.md` | **Template**  | Usually take template, merge carefully           |
-| `.github/agents/*`                | **Template**  | Usually take template                            |
-| `.github/instructions/*`          | **Template**  | Usually take template                            |
-| `.github/prompts/*`               | **Template**  | Usually take template                            |
-| `.githooks/*`                     | **Template**  | Usually take template                            |
-| `.vscode/*`                       | **Mixed**     | Merge — template structure + your customizations |
-| `.gitignore`                      | **Mixed**     | Merge — template patterns + your additions       |
-
-### Resolving Common Conflicts
-
-#### .github/workspace.md
-
-Always keep your version:
-
-```bash
-git checkout --ours .github/workspace.md
-git add .github/workspace.md
-```
-
-#### README.md
-
-Always keep your version:
-
-```bash
-git checkout --ours README.md
-git add README.md
-```
-
-#### .github/copilot-instructions.md
-
-Merge carefully — template may have important updates:
-
-1. Open the conflicted file
-2. Review both versions
-3. Keep template structure while preserving any custom rules you added
-4. Usually the template version is correct unless you added custom instructions
-
-#### .gitignore
-
-Merge both — take template patterns AND your additions:
-
-1. Open the conflicted file
-2. Keep all patterns from both versions
-3. Remove true duplicates
-
-### After Resolving All Conflicts
-
-```bash
-git add .
-git commit -m "chore: sync with _workspace-repo-template
-
-Resolved conflicts:
-- Kept workspace.md (satellite-owned)
-- Kept README.md (satellite-owned)
-- Merged .gitignore (combined patterns)"
-```
-
-## Automating with .gitattributes
-
-You can configure automatic merge strategies for satellite-owned files:
-
-```gitattributes
-# Always keep satellite version for these files
-.github/workspace.md merge=ours
-.github/AGENTS.md merge=ours
-README.md merge=ours
-```
-
-To enable the `ours` merge driver:
-
-```bash
-git config merge.ours.driver true
-```
-
-**Note:** This auto-resolves conflicts but may silently discard template changes to these files. Use with caution.
+| Location                                  | Owner        | Sync Strategy                                                |
+| ----------------------------------------- | ------------ | ------------------------------------------------------------ |
+| `.workspace-repo-template/` (containment) | **Template** | Always overwritten by sync — this IS the upstream reference  |
+| `README.md`, `CHANGELOG.md`, `LICENSE`    | **Consumer** | Never overwritten by sync. Compare with containment manually |
+| `docs/**` (your docs)                     | **Consumer** | Never overwritten by sync                                    |
+| `.github/agents/*`                        | **Template** | Copy from containment after sync                             |
+| `.github/instructions/*`                  | **Template** | Copy from containment after sync                             |
+| `.github/prompts/*`                       | **Template** | Copy from containment after sync                             |
+| `.github/copilot-instructions.md`         | **Mixed**    | Compare with containment, merge carefully                    |
+| `.githooks/*`                             | **Template** | Copy from containment after sync                             |
+| `.vscode/*`                               | **Mixed**    | Compare with containment, merge manually                     |
+| `.gitignore`                              | **Mixed**    | Compare with containment, merge manually                     |
+| `workspace.config.yaml`                   | **Consumer** | Never overwritten — compare for new keys                     |
 
 ## Sync Checklist
 
-- [ ] `git fetch upstream`
-- [ ] Review changes: `git log HEAD..upstream/main --oneline`
-- [ ] Merge: `git merge upstream/main --no-ff -m "chore: sync with _workspace-repo-template"`
-- [ ] Resolve conflicts (if any)
+- [ ] Run `tools/sync-upstream.sh` (or manual fetch + checkout)
+- [ ] Review staged changes: `git diff --cached --stat`
+- [ ] Commit: `git commit -m "chore: sync containment from upstream"`
+- [ ] Compare containment with workspace root for template-owned files to adopt
+- [ ] Copy updated template-owned files to root if desired
 - [ ] Test workspace: Open in VS Code, verify Copilot works
-- [ ] Commit and push: `git push origin main`
+- [ ] Push: `git push origin main`
 - [ ] Update CHANGELOG.md with sync note
 
 ## Skipping Specific Changes
 
-If the template introduces something you don't want:
+Since sync only updates the containment directory, you never need to reject changes there — it's the pure upstream reference. You control whether to adopt changes into your workspace root by choosing which files to copy.
 
-```bash
-# After merge with conflicts, discard specific template changes
-git checkout --ours path/to/unwanted/file
-git add path/to/unwanted/file
-```
-
-Or revert specific files after merge:
-
-```bash
-git merge upstream/main
-git checkout HEAD~1 -- path/to/unwanted/file
-git commit --amend
-```
+If upstream adds something you don't want in your workspace, simply don't copy it from containment to root. The containment directory will have it (as a reference) but your workspace won't use it.

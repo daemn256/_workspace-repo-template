@@ -1,5 +1,4 @@
-# Source: _workspace-repo-template | File: workspace.config.template.yaml
-# Copy to workspace.config.yaml and fill in real values.
+# Source: _workspace-repo-template | File: workspace.config.yaml
 # This file is template-owned. Sync updates it but NEVER overwrites your real config.
 #
 # Schema: https://github.com/daemn256/_agentic-system/blob/main/src/workspace/workspace-config-schema.md

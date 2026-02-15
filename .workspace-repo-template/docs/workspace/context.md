@@ -1,5 +1,4 @@
-<!-- Source: _workspace-repo-template | File: context.template.md -->
-<!-- Copy to context.md and fill in your project details. -->
+<!-- Source: _workspace-repo-template | File: context.md -->
 
 # Workspace Context
 

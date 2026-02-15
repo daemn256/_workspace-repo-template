@@ -63,13 +63,10 @@ This file helps GitHub Copilot understand your project.
 
 ## Step 4: Replace the README
 
-The template's `README.md` describes the template itself. Replace it with your project's README:
+The template's `README.md` has placeholder content. Replace it with your project's README:
 
 ```bash
-# Backup template README if you want to reference it
-mv README.md README.template.md
-
-# Create your own
+# Create your own (overwrite the template placeholder)
 cat > README.md << 'EOF'
 # My Project
 

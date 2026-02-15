@@ -6,11 +6,9 @@ sandbox/*
 archive/*
 !archive/README.md
 
-# Copilot Workspace (transient session data)
-.tmp/sessions/*
-!.tmp/sessions/README.md
-.tmp/scratch/*
-!.tmp/scratch/README.md
+# Temporary / transient workspace data
+.tmp/**
+!.tmp/**/README.md
 
 # OS
 .DS_Store

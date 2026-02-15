@@ -1,5 +1,4 @@
-<!-- Source: _workspace-repo-template | File: README.template.md -->
-<!-- Copy to README.md and customize for your project. -->
+<!-- Source: _workspace-repo-template | File: README.md -->
 
 # {project-name}
 

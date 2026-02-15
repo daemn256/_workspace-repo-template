@@ -1,23 +1,46 @@
 # Workspace Tools
 
-Automation scripts for **workspace-level operations** — not project creation or scaffolding.
+Automation scripts for **workspace-level operations** — initialization, git configuration, and maintenance.
 
-## Available Scripts
+## Initialization Scripts
 
-### setup.sh
+These scripts are called by `initialize-workspace.sh` during workspace setup.
 
-**Run once after creating your workspace from the template.**
+### copy-template.sh
+
+**Copies template files from the containment directory to the workspace root.**
+
+Called by `initialize-workspace.sh`. Not typically run standalone.
+
+- Copies all template content (structure, configs, docs, agents, hooks)
+- Excludes containment-only files (`initialize-workspace.sh`, `.template.yaml`, itself)
+- Uses `rsync` for reliable, idempotent copying
+
+### setup-githooks.sh
+
+**Configures git to use the `.githooks/` directory for branch protection.**
 
 ```bash
-./tools/setup.sh
+./tools/setup-githooks.sh
 ```
 
-This script:
-1. Configures git to use `.githooks/` for branch protection
-2. Adds the template repository as `upstream` remote
-3. Blocks push to upstream (prevents accidental template contamination)
+- Sets `core.hooksPath` to `.githooks/`
+- Idempotent — safe to re-run at any time
+- Can be run standalone from anywhere in the repository
 
-See [Getting Started](docs/guides/getting-started.md) for full setup instructions.
+### setup-remotes.sh
+
+**Configures upstream template remotes for tracking updates.**
+
+```bash
+./tools/setup-remotes.sh
+```
+
+- Adds `upstream-workspace` remote (this workspace template)
+- Adds `upstream-repo` remote (parent repository template)
+- Blocks push to both remotes (fetch-only)
+- Migrates legacy `upstream` remotes to `upstream-workspace`
+- Idempotent — safe to re-run at any time
 
 ---
 

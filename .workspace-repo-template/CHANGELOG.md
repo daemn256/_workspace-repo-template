@@ -1,5 +1,4 @@
-<!-- Source: _workspace-repo-template | File: CHANGELOG.template.md -->
-<!-- Copy to CHANGELOG.md and update with your project history. -->
+<!-- Source: _workspace-repo-template | File: CHANGELOG.md -->
 
 # Changelog
 

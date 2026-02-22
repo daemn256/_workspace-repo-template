@@ -79,16 +79,22 @@ After syncing the containment directory, compare it with your root to see if you
 diff -r .workspace-repo-template/ ./ --exclude=.git --exclude=.workspace-repo-template
 ```
 
-For template-owned files (agents, instructions, prompts, hooks), you'll typically want to copy the updated versions:
+See the [Development Workflow](development-workflow.md) guide for the full adoption process, including selective adoption vs full adoption (`copy-template.sh`).
+
+For **template-owned files** (agents, instructions, prompts, hooks, tools), copy from containment:
 
 ```bash
-# Example: update agents from containment
-cp -r .workspace-repo-template/.github/agents/ .github/agents/
+# Example: adopt a specific tool update
+cp .workspace-repo-template/tools/check-drift.sh tools/check-drift.sh
 ```
 
-For mixed-ownership files (`.gitignore`, `.vscode/`), review and merge manually.
+For **rendered files** (CLAUDE.md, copilot-instructions.md, etc.), re-render after adoption:
 
-For satellite-owned files (`README.md`, `docs/`), keep your versions.
+```bash
+tools/render-instructions.sh
+```
+
+For **consumer-owned files** (`workspace.config.yaml`, `README.md`, `docs/workspace/*`), keep your versions.
 
 #### Step 6: Push
 
@@ -98,21 +104,21 @@ git push origin main
 
 ## Ownership Model
 
-The containment directory preserves the complete upstream reference. Your workspace root contains your customized versions.
+The containment directory preserves the complete upstream reference. Your workspace root contains your customized versions. Three ownership tiers exist:
 
-| Location                                  | Owner        | Sync Strategy                                                |
-| ----------------------------------------- | ------------ | ------------------------------------------------------------ |
-| `.workspace-repo-template/` (containment) | **Template** | Always overwritten by sync — this IS the upstream reference  |
-| `README.md`, `CHANGELOG.md`, `LICENSE`    | **Consumer** | Never overwritten by sync. Compare with containment manually |
-| `docs/**` (your docs)                     | **Consumer** | Never overwritten by sync                                    |
-| `.github/agents/*`                        | **Template** | Copy from containment after sync                             |
-| `.github/instructions/*`                  | **Template** | Copy from containment after sync                             |
-| `.github/prompts/*`                       | **Template** | Copy from containment after sync                             |
-| `.github/copilot-instructions.md`         | **Mixed**    | Compare with containment, merge carefully                    |
-| `.githooks/*`                             | **Template** | Copy from containment after sync                             |
-| `.vscode/*`                               | **Mixed**    | Compare with containment, merge manually                     |
-| `.gitignore`                              | **Mixed**    | Compare with containment, merge manually                     |
-| `workspace.config.yaml`                   | **Consumer** | Never overwritten — compare for new keys                     |
+| Location                                  | Tier             | Sync Strategy                                                |
+| ----------------------------------------- | ---------------- | ------------------------------------------------------------ |
+| `.workspace-repo-template/` (containment) | **Template**     | Always overwritten by sync — this IS the upstream reference  |
+| `.github/agents/*`, `.github/instructions/*`, `.github/prompts/*` | **Template** | Copy from containment after sync |
+| `.githooks/*`, `.vscode/*`, `tools/*` (from containment) | **Template** | Copy from containment after sync |
+| `CLAUDE.md`, `.github/copilot-instructions.md`, `.github/AGENTS.md` | **Rendered** | Re-run `tools/render-instructions.sh` after sync |
+| `.junie/guidelines.md`, `.claude/skills/pr/SKILL.md` | **Rendered** | Re-run `tools/render-instructions.sh` after sync |
+| `workspace.config.yaml`                   | **Consumer**     | Never overwritten — your config values                       |
+| `README.md`, `CHANGELOG.md`, `LICENSE`    | **Consumer**     | Never overwritten by sync                                    |
+| `docs/workspace/*` (context, goals)       | **Consumer**     | Never overwritten by sync                                    |
+| `docs/adr/*`, `docs/observations/*`       | **Consumer**     | Your workspace-specific docs                                 |
+
+For the complete ownership model, see the [Development Workflow](development-workflow.md) guide.
 
 ## Sync Checklist
 
@@ -130,3 +136,8 @@ The containment directory preserves the complete upstream reference. Your worksp
 Since sync only updates the containment directory, you never need to reject changes there — it's the pure upstream reference. You control whether to adopt changes into your workspace root by choosing which files to copy.
 
 If upstream adds something you don't want in your workspace, simply don't copy it from containment to root. The containment directory will have it (as a reference) but your workspace won't use it.
+
+## See Also
+
+- [Development Workflow](development-workflow.md) — Full pipeline flow, adoption strategies, file ownership
+- [Remote Management](remote-management.md) — Remote configuration and the satellite model

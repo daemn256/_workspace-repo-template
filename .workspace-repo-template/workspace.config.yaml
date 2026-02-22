@@ -67,3 +67,20 @@ board:
   #   - { name: High, description: Must address now }
   #   - { name: Medium, description: Address this milestone }
   #   - { name: Low, description: Address when convenient }
+
+# ─── Commands ─────────────────────────────────────────────────────
+# Tech-stack-specific commands referenced by instruction file rendering.
+# Used by tools/render-instructions.sh to fill {{{placeholder}}} tokens.
+commands:
+  build: "" # e.g., npm run build, dotnet build
+  test: "" # e.g., npm test, dotnet test
+  run: "" # e.g., npm start, dotnet run
+  lint: "" # e.g., npm run lint, dotnet format
+
+# ─── Project ─────────────────────────────────────────────────────
+# Project identity and git conventions for instruction file rendering.
+project:
+  root: "" # Project root directory (relative to workspace)
+  base-branch: "main" # Default branch for PRs
+  branch-pattern: "<type>/<issue-number>-<kebab-description>"
+  overlay-file: "docs/workspace/project-overlay.md" # Consumer project overlay content

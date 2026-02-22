@@ -47,3 +47,19 @@ echo "   Excluded (containment-only):"
 echo "     - initialize-workspace.sh"
 echo "     - .template.yaml"
 echo "     - tools/copy-template.sh"
+
+# ─── Config-driven rendering (Issue #73) ──────────────────────────
+# If workspace.config.yaml exists and render-instructions.sh is available,
+# automatically render instruction files with consumer values.
+RENDER_SCRIPT="$WORKSPACE_DIR/tools/render-instructions.sh"
+CONFIG_FILE="$WORKSPACE_DIR/workspace.config.yaml"
+
+if [[ -x "$RENDER_SCRIPT" && -f "$CONFIG_FILE" ]]; then
+  echo ""
+  echo "   Running config-driven instruction rendering..."
+  "$RENDER_SCRIPT"
+elif [[ -f "$CONFIG_FILE" ]]; then
+  echo ""
+  echo "   ⚠️  workspace.config.yaml found but tools/render-instructions.sh not available"
+  echo "      Consumer {{{placeholder}}} tokens may need manual filling"
+fi

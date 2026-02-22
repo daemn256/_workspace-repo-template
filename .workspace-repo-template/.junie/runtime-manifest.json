@@ -1,7 +1,7 @@
 {
   "manifestVersion": "1.0",
   "platform": "jetbrains-junie",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "buildDate": "2026-02-21T21:46:35Z",
   "gitCommit": "39f2ea1",
   "gitBranch": "feat/62-multi-runtime-builds",

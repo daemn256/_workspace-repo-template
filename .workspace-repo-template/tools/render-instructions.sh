@@ -311,7 +311,7 @@ echo ""
 
 # Report unfilled consumer tokens (collected during rendering)
 REMAINING=0
-for report in "${UNFILLED_REPORTS[@]}"; do
+for report in "${UNFILLED_REPORTS[@]+"${UNFILLED_REPORTS[@]}"}"; do
   IFS='|' read -r rel_path count tokens <<< "$report"
   log_warn "$rel_path has $count unfilled consumer token(s)"
   echo "$tokens" | tr ',' '\n' | sed 's/^/    /'

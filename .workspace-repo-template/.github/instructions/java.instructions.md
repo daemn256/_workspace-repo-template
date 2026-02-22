@@ -2,7 +2,7 @@
 applyTo: "**/*.java,**/pom.xml"
 ---
 
-# Java Instructions
+# Java Conventions
 
 > Conventions for Java and Maven development.
 
@@ -15,14 +15,14 @@ applyTo: "**/*.java,**/pom.xml"
 
 ## Naming Conventions
 
-| Element | Convention | Example |
-|---------|------------|---------|
-| Class | PascalCase | `UserService` |
-| Interface | PascalCase | `UserRepository` |
-| Method | camelCase | `getUserById` |
-| Variable | camelCase | `currentUser` |
-| Constant | SCREAMING_SNAKE | `MAX_RETRY_COUNT` |
-| Package | lowercase | `com.example.users` |
+| Element   | Convention      | Example             |
+| --------- | --------------- | ------------------- |
+| Class     | PascalCase      | `UserService`       |
+| Interface | PascalCase      | `UserRepository`    |
+| Method    | camelCase       | `getUserById`       |
+| Variable  | camelCase       | `currentUser`       |
+| Constant  | SCREAMING_SNAKE | `MAX_RETRY_COUNT`   |
+| Package   | lowercase       | `com.example.users` |
 
 ## Package Structure
 
@@ -96,9 +96,9 @@ public UserService(@NonNull UserRepository repository) {
 @RestController
 @RequestMapping("/api/v1/users")
 public class UserController {
-    
+
     private final UserService userService;
-    
+
     public UserController(UserService userService) {
         this.userService = userService;
     }

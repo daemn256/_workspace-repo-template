@@ -1,44 +1,71 @@
 ---
-description: Create follow-up issue from existing work
+description: "Create a follow-up issue linked to existing work"
 ---
 
 # Issue Spawn
 
-Create a follow-up issue linked to existing work.
+Orchestrator-led workflow. When work-in-progress reveals additional scope, technical debt, or related tasks, spawn a new issue with full traceability back to the parent.
 
-## When to Use
+**Prerequisites:** Active work context (parent issue number and title), clear reason why this is separate work, access to issue tracker (`gh` CLI)
 
-- During implementation, discover related work needed
-- Scope creep identified and needs separate tracking
-- Technical debt discovered
-- Enhancement idea while working on something else
+---
 
-## Spawn Categories
+## Phase 1: Identify
 
-| Category | Example |
-|----------|---------|
-| **Scope split** | Original issue too large, splitting |
-| **Follow-up** | Additional work identified during implementation |
-| **Technical debt** | Cleanup or refactoring needed |
-| **Enhancement** | Nice-to-have discovered during work |
-| **Bug** | Defect found while implementing |
+### Classify and Confirm Separation
 
-## Output Format
+1. Identify the spawn category:
+
+| Category           | Example                                          |
+| ------------------ | ------------------------------------------------ |
+| **Scope split**    | Original issue too large, splitting              |
+| **Follow-up**      | Additional work identified during implementation |
+| **Technical debt** | Cleanup or refactoring needed                    |
+| **Enhancement**    | Nice-to-have discovered during work              |
+| **Bug**            | Defect found while implementing                  |
+
+2. Confirm with the human that this should be separate work
+3. Note the parent issue context
+
+**Entry points:**
+
+- "This is out of scope, let's file it separately" — Start here
+- "I found a bug while implementing" — Start here with `type:bug`
+- "This needs its own issue" — Start here
+
+### Output
 
 ```markdown
 ## Context Anchors
 
 - **Parent Issue:** #<number> - <title>
-- **Reason for Spawn:** <category from above>
+- **Reason for Spawn:** <category>
+- **Phase:** 1 — Identify
 
-## Proposed Issue
+## Spawn Justification
 
-**Title:** <concise title>
+<why this should be separate work>
 
-**Labels:** `type:...`, `area:...`, `topic:...`
+## Next Step
 
-**Body:**
+Confirm spawn is warranted.
 
+**Approval Required:** Yes
+```
+
+### ⛔ CHECKPOINT
+
+**STOP.** Do not proceed until human confirms the spawn is warranted.
+
+---
+
+## Phase 2: Draft
+
+### Compose Spawned Issue
+
+Draft the issue with traceability links:
+
+```markdown
 ## Summary
 
 <What this spawned issue addresses>
@@ -58,37 +85,101 @@ Spawned from #<parent-number> during <activity>.
 
 - Spawned from #<parent-number>
 - Related to #<other-related>
-
-## Commands
-
-```bash
-gh issue create \
-  --title "<title>" \
-  --body-file .tmp/issue-body.md \
-  --label "type:<type>"
 ```
 
-## Next Step
-
-Awaiting approval to create spawned issue.
-
-**Approval Required:** Yes
-```
-
-## Traceability Requirements
+### Traceability Requirements
 
 Spawned issues MUST include:
 
 1. **Link to parent** — "Spawned from #N"
 2. **Context** — Why this was discovered
-3. **Separation rationale** — Why it's separate work
+3. **Separation rationale** — Why it is separate work
 
-## Parent Issue Update
+### Output
 
-After spawning, update the parent issue:
+```markdown
+## Context Anchors
+
+- **Parent Issue:** #<number> - <title>
+- **Reason for Spawn:** <category>
+- **Phase:** 2 — Draft
+
+## Proposed Issue
+
+- **Title:** <title>
+- **Labels:** `type:<type>`
+
+## Issue Body
+
+<full issue body content>
+
+## Next Step
+
+Awaiting approval of draft content, title, and labels.
+
+**Approval Required:** Yes
+```
+
+### ⛔ CHECKPOINT
+
+**STOP.** Do not create the issue until human approves the draft content, title, and labels.
+
+---
+
+## Phase 3: Create and Link
+
+### Create and Update Parent
+
+1. Write the issue body to a temporary file
+2. Create the issue via CLI:
+
+```bash
+gh issue create \
+  --title "<title>" \
+  --body-file .tmp/scratch/issue-body.md \
+  --label "type:<type>"
+```
+
+3. Update the parent issue body with a spawn reference:
 
 ```markdown
 ## Spawned Issues
 
 - #<new-number> - <title> (spawned during implementation)
 ```
+
+### Output
+
+```markdown
+## Context Anchors
+
+- **Parent Issue:** #<parent-number> - <parent-title>
+- **Spawned Issue:** #<new-number> - <new-title>
+- **Phase:** 3 — Create and Link
+
+## Result
+
+- Issue created: #<new-number>
+- Parent updated: #<parent-number> now references spawn
+
+## Next Step
+
+Spawned issue created and linked. Return to parent work.
+
+**Approval Required:** No
+```
+
+### ⛔ CHECKPOINT
+
+**STOP.** Confirm issue created and parent updated.
+
+---
+
+## Error Handling
+
+| Error                          | Recovery                                                    |
+| ------------------------------ | ----------------------------------------------------------- |
+| Parent issue context missing   | Ask for the parent issue number, do not guess               |
+| Separation rationale weak      | Suggest keeping work in parent issue, let human decide      |
+| Parent issue cannot be updated | Report failure; spawned issue still has "Spawned from" link |
+| `gh` CLI not authenticated     | Run `gh auth login`                                         |

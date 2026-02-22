@@ -2,7 +2,7 @@
 applyTo: "**/*.component.ts,**/*.service.ts,**/*.directive.ts,**/*.pipe.ts,**/*.module.ts"
 ---
 
-# Angular Instructions
+# Angular Conventions
 
 > Conventions for Angular development.
 
@@ -15,13 +15,13 @@ applyTo: "**/*.component.ts,**/*.service.ts,**/*.directive.ts,**/*.pipe.ts,**/*.
 
 ## Naming Conventions
 
-| Element | Convention | Example |
-|---------|------------|---------|
-| Component | kebab-case selector | `app-user-profile` |
-| Service | PascalCase + Service | `UserService` |
-| Directive | camelCase selector | `appHighlight` |
-| Pipe | camelCase name | `dateFormat` |
-| Module | PascalCase + Module | `SharedModule` |
+| Element   | Convention           | Example            |
+| --------- | -------------------- | ------------------ |
+| Component | kebab-case selector  | `app-user-profile` |
+| Service   | PascalCase + Service | `UserService`      |
+| Directive | camelCase selector   | `appHighlight`     |
+| Pipe      | camelCase name       | `dateFormat`       |
+| Module    | PascalCase + Module  | `SharedModule`     |
 
 ## File Naming
 
@@ -30,6 +30,7 @@ applyTo: "**/*.component.ts,**/*.service.ts,**/*.directive.ts,**/*.pipe.ts,**/*.
 ```
 
 Examples:
+
 - `user-profile.component.ts`
 - `auth.service.ts`
 - `highlight.directive.ts`

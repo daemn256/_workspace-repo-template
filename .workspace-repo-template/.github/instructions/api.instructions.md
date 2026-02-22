@@ -2,115 +2,87 @@
 applyTo: "**/Controllers/**,**/Endpoints/**"
 ---
 
-# API Instructions
+# API Design Conventions
 
-> Conventions for API controllers and endpoints.
+> Guidelines for API design and implementation.
 
-## REST Conventions
+## HTTP Methods
 
-| Verb | Purpose | Success | Body |
-|------|---------|---------|------|
-| GET | Retrieve | 200 | Response |
-| POST | Create | 201 | Created resource |
-| PUT | Replace | 200 | Updated resource |
-| PATCH | Partial update | 200 | Updated resource |
-| DELETE | Remove | 204 | None |
+| Method | Purpose        | Idempotent |
+| ------ | -------------- | ---------- |
+| GET    | Retrieve       | Yes        |
+| POST   | Create         | No         |
+| PUT    | Full update    | Yes        |
+| PATCH  | Partial update | Yes        |
+| DELETE | Remove         | Yes        |
 
-## Status Codes
+## Response Codes
 
-| Code | Meaning | When to Use |
-|------|---------|-------------|
-| 200 | OK | Successful GET, PUT, PATCH |
-| 201 | Created | Successful POST |
-| 204 | No Content | Successful DELETE |
-| 400 | Bad Request | Invalid input |
-| 401 | Unauthorized | Missing/invalid auth |
-| 403 | Forbidden | Valid auth, no permission |
-| 404 | Not Found | Resource doesn't exist |
-| 409 | Conflict | State conflict |
-| 422 | Unprocessable | Validation failed |
-| 500 | Server Error | Unexpected error |
+| Code | When                      |
+| ---- | ------------------------- |
+| 200  | Success with body         |
+| 201  | Created (POST)            |
+| 204  | Success, no body (DELETE) |
+| 400  | Bad request (syntax)      |
+| 401  | Unauthenticated           |
+| 403  | Unauthorized              |
+| 404  | Not found                 |
+| 409  | Conflict                  |
+| 422  | Validation error          |
 
-## Error Response (Problem Details - RFC 9457)
+## Problem Details (RFC 7807)
+
+All errors return Problem Details format:
 
 ```json
 {
   "type": "https://api.example.com/problems/validation-error",
   "title": "Validation Error",
-  "status": 400,
-  "detail": "One or more validation errors occurred.",
-  "errors": {
-    "email": ["Invalid email format"]
-  }
+  "status": 422,
+  "detail": "One or more fields failed validation",
+  "errors": { "field": ["error message"] }
 }
 ```
-
-## URL Patterns
-
-```
-/api/v1/{resource}           # Collection
-/api/v1/{resource}/{id}      # Single item
-/api/v1/{resource}/{id}/{sub}  # Sub-resource
-```
-
-- Use plural nouns for resources (`/users`, not `/user`)
-- Use kebab-case for multi-word resources (`/order-items`)
-- Avoid verbs in URLs (use HTTP methods instead)
-
-## Versioning
-
-- Include version in URL path (`/api/v1/...`)
-- Maintain backwards compatibility within major version
-- Document breaking changes
-- Deprecate before removing
 
 ## Pagination
 
-```json
-{
-  "data": [...],
-  "pagination": {
-    "page": 1,
-    "pageSize": 20,
-    "totalCount": 100,
-    "totalPages": 5
-  }
-}
-```
-
-Query parameters: `?page=1&pageSize=20`
-
-## Filtering and Sorting
+Standard query parameters:
 
 ```
-GET /api/v1/users?status=active&sort=name:asc,createdAt:desc
+GET /api/entities?page=1&pageSize=20
 ```
 
-- Use query parameters for filtering
-- Support multiple sort fields with direction
+Response includes:
 
-## Controller Patterns
+- `items`: Array of results
+- `totalCount`: Total items
+- `page`: Current page
+- `pageSize`: Items per page
 
-```csharp
-[ApiController]
-[Route("api/v1/[controller]")]
-public class UsersController : ControllerBase
-{
-    [HttpGet("{id}")]
-    [ProducesResponseType<User>(StatusCodes.Status200OK)]
-    [ProducesResponseType<ProblemDetails>(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetById(string id)
-    {
-        // ...
-    }
-}
+## Naming
+
+### URIs
+
+- Plural nouns for collections: `/users`, `/orders`
+- Kebab-case for multi-word: `/order-items`
+- Nested resources for ownership: `/users/{id}/orders`
+
+### Query Parameters
+
+- camelCase: `pageSize`, `sortBy`
+- Standard filters: `search`, `status`, `from`, `to`
+
+## Versioning
+
+Prefer URL path versioning:
+
+```
+/api/v1/users
+/api/v2/users
 ```
 
-## Anti-Patterns
+## Contract-First
 
-- ❌ Verbs in URLs (`/api/getUser`)
-- ❌ Inconsistent naming (mixing `/User` and `/orders`)
-- ❌ Returning 200 for errors
-- ❌ Exposing internal IDs or implementation details
-- ❌ Missing Content-Type headers
-- ❌ Ignoring Accept headers
+- Define OpenAPI/Swagger spec before implementation
+- Use spec for validation and documentation
+- Generate client SDKs from spec when possible

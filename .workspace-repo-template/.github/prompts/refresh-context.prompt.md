@@ -1,66 +1,48 @@
 ---
-description: Update stale workspace context
+description: "Update stale workspace context"
 ---
 
-# Context Refresh
+# Refresh Context
 
-The workspace context in `workspace.md` may be outdated. Let's verify and update it.
+Research-led workflow with Orchestrator support. Verify and update the workspace context file when it may be outdated. Scans the codebase for changes and reconciles with documented state.
 
-## When to Run
-
-- Major refactoring has occurred
-- New modules/features added
-- Documentation has moved
-- Team conventions have changed
-- It's been a while since last refresh
-
-## Process
-
-### Step 1: Read Current Context
-
-I'll read the existing `workspace.md` and summarize what it contains.
-
-### Step 2: Scan Codebase
-
-I'll look for changes:
-
-- New directories or modules
-- Changed file patterns
-- Updated configuration
-- Moved documentation
-
-### Step 3: Report Inconsistencies
-
-```markdown
-## Current workspace.md States
-
-- <item 1>
-- <item 2>
-
-## Detected Changes
-
-| Item | Current State | Detected State | Action |
-|------|---------------|----------------|--------|
-| <item> | <old> | <new> | Update/Remove/Verify |
-
-## Questions
-
-- <Question about ambiguous change>
-```
-
-### Step 4: Propose Updates
-
-After your input, I'll propose specific updates to `workspace.md`.
-
-### Step 5: Apply Updates
-
-With your approval, I'll update the file.
+**Prerequisites:** Existing workspace context file, access to codebase
 
 ---
 
-## Staleness Indicators
+## Phase 1: Read Current Context
 
-Signs that `workspace.md` might be stale:
+### Understand Documented State
+
+1. Read the existing workspace context file
+2. Summarize what it contains
+3. Note the last-updated timestamp
+
+---
+
+## Phase 2: Scan Codebase
+
+### Detect Changes
+
+1. Look for new directories or modules
+2. Check for changed file patterns
+3. Review updated configuration
+4. Check for moved documentation
+5. Verify convention adherence
+
+---
+
+## Phase 3: Report Inconsistencies
+
+### Present Findings
+
+1. Compare current context against detected state
+2. List items that need updating, removal, or verification
+3. Highlight questions about ambiguous changes
+
+### Staleness Indicators
+
+Signs that workspace context might be stale:
 
 - References files that no longer exist
 - Mentions patterns not seen in recent code
@@ -68,17 +50,72 @@ Signs that `workspace.md` might be stale:
 - Documentation links are broken
 - Conventions don't match observed code
 
+### Output
+
+```markdown
+## Context Anchors
+
+- **File:** <workspace context path>
+- **Phase:** 3 — Report Inconsistencies
+
+## Detected Changes
+
+| Item   | Current State | Detected State | Action   |
+| ------ | ------------- | -------------- | -------- |
+| <item> | <documented>  | <actual>       | <update> |
+
+## Questions
+
+- <question about ambiguous change>
+
+## Next Step
+
+Awaiting human input before making changes.
+
+**Approval Required:** Yes
+```
+
+### ⛔ CHECKPOINT
+
+**STOP.** Do not update the workspace context until human reviews and approves changes.
+
 ---
 
-## Output
+## Phase 4: Apply Updates
 
-Updated `workspace.md` with:
+### Update Workspace Context
 
-- Corrected information
-- New discoveries
-- Removed obsolete content
-- Updated timestamp
+1. Apply approved corrections
+2. Add new discoveries
+3. Remove obsolete content
+4. Update timestamp
+
+### Output
+
+```markdown
+## Context Anchors
+
+- **File:** <workspace context path>
+- **Phase:** 4 — Apply Updates
+
+## Updates Applied
+
+- <change 1>
+- <change 2>
+
+## Next Step
+
+Workspace context updated.
+
+**Approval Required:** No
+```
 
 ---
 
-Starting refresh. Reading current context...
+## Error Handling
+
+| Error                              | Recovery                                   |
+| ---------------------------------- | ------------------------------------------ |
+| No workspace context file exists   | Offer to create one via setup workflow     |
+| File has incompatible format       | Note format issues, propose migration      |
+| Too many changes to review at once | Batch into sections, process incrementally |

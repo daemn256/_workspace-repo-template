@@ -1,0 +1,12 @@
+{
+  "manifestVersion": "1.0",
+  "kernelVersion": "3.0.0",
+  "syncDate": "2026-02-22T02:42:45Z",
+  "platforms": ["github-copilot", "claude-code", "jetbrains-junie"],
+  "platformCount": 3,
+  "totals": {
+    "agents": 14,
+    "prompts": 12,
+    "instructions": 10
+  }
+}

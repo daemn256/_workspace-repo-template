@@ -1,71 +1,77 @@
 ---
-description: Recover from missing workspace context
+description: "Recover from missing workspace context"
 ---
 
-# Context Recovery
+# Recover Context
 
-I've hit a point where I need information that isn't in my workspace context.
+Orchestrator-led workflow with Research support. When insufficient context is encountered, this workflow provides a structured protocol for acknowledging the gap, describing what's missing, and offering recovery paths.
 
-## Behavior Contract
+**Prerequisites:** Agent has identified a context gap, work is blocked by missing information
 
-When context is insufficient, I will:
+---
 
-1. **Stop** — Not proceed with incomplete information
-2. **Describe** — What I was attempting and what's missing
-3. **Offer options** — How to fill the gap
+## Behavioral Contract
 
-I will NOT:
+When context is insufficient:
 
-- ❌ Invent information I don't have
-- ❌ Guess at conventions or patterns
-- ❌ Proceed without acknowledging the gap
-- ❌ Claim to have scanned when I haven't
+1. **Stop** — Do not proceed with incomplete information
+2. **Describe** — State what was attempted and what's missing
+3. **Offer options** — Provide structured recovery paths
+
+**Anti-patterns:**
+
+- MUST NOT invent information
+- MUST NOT guess at conventions or patterns
+- MUST NOT proceed without acknowledging the gap
+- MUST NOT claim to have scanned when it hasn't
 
 ---
 
 ## Recovery Options
 
-### Option 1: Point Me to Docs
+### Option 1: Point to Docs
 
-If the information exists somewhere, tell me where:
+If the information exists somewhere, the human points to it:
 
 > "Look at docs/architecture/caching.md"
 
-I'll read it and add relevant context to workspace.md.
+The agent reads it and integrates relevant context.
 
-### Option 2: Tell Me Directly
+### Option 2: Direct Answer
 
-If you know the answer, just tell me:
+The human provides the information directly:
 
 > "We use Redis for caching with a 5-minute TTL by default"
 
-I'll add it to workspace.md for future reference.
+The agent records it in workspace context for future reference.
 
-### Option 3: Create the Missing Doc
+### Option 3: Create Missing Doc
 
-If this should be documented but isn't, we can create it together.
+If the information should be documented but isn't, collaboratively create it.
 
 ### Option 4: Proceed with Assumptions
 
-For low-risk situations, I can state my assumptions explicitly:
+For low-risk situations, state assumptions explicitly:
 
 > "I'll assume X. Please correct if wrong."
 
 ---
 
-## Current Gap
+## Output Contract
 
-**What I'm attempting:** [description]
+The recovery interaction produces:
 
-**What I'm missing:** [description]
-
-**Why I need it:** [explanation]
+- Clear statement of what's missing and why
+- Recovery option selected
+- Resolution (information acquired or assumption stated)
+- Workspace context updated if applicable
 
 ---
 
-## Which recovery path should we take?
+## Error Handling
 
-1. Point me to existing docs
-2. Tell me directly
-3. Create the missing doc
-4. Proceed with stated assumptions
+| Error                        | Recovery                                  |
+| ---------------------------- | ----------------------------------------- |
+| Human doesn't know either    | Escalate or document as unknown           |
+| Pointed doc doesn't exist    | Note the gap, offer to create it          |
+| Multiple conflicting sources | Flag conflict, ask which is authoritative |

@@ -2,7 +2,7 @@
 applyTo: "**/.jfrog/**,**/artifactory/**,**/*jfrog*"
 ---
 
-# JFrog Instructions
+# JFrog Conventions
 
 > Conventions for JFrog Artifactory integration.
 
@@ -17,11 +17,11 @@ applyTo: "**/.jfrog/**,**/artifactory/**,**/*jfrog*"
 
 ## Repository Types
 
-| Type | Purpose | Naming |
-|------|---------|--------|
-| local | Internal artifacts | `<team>-<type>-local` |
-| remote | Proxy external repos | `<source>-remote` |
-| virtual | Aggregate repositories | `<team>-<type>` |
+| Type    | Purpose                | Naming                |
+| ------- | ---------------------- | --------------------- |
+| local   | Internal artifacts     | `<team>-<type>-local` |
+| remote  | Proxy external repos   | `<source>-remote`     |
+| virtual | Aggregate repositories | `<team>-<type>`       |
 
 ## Naming Conventions
 

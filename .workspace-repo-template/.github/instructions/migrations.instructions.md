@@ -2,125 +2,96 @@
 applyTo: "**/Migrations/**"
 ---
 
-# Migrations Instructions
+# Database Migrations Conventions
 
-> Conventions for database migrations.
+> Guidelines for database schema changes and migrations.
 
-## Migration Safety Principles
+## Migration Safety
 
-1. **Always reversible** — Every migration must have a rollback
-2. **Data preservation** — Never lose existing data
-3. **Idempotent** — Safe to run multiple times
-4. **Atomic** — Succeed completely or fail completely
+### Always Reversible
 
-## Naming Convention
-
-```
-YYYYMMDDHHMMSS_<Description>.cs
-```
-
-Example: `20240115143000_AddUserEmailIndex.cs`
-
-## Safe Operations
-
-| Operation | Safe | Notes |
-|-----------|------|-------|
-| Add column (nullable) | ✅ | No data impact |
-| Add column (with default) | ✅ | Populates existing rows |
-| Add index | ✅ | May be slow on large tables |
-| Create table | ✅ | No data impact |
-| Rename column | ⚠️ | Break queries referencing old name |
-| Drop column | ⚠️ | Data loss, break dependent code |
-| Drop table | ❌ | Data loss |
-| Change column type | ⚠️ | May lose precision/data |
-
-## Adding Columns
+Migrations should be reversible when possible:
 
 ```csharp
-// Safe: nullable column
-migrationBuilder.AddColumn<string>(
-    name: "MiddleName",
-    table: "Users",
-    nullable: true);
+// ✅ Good - can rollback
+migrationBuilder.AddColumn<string>("NewColumn", "TableName", nullable: true);
 
-// Safe: with default value
-migrationBuilder.AddColumn<bool>(
-    name: "IsActive",
-    table: "Users",
-    nullable: false,
-    defaultValue: true);
+// ⚠️ Careful - data loss on rollback
+migrationBuilder.DropColumn("OldColumn", "TableName");
 ```
 
-## Removing Columns (Two-Phase)
+### Never Destructive Without Approval
 
-### Phase 1: Deprecate
+Operations requiring explicit approval:
 
-1. Stop writing to column
-2. Remove reads from column
-3. Deploy and verify
+- Dropping columns or tables
+- Changing column types (potential data loss)
+- Removing indexes
+- Renaming (may break existing code)
 
-### Phase 2: Remove
+## Migration Naming
 
-1. Create migration to drop column
-2. Deploy during low-traffic window
+Pattern: `YYYYMMDDHHMMSS_DescriptiveAction`
 
-## Index Considerations
+Examples:
+
+- `20260201120000_AddUserEmailColumn`
+- `20260201130000_CreateOrdersTable`
+- `20260201140000_AddIndexOnOrderStatus`
+
+## Schema Changes
+
+### Adding Columns
 
 ```csharp
-// Create index (may lock table)
+// Nullable first, then backfill, then make required
+migrationBuilder.AddColumn<string>("Email", "Users", nullable: true);
+// Later migration: UPDATE, then alter to NOT NULL
+```
+
+### Adding Indexes
+
+```csharp
+// Consider concurrency
 migrationBuilder.CreateIndex(
-    name: "IX_Users_Email",
-    table: "Users",
-    column: "Email",
-    unique: true);
-
-// For large tables, consider CONCURRENTLY (PostgreSQL)
-// or ONLINE (SQL Server) options
+    name: "IX_Orders_Status",
+    table: "Orders",
+    column: "Status");
 ```
 
-## Data Migrations
+## Best Practices
 
-- Separate schema and data migrations
-- Use SQL for bulk data operations
-- Consider batching for large datasets
-- Test with production-like data volumes
+### One Change Per Migration
 
-```csharp
-// Data migration in separate step
-migrationBuilder.Sql(@"
-    UPDATE Users 
-    SET Status = 'active' 
-    WHERE Status IS NULL");
+- Single logical change per migration
+- Easier to review, test, and rollback
+- Clearer history
+
+### Test Migrations
+
+- Run up and down in dev environment
+- Verify data preservation
+- Check performance impact
+
+### Document Breaking Changes
+
+Include comments for:
+
+- Data transformations
+- Assumptions about existing data
+- Required coordination with code changes
+
+## Rollback Strategy
+
+Always have a rollback plan:
+
+```bash
+# Check current migration
+dotnet ef migrations list
+
+# Rollback to specific migration
+dotnet ef database update PreviousMigrationName
+
+# Generate rollback script
+dotnet ef migrations script CurrentMigration PreviousMigration
 ```
-
-## Rollback Requirements
-
-Every `Up()` needs a corresponding `Down()`:
-
-```csharp
-protected override void Up(MigrationBuilder migrationBuilder)
-{
-    migrationBuilder.AddColumn<string>("NewColumn", "Table", nullable: true);
-}
-
-protected override void Down(MigrationBuilder migrationBuilder)
-{
-    migrationBuilder.DropColumn("NewColumn", "Table");
-}
-```
-
-## Testing Migrations
-
-1. Test Up migration on copy of production data
-2. Test Down migration (rollback)
-3. Verify data integrity after migration
-4. Test application with migrated schema
-
-## Anti-Patterns
-
-- ❌ Migrations without rollback (`Down()`)
-- ❌ Dropping columns without deprecation period
-- ❌ Large data migrations in schema migration
-- ❌ Assuming empty tables in production
-- ❌ Hard-coded IDs or values
-- ❌ Running untested migrations in production

@@ -1,106 +1,160 @@
 ---
-description: Implement review feedback on a PR
+description: "Implement review feedback on a PR"
 ---
 
-# Address Feedback Workflow
+# Address Feedback
 
-Help implement review feedback on a PR.
+Implementer-led workflow with Git-Ops support. Parse review feedback, plan changes, and implement them with approval at each step.
 
-## Prerequisites
+**Prerequisites:** Review feedback available, access to codebase, PR context (branch, changes)
 
-- Review feedback (what was requested)
-- Access to codebase
-- PR context (branch, changes)
+---
 
-## Workflow
+## Phase 1: Parse Feedback
 
-### Step 1: Parse Feedback
+### Gather and Categorize
 
-Extract specific requested changes:
+1. Read all review comments on the PR
+2. Categorize each item by type:
+   - **Blocking** — Must address before merge
+   - **Suggestion** — Non-blocking improvement
+   - **Nitpick** — Style preference, optional
+   - **Question** — May not require code change
+3. Identify exact file locations and planned actions for each item
+4. Summarize in a structured table
+
+### Output
 
 ```markdown
 ## Context Anchors
 
-- **PR:** #<number>
+- **PR:** #<number> - <title>
+- **Phase:** 1 — Parse Feedback
 - **Feedback items:** <count>
 
 ## Feedback Analysis
 
-| # | Feedback | Category | Location | Planned Action |
-|---|----------|----------|----------|----------------|
-| 1 | <summary> | Blocking | `file:line` | <planned change> |
-| 2 | <summary> | Suggestion | `file:line` | <planned change> |
-```
+| #   | Type     | Location    | Summary   | Planned Action   |
+| --- | -------- | ----------- | --------- | ---------------- |
+| 1   | Blocking | <file:line> | <summary> | <planned change> |
+| 2   | ...      | ...         | ...       | ...              |
 
-### Step 2: Plan Changes
-
-For each feedback item:
-- Identify exact location
-- Determine required change
-- Consider side effects
-
-### Step 3: Await Approval
-
-```markdown
 ## Next Step
 
-Ready to implement these changes.
+Confirm understanding of feedback before implementing.
 
-**Approval Required:** Yes (to begin changes)
+**Approval Required:** Yes
 ```
 
-### Step 4: Implement
+### ⛔ CHECKPOINT
 
-Make changes per the plan.
+**STOP.** Do not proceed until human explicitly approves:
 
-### Step 5: Report
+- Feedback categorization is correct
+- Planned actions are appropriate
+
+---
+
+## Phase 2: Implement Changes
+
+### Address by Priority
+
+1. Work through feedback items by priority (Blocking first, then Suggestion, then Nitpick)
+2. For each item:
+   - Make focused changes addressing only that item
+   - Run build and tests to verify: `{{{build_command}}}` / `{{{test_command}}}`
+   - Report status
+3. Do not introduce unrelated changes
+
+### Output
 
 ```markdown
 ## Context Anchors
 
-- **PR:** #<number>
-- **Feedback addressed:** <count>
+- **PR:** #<number> - <title>
+- **Phase:** 2 — Implement Changes
+- **Progress:** <N>/<total> items addressed
 
 ## Changes Made
 
-| # | Feedback | File | Change Made |
-|---|----------|------|-------------|
-| 1 | <summary> | `path` | <description> |
-| 2 | <summary> | `path` | <description> |
+| #   | Feedback  | Status         | Files Changed |
+| --- | --------- | -------------- | ------------- |
+| 1   | <summary> | ✅ Done        | <files>       |
+| 2   | <summary> | 🔄 In Progress | <files>       |
 
 ## Verification
 
-- Build: <result>
-- Tests: <result>
-
-## Commit Message
-
-```
-fix(review): address PR feedback
-
-- <change 1>
-- <change 2>
-```
+- [ ] Build passes
+- [ ] Tests pass
 
 ## Next Step
 
-Changes implemented. Ready to commit and push for re-review.
+<Continue with next item | All items addressed>
 
-**Approval Required:** Yes (to commit)
+**Approval Required:** Per significant change
 ```
 
-## Handling Different Feedback Types
+### ⛔ CHECKPOINT
 
-| Type | Approach |
-|------|----------|
-| **Blocking** | Must address before merge |
-| **Suggestion** | Implement if reasonable, otherwise explain why not |
-| **Nitpick** | Optional, can discuss or accept |
-| **Question** | Provide answer, may not require code change |
+**STOP.** Checkpoint after each significant change — do not batch all changes without approval.
 
-## Anti-Patterns
+---
 
-- ❌ Addressing feedback without understanding it
-- ❌ Making unrelated changes while addressing feedback
-- ❌ Ignoring feedback without explanation
-- ❌ Over-correcting beyond what was requested
+## Phase 3: Report
+
+### Summarize and Prepare Commit
+
+1. List all changes made per feedback item
+2. Run full build and tests: `{{{build_command}}}` / `{{{test_command}}}`
+3. Prepare commit message in conventional format:
+
+   ```
+   fix(<scope>): address review feedback
+
+   - <change 1>
+   - <change 2>
+
+   PR #<number>
+   ```
+
+### Output
+
+```markdown
+## Context Anchors
+
+- **PR:** #<number> - <title>
+- **Phase:** 3 — Report
+- **Items addressed:** <count>/<total>
+
+## Summary
+
+| #   | Feedback  | Status      | Notes   |
+| --- | --------- | ----------- | ------- |
+| 1   | <summary> | ✅ Resolved | <notes> |
+
+## Verification
+
+- [x] Build passes
+- [x] Tests pass
+
+## Next Step
+
+Awaiting approval to commit changes.
+
+**Approval Required:** Yes
+```
+
+### ⛔ CHECKPOINT
+
+**STOP.** Do not commit until human explicitly approves.
+
+---
+
+## Error Handling
+
+| Error                                  | Recovery                               |
+| -------------------------------------- | -------------------------------------- |
+| Ambiguous feedback                     | Ask for clarification                  |
+| Conflicting feedback items             | Flag conflict, ask for resolution      |
+| Feedback requires architectural change | Escalate, don't implement unilaterally |
+| Tests fail after change                | Report failure, seek guidance          |

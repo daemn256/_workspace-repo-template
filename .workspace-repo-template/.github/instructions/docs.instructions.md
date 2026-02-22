@@ -2,7 +2,7 @@
 applyTo: "docs/**/*.md"
 ---
 
-# Documentation Instructions
+# Documentation Conventions
 
 > Conventions for documentation files.
 
@@ -29,7 +29,7 @@ Always specify the language:
 
 ````markdown
 ```typescript
-const example = 'code';
+const example = "code";
 ```
 ````
 
@@ -53,7 +53,7 @@ See [Architecture Decisions](../adr/README.md) for context.
 
 ```markdown
 | Column 1 | Column 2 | Column 3 |
-|----------|----------|----------|
+| -------- | -------- | -------- |
 | Value    | Value    | Value    |
 ```
 

@@ -28,8 +28,8 @@ forge:
 adapters:
   ai-runtimes:
     - github-copilot
-    # - claude-code
-    # - jetbrains-ai
+    - claude-code
+    - jetbrains-junie
 
 # ─── Process Profile ─────────────────────────────────────
 # lightweight — minimal ceremony, self-merge allowed

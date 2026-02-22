@@ -2,106 +2,94 @@
 applyTo: "**/tests/**,**/*.test.ts,**/*.spec.ts,**/*.Tests.csproj,**/*Tests.cs"
 ---
 
-# Testing Instructions
+# Testing Conventions
 
-> Conventions for test files and testing patterns.
+> Guidelines for writing and running tests.
+
+## Test Execution
+
+### CLI Commands Only
+
+Tests MUST be run via explicit CLI commands:
+
+```bash
+# .NET
+dotnet test path/to/Project.Tests.csproj --logger:"console;verbosity=normal"
+
+# Node/npm
+npm test
+
+# Angular
+ng test --project=<project-name>
+
+# Jest
+npx jest --verbose
+```
+
+**Critical:**
+
+- NEVER create launch configurations for tests
+- NEVER create VS Code tasks for running tests
+- Always parse output, don't trust exit code alone
 
 ## Test Structure
 
-Use Arrange-Act-Assert (AAA) pattern:
+### Arrange-Act-Assert
 
-```typescript
-it('should return user when found', () => {
-  // Arrange
-  const userId = '123';
-  const expectedUser = { id: userId, name: 'Test' };
-  mockRepository.findById.mockResolvedValue(expectedUser);
+```csharp
+[Fact]
+public async Task GetById_WhenEntityExists_ReturnsEntity()
+{
+    // Arrange
+    var entity = CreateTestEntity();
+    await _repository.AddAsync(entity);
 
-  // Act
-  const result = await service.getUser(userId);
+    // Act
+    var result = await _service.GetByIdAsync(entity.Id);
 
-  // Assert
-  expect(result).toEqual(expectedUser);
-});
+    // Assert
+    result.IsSuccess.Should().BeTrue();
+    result.Value.Should().BeEquivalentTo(expected);
+}
 ```
 
-## Test Naming
+### Naming Convention
 
-```
-<MethodUnderTest>_<Scenario>_<ExpectedBehavior>
-```
+Pattern: `MethodName_Scenario_ExpectedBehavior`
 
 Examples:
-- `GetUser_WithValidId_ReturnsUser`
-- `CreateOrder_WithEmptyCart_ThrowsValidationError`
-- `CalculateTotal_WithDiscount_AppliesCorrectly`
+
+- `GetById_WhenNotFound_ReturnsNotFoundError`
+- `Create_WithValidInput_ReturnsCreatedEntity`
+- `Update_WhenConcurrencyConflict_ReturnsConflictError`
 
 ## Test Categories
 
-| Category | Purpose | Speed | Isolation |
-|----------|---------|-------|-----------|
-| Unit | Test single unit | Fast | Fully isolated |
-| Integration | Test interactions | Medium | Partial isolation |
-| E2E | Test full flows | Slow | No isolation |
-
-## What to Test
-
-### Do Test
-
-- Business logic and calculations
-- Edge cases and boundaries
-- Error handling paths
-- State transitions
-- Public API contracts
-
-### Don't Test
-
-- Framework code (Angular, .NET)
-- Simple getters/setters
-- Third-party library internals
-- Private methods directly
-
-## Mocking Guidelines
-
-- Mock external dependencies (APIs, databases)
-- Don't mock the thing under test
-- Prefer fakes over mocks for complex behavior
-- Reset mocks between tests
-
-```typescript
-// Good: mock external dependency
-const mockHttp = jest.fn();
-
-// Bad: mock internal implementation
-const mockPrivateMethod = jest.spyOn(service, 'privateMethod');
-```
-
-## Assertions
-
-- One logical assertion per test (multiple expects OK if same concept)
-- Use specific matchers (`toEqual`, not `toBeTruthy`)
-- Test for absence explicitly when relevant
-- Include failure messages for complex assertions
-
-## Test Data
-
-- Use factories or builders for complex objects
-- Avoid shared mutable state
-- Use meaningful test data (not `test123`)
-- Clean up after tests that modify state
+| Category     | Scope               | Speed  | When                |
+| ------------ | ------------------- | ------ | ------------------- |
+| Unit         | Single class/method | Fast   | Always              |
+| Integration  | Multiple components | Medium | API boundaries      |
+| Architecture | Code structure      | Fast   | Solution-wide rules |
+| E2E          | Full system         | Slow   | Critical paths      |
 
 ## Coverage Guidelines
 
 - Aim for meaningful coverage, not 100%
-- Cover critical paths thoroughly
-- Don't test trivial code to hit metrics
-- Review uncovered code intentionally
+- Prioritize: happy path → error paths → edge cases
+- Test behavior, not implementation
 
-## Anti-Patterns
+## Verdicts
 
-- ❌ Tests that depend on execution order
-- ❌ Tests that share mutable state
-- ❌ Testing implementation details
-- ❌ Ignoring flaky tests
-- ❌ Tests without assertions
-- ❌ Overly complex test setup
+| Verdict        | Condition           |
+| -------------- | ------------------- |
+| **PASS** ✅    | Failed=0, Skipped=0 |
+| **PARTIAL** ⚠️ | Failed=0, Skipped>0 |
+| **FAIL** ❌    | Failed>0            |
+
+**Never trust exit code alone.** Parse and report actual counts.
+
+## Mocking
+
+- Mock external dependencies (APIs, databases, time)
+- Don't mock what you own (prefer fakes for internal deps)
+- Use builder patterns for complex test data

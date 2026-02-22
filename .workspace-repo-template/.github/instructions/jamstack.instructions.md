@@ -2,7 +2,7 @@
 applyTo: "**/jamstack/**,**/*.astro,**/netlify.toml,**/vercel.json"
 ---
 
-# Jamstack Instructions
+# Jamstack Conventions
 
 > Conventions for Jamstack and static site development.
 
@@ -75,10 +75,10 @@ const posts = await getCollection('blog');
 
 ```typescript
 // src/content/config.ts
-import { defineCollection, z } from 'astro:content';
+import { defineCollection, z } from "astro:content";
 
 const blog = defineCollection({
-  type: 'content',
+  type: "content",
   schema: z.object({
     title: z.string(),
     date: z.date(),

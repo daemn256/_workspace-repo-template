@@ -2,118 +2,127 @@
 applyTo: "**/*.ts,**/*.tsx"
 ---
 
-# TypeScript Instructions
+# TypeScript Conventions
 
-> Conventions for TypeScript development.
+> Guidelines for TypeScript development.
 
 ## Type Safety
 
-- Enable strict mode in tsconfig
-- Avoid `any` — use `unknown` when type is truly unknown
-- Prefer interfaces for object shapes
-- Use type guards for narrowing
-
-## Type Definitions
+### Prefer Explicit Types
 
 ```typescript
-// Prefer interface for object shapes
-interface User {
-  id: string;
-  name: string;
-  email: string;
+// ✅ Good
+function getUser(id: string): Promise<User | null> {
+  return userService.findById(id);
 }
 
-// Use type for unions, intersections, utilities
-type Status = 'pending' | 'active' | 'inactive';
-type PartialUser = Partial<User>;
+// ❌ Avoid
+function getUser(id) {
+  return userService.findById(id);
+}
 ```
 
-## Naming Conventions
+### Use `unknown` Over `any`
 
-| Element | Convention | Example |
-|---------|------------|---------|
-| Interface | PascalCase | `UserProfile` |
-| Type | PascalCase | `ButtonVariant` |
-| Enum | PascalCase | `UserRole` |
-| Function | camelCase | `getUserById` |
-| Variable | camelCase | `currentUser` |
-| Constant | SCREAMING_SNAKE or PascalCase | `MAX_RETRIES`, `DefaultConfig` |
+```typescript
+// ✅ Good
+function parseJson(json: string): unknown {
+  return JSON.parse(json);
+}
+
+// ❌ Avoid
+function parseJson(json: string): any {
+  return JSON.parse(json);
+}
+```
 
 ## Null Handling
 
-- Use strict null checks
-- Prefer undefined over null for optional values
-- Use optional chaining (`?.`) and nullish coalescing (`??`)
-- Type optional properties explicitly
+### Prefer Optional Chaining
 
 ```typescript
-// Optional property
-interface Config {
-  timeout?: number;  // number | undefined
-}
+// ✅ Good
+const name = user?.profile?.name ?? "Anonymous";
 
-// Null handling
-const value = data?.nested?.value ?? 'default';
+// ❌ Avoid
+const name = (user && user.profile && user.profile.name) || "Anonymous";
 ```
 
-## Function Patterns
+### Use Strict Null Checks
 
-- Use explicit return types for public functions
-- Prefer arrow functions for callbacks
-- Use default parameters over conditional logic
-- Avoid overloads when union types suffice
+Assume `strictNullChecks: true` in tsconfig.
+
+## Interfaces vs Types
+
+| Use         | When                                  |
+| ----------- | ------------------------------------- |
+| `interface` | Object shapes, especially extendable  |
+| `type`      | Unions, intersections, computed types |
 
 ```typescript
-// Explicit return type
-function getUser(id: string): Promise<User | null> {
-  // ...
+// Interface for objects
+interface User {
+  id: string;
+  name: string;
 }
 
-// Default parameters
-function greet(name: string, greeting = 'Hello'): string {
-  return `${greeting}, ${name}`;
-}
+// Type for unions/computed
+type Status = "pending" | "active" | "completed";
+type UserWithStatus = User & { status: Status };
 ```
 
-## Import Organization
+## Enums
 
-Order imports:
-1. External packages
-2. Internal modules (absolute paths)
-3. Relative imports
-4. Type-only imports last
+Prefer const objects or union types over enums:
 
 ```typescript
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+// ✅ Preferred
+const Status = {
+  Pending: "pending",
+  Active: "active",
+  Completed: "completed",
+} as const;
+type Status = (typeof Status)[keyof typeof Status];
 
-import { UserService } from '@app/services';
-
-import { User } from './models';
-
-import type { Config } from './types';
-```
-
-## Generics
-
-- Use meaningful generic names (`T`, `K`, `V` or descriptive)
-- Constrain generics when possible
-- Provide defaults for optional generics
-
-```typescript
-function first<T>(array: T[]): T | undefined {
-  return array[0];
-}
-
-interface Repository<T extends { id: string }> {
-  findById(id: string): Promise<T | null>;
+// ❌ Avoid (runtime overhead, quirks)
+enum Status {
+  Pending = "pending",
+  Active = "active",
 }
 ```
 
-## Anti-Patterns
+## Async/Await
 
-- ❌ Using `any` (use `unknown` or proper types)
-- ❌ Type assertions without validation (`as Type`)
-- ❌ Non-null assertions (`!`) without certainty
-- ❌ Ignoring TypeScript errors with `@ts-ignore`
-- ❌ Mixing default and named exports inconsistently
+Always use async/await over raw Promises:
+
+```typescript
+// ✅ Good
+async function fetchUser(id: string): Promise<User> {
+  const response = await api.get(`/users/${id}`);
+  return response.data;
+}
+
+// ❌ Avoid
+function fetchUser(id: string): Promise<User> {
+  return api.get(`/users/${id}`).then((r) => r.data);
+}
+```
+
+## Error Handling
+
+Use discriminated unions for result types:
+
+```typescript
+type Result<T, E = Error> =
+  | { success: true; data: T }
+  | { success: false; error: E };
+
+async function getUser(id: string): Promise<Result<User>> {
+  try {
+    const user = await repository.findById(id);
+    return { success: true, data: user };
+  } catch (error) {
+    return { success: false, error };
+  }
+}
+```

@@ -1,10 +1,10 @@
 {
   "manifestVersion": "1.0",
   "platform": "claude-code",
-  "version": "3.0.0",
-  "buildDate": "2026-02-21T21:46:29Z",
-  "gitCommit": "39f2ea1",
-  "gitBranch": "feat/62-multi-runtime-builds",
+  "version": "3.0.1",
+  "buildDate": "2026-02-22T04:03:45Z",
+  "gitCommit": "071dcc8",
+  "gitBranch": "main",
   "outputRoot": ".claude/",
   "managedPaths": [".claude/"],
   "sourceFiles": {

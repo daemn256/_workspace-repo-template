@@ -1,7 +1,7 @@
 {
   "manifestVersion": "1.0",
   "platform": "github-copilot",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "buildDate": "2026-02-21T20:20:58Z",
   "gitCommit": "39f2ea1",
   "gitBranch": "feat/61-build-transforms-github-copilot",

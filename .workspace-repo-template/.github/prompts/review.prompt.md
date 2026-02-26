@@ -183,6 +183,21 @@ Ready to implement these changes.
 
 ---
 
+## Mechanical Review Checklist
+
+Before providing any review verdict, verify these mechanically:
+
+- [ ] All changed files reviewed (none skipped)
+- [ ] Build passes on the branch
+- [ ] Tests pass with counts reported
+- [ ] No unresolved merge conflicts
+- [ ] Commit messages follow conventional format
+- [ ] Branch naming follows convention
+- [ ] PR description references the issue
+- [ ] No `TODO` or `FIXME` markers in new code (unless tracked by issue)
+
+---
+
 ## Error Handling
 
 | Error                    | Recovery                      |

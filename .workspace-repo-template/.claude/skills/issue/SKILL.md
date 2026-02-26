@@ -235,6 +235,32 @@ Await approval to push/create PR.
 
 ---
 
+## Knowledge Gates
+
+| Transition         | Required Before Proceeding                  |
+| ------------------ | ------------------------------------------- |
+| Analyze → Branch   | Complexity classified, approach approved    |
+| Branch → Implement | Branch created, approval to proceed         |
+| Implement → Review | Logical unit complete, build passes         |
+| Review → Commit    | Build + tests + lint pass, changes approved |
+| Commit → Push/PR   | Commit created, approval to push            |
+
+---
+
+## Spawned Issues
+
+When implementation reveals work outside the current issue's scope:
+
+1. **Do NOT expand scope** — stay within the original issue boundary
+2. **Create a spawned issue** with:
+   - Clear title referencing the parent: `<type>: <description> (from #<parent>)`
+   - Link to parent issue
+   - Enough context to be independently actionable
+3. **Note in the parent issue** that a spawned issue was created
+4. **Continue with the original scope**
+
+---
+
 ## Error Handling
 
 | Error                          | Recovery                                                                |

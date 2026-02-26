@@ -1,16 +1,16 @@
 {
   "manifestVersion": "1.0",
   "platform": "github-copilot",
-  "version": "3.0.1",
-  "buildDate": "2026-02-21T20:20:58Z",
-  "gitCommit": "39f2ea1",
-  "gitBranch": "feat/61-build-transforms-github-copilot",
+  "version": "3.1.0",
+  "buildDate": "2026-02-26T02:10:35Z",
+  "gitCommit": "02051a5",
+  "gitBranch": "main",
   "outputRoot": ".github/",
   "managedPaths": [".github/"],
   "sourceFiles": {
     "personas": 14,
     "workflows": 12,
-    "principles": 6,
+    "principles": 9,
     "skillsets": 10
   },
   "transforms": {

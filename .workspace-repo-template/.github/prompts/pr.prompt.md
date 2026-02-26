@@ -164,6 +164,39 @@ PR created. Awaiting review.
 
 ---
 
+## Review Requirements by Profile
+
+| Profile       | Reviewers | CI Required | Self-Merge |
+| ------------- | --------- | ----------- | ---------- |
+| `lightweight` | 0         | No          | Yes        |
+| `standard`    | 1         | Yes         | No         |
+| `regulated`   | 2         | Yes         | No         |
+
+Check `process.profile` in `workspace.config.yaml` to determine which rules apply.
+
+---
+
+## Merge Strategy
+
+| Strategy     | When to Use                                         |
+| ------------ | --------------------------------------------------- |
+| Merge commit | Feature branches with meaningful commit history     |
+| Squash       | Small fixes, single-logical-change PRs              |
+| Rebase       | Linear history preferred, clean single-topic branch |
+
+---
+
+## Knowledge Gates
+
+| Transition        | Required Before Proceeding                 |
+| ----------------- | ------------------------------------------ |
+| Config → Body     | Title, template, labels, target determined |
+| Body → Proposal   | PR body composed                           |
+| Proposal → Create | Human approval of PR configuration         |
+| Create → Complete | PR created, URL reported                   |
+
+---
+
 ## Error Handling
 
 | Error                    | Recovery               |

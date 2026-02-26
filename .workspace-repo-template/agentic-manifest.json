@@ -1,7 +1,7 @@
 {
   "manifestVersion": "1.0",
-  "kernelVersion": "3.0.1",
-  "syncDate": "2026-02-22T04:08:00Z",
+  "kernelVersion": "3.1.0",
+  "syncDate": "2026-02-26T02:46:49Z",
   "platforms": ["github-copilot", "claude-code", "jetbrains-junie"],
   "platformCount": 3,
   "totals": {

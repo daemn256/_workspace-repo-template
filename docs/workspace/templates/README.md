@@ -20,6 +20,6 @@ When creating an issue or PR, copy the relevant template and fill in the section
 
 ## Customization
 
-These templates are owned by the consumer workspace. The containment directory version is the upstream reference — the root version is yours to customize.
+These templates are consumer-owned. You can modify them to fit your project's needs. Upstream template updates won't overwrite your customizations — resolve any merge conflicts by keeping your versions.
 
 If your project needs additional templates (e.g., `issue-incident.md` for ops), add them here.

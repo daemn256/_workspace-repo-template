@@ -1,20 +1,8 @@
 # Workspace Tools
 
-Automation scripts for **workspace-level operations** — initialization, git configuration, and maintenance.
+Automation scripts for **workspace-level operations** — git configuration, instruction rendering, and maintenance.
 
-## Initialization Scripts
-
-These scripts are called by `initialize-workspace.sh` during workspace setup.
-
-### copy-template.sh
-
-**Copies template files from the containment directory to the workspace root.**
-
-Called by `initialize-workspace.sh`. Not typically run standalone.
-
-- Copies all template content (structure, configs, docs, agents, hooks)
-- Excludes containment-only files (`initialize-workspace.sh`, `.template.yaml`, itself)
-- Uses `rsync` for reliable, idempotent copying
+## Setup Scripts
 
 ### setup-githooks.sh
 
@@ -42,28 +30,20 @@ Called by `initialize-workspace.sh`. Not typically run standalone.
 - Migrates legacy `upstream` remotes to `upstream-workspace`
 - Idempotent — safe to re-run at any time
 
-## Maintenance Scripts
+## Rendering
 
-### sync-upstream.sh
+### render-instructions.sh
 
-**Safely sync the containment directory from upstream template.**
+**Replaces `{{{placeholder}}}` tokens in instruction files with values from `workspace.config.yaml`.**
 
 ```bash
-# Preview changes (dry run)
-./tools/sync-upstream.sh
-
-# Apply changes
-./tools/sync-upstream.sh --apply
+./tools/render-instructions.sh
 ```
 
-- Selective extraction — only updates the containment directory, never touches root files
-- Dry run by default — shows what would change before applying
-- Auto-detects containment directory name and upstream remote
-- See [Upstream Sync](../docs/guides/upstream-sync.md) for full guide
-
-> **Important:** Never use `git merge upstream-workspace/main` on a containment-model workspace. See the sync guide for why.
-
----
+- Finds files with consumer-fill tokens and replaces them with config values
+- Adds a generated-file header comment
+- Reports unfilled tokens as warnings
+- See [Configuration](../docs/architecture/configuration.md) for the token reference
 
 ## Purpose
 
@@ -71,13 +51,16 @@ This directory contains utilities that help maintain and operate the workspace a
 
 ## What Belongs Here
 
-✅ **Workspace maintenance scripts:**
-
-- Batch operations across multiple repos (status checks, updates)
-- Workspace cleanup or validation utilities
-- Environment setup or verification scripts
-- Git workflow helpers (e.g., sync all repos, check for uncommitted changes)
+- Workspace maintenance scripts (batch operations, validation)
+- Environment setup or verification
+- Git workflow helpers
 - Documentation generators or validators
+
+## What Doesn't Belong Here
+
+- Project-specific build or test scripts (belong in individual repos)
+- One-off scripts (use `sandbox/` or `.tmp/scratch/`)
+- Secrets, credentials, or environment-specific configs
 - Workspace export/import utilities
 
 ✅ **Cross-cutting automation:**

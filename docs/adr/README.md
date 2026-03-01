@@ -2,6 +2,8 @@
 
 This directory contains Architecture Decision Records (ADRs) documenting significant architectural and design decisions.
 
+> **Fresh start.** Prior ADRs were cleared during the architectural simplification (#77). The numbering restarts at 0001.
+
 ## Format
 
 Use the standard ADR format:
@@ -38,32 +40,6 @@ What are the positive and negative outcomes of this decision?
 2. **Accepted** — Decision is made and active
 3. **Deprecated** — No longer relevant
 4. **Superseded** — Replaced by a newer ADR (reference the new one)
-
-## Getting Started
-
-Create your first ADR:
-
-```bash
-cat > docs/adr/0001-your-decision.md << 'EOF'
-# ADR-0001: Your Decision Title
-
-## Status
-
-Accepted
-
-## Context
-
-Describe the context and problem you're addressing.
-
-## Decision
-
-State the decision clearly.
-
-## Consequences
-
-Explain what changes as a result.
-EOF
-```
 
 ## Resources
 

@@ -1,17 +1,12 @@
 # Source: _workspace-repo-template | File: workspace.config.yaml
-# This file is template-owned. Sync updates it but NEVER overwrites your real config.
+# This file is consumer-owned. Template sync never overwrites your real config.
 #
-# Schema: https://github.com/daemn256/_agentic-system/blob/main/src/workspace/workspace-config-schema.md
+# Schema: docs/architecture/configuration.md
 
 # ─── Identity ──────────────────────────────────────────────
 workspace:
   name: "{workspace-name}"
   description: "{workspace-description}"
-
-# ─── Agentic System ───────────────────────────────────────
-agentic-system:
-  version: "1.0.0"
-  # source: "https://github.com/your-org/_agentic-system.git"
 
 # ─── Forge Topology ───────────────────────────────────────
 # Which provider handles each concern.

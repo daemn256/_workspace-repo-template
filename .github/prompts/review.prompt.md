@@ -4,7 +4,7 @@ description: Structured review of PRs and verification of feedback implementatio
 
 # Review
 
-Uses **Reviewer** (primary) with **Security** support. Analyze PRs, provide structured feedback, and verify that commits address feedback.
+Uses **Reviewer**. Analyze PRs, provide structured feedback, assess security implications, and verify that commits address feedback.
 
 **Prerequisites:** PR diff available (pasted or accessible), context about the PR's purpose
 

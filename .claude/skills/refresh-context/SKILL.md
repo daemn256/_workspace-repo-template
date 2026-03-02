@@ -5,7 +5,7 @@ description: Update stale workspace context.
 
 # Refresh Context
 
-Research drives this workflow with Orchestrator support. Verify and update the workspace context file when it may be outdated by scanning the codebase for changes and reconciling with documented state.
+The Planner drives this workflow with Orchestrator support. Verify and update the workspace context file when it may be outdated by scanning the codebase for changes and reconciling with documented state.
 
 **Prerequisites:** Existing workspace context file, access to codebase.
 

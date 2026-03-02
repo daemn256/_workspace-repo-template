@@ -576,13 +576,10 @@ The workspace-level prompts or agents provide the concrete commands for the conf
 
 ## Agent Responsibility
 
-| Agent         | Board Updates Expected                                |
-| ------------- | ----------------------------------------------------- |
-| Orchestrator  | Backlog (on create), Ready (on refinement)            |
-| Implementer   | In Progress (when starting work)                      |
-| Git-Ops       | In Review (when PR created), Done (when merged)       |
-| Session Start | Verify current status matches reality on session init |
-| Session End   | Verify status is current before closing session       |
+| Agent         | Board Updates Expected                                                            |
+| ------------- | --------------------------------------------------------------------------------- |
+| Orchestrator  | Backlog (on create), Ready (on refinement), verify on session start/end           |
+| Implementer   | In Progress (when starting work), In Review (when PR created), Done (when merged) |
 
 ---
 
@@ -672,27 +669,14 @@ If information is missing, ask for it.
 
 > Use the Task tool to delegate work to specialized subagents.
 
-| Subagent               | Description                                                    | When to Use                                           |
-| ---------------------- | -------------------------------------------------------------- | ----------------------------------------------------- |
-| API                    | API design, endpoint review, contract validation               | API design reviews, endpoint implementation           |
-| Architect              | System design, patterns, architecture decisions                | Architecture review, design proposals, ADRs           |
-| Brainstorm             | Creative ideation, exploration, and divergent thinking         | Open-ended exploration, idea generation               |
-| Data                   | Database design, query optimization, data modeling             | Schema design, migration planning, query tuning       |
-| Debug                  | Troubleshooting, root cause analysis, diagnostics              | Error investigation, "Why is X failing"               |
-| Docs                   | Documentation creation, maintenance, and review                | README updates, ADR creation, guide writing           |
-| Git-Ops                | Source control operations, branch management, CI/CD            | Branching, committing, PR creation                    |
-| Implementer            | Code implementation, refactoring, feature development          | Writing code, refactoring, feature branches           |
-| Navigator              | Intent classification, workflow routing, mode switching        | "Analyze issue", routing to appropriate workflow      |
-| Ops                    | Infrastructure, deployment, monitoring, CI/CD                  | Deployment config, CI pipeline, monitoring setup      |
-| Orchestrator           | Issue/project management, workflow coordination, and planning  | GitHub issue work, project board ops, "Analyze issue" |
-| Planner                | Research, analysis, and technical planning                     | Complex work requiring upfront design                 |
-| Research               | Information gathering, codebase analysis, documentation review | Finding patterns, scanning docs, surveying code       |
-| Reviewer               | Code review, PR assessment, and quality verification           | PR reviews, commit verification, feedback             |
-| Security               | Security analysis, vulnerability assessment, auth review       | Security reviews, auth flows, vulnerability checks    |
-| Session End            | Clean session closure, context preservation, and handoff       | End of conversation, context window limit             |
-| Session Start          | Proactive context gathering and session initialization         | Beginning of conversation, multi-step work            |
-| Test                   | Test analysis, coverage assessment, quality metrics            | Test verdicts, coverage analysis                      |
-| Workspace Configurator | Workspace setup, forge integration, prompt/agent scaffolding   | Workspace configuration, tool integration             |
+| Subagent               | Description                                                        | When to Use                                             |
+| ---------------------- | ------------------------------------------------------------------ | ------------------------------------------------------- |
+| Implementer            | Write code, fix bugs, create docs, manage source control           | Writing code, debugging, documentation, git ops         |
+| Orchestrator           | Issue/project management, workflow coordination, session lifecycle | GitHub issue work, project board ops, session start/end |
+| Planner                | Research, design, analyze trade-offs, plan implementation          | Architecture, research, brainstorming, design           |
+| Reviewer               | Code review, PR assessment, security assessment, quality           | PR reviews, security review, commit verification        |
+| Test                   | Test analysis, coverage assessment, verdict reporting              | Test verdicts, coverage analysis, TDD support           |
+| Workspace Configurator | Workspace setup, forge integration, prompt/agent scaffolding       | Workspace configuration, tool integration               |
 
 ### Available Skills
 
@@ -706,6 +690,11 @@ If information is missing, ask for it.
 | Issue Create          | Create a new issue from scratch with proper structure | `/skill:issue-create`          |
 | Issue Spawn           | Create follow-up issue linked to existing work        | `/skill:issue-spawn`           |
 | Address Feedback      | Implement review feedback on a PR                     | `/skill:address-feedback`      |
+| Debug                 | Hypothesis-driven debugging and root cause analysis   | `/skill:debug`                 |
+| Docs                  | Documentation creation, maintenance, and review       | `/skill:docs`                  |
+| Commit                | Stage changes and create a Conventional Commit        | `/skill:commit`                |
+| Session Start         | Initialize session with workspace context             | `/skill:session-start`         |
+| Session End           | Clean session closure and handoff                     | `/skill:session-end`           |
 | Setup Workspace       | Configure workspace context for the agentic kernel    | `/skill:setup-workspace`       |
 | Refresh Context       | Update stale workspace context                        | `/skill:refresh-context`       |
 | Recover Context       | Recover from missing workspace context                | `/skill:recover-context`       |

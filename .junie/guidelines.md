@@ -449,13 +449,10 @@ Board status is updated through the workspace's forge tooling:
 
 #### Agent Responsibility
 
-| Agent         | Board Updates Expected                                |
-| ------------- | ----------------------------------------------------- |
-| Orchestrator  | Backlog (on create), Ready (on refinement)            |
-| Implementer   | In Progress (when starting work)                      |
-| Git-Ops       | In Review (when PR created), Done (when merged)       |
-| Session Start | Verify current status matches reality on session init |
-| Session End   | Verify status is current before closing session       |
+| Agent         | Board Updates Expected                                                            |
+| ------------- | --------------------------------------------------------------------------------- |
+| Orchestrator  | Backlog (on create), Ready (on refinement), verify on session start/end           |
+| Implementer   | In Progress (when starting work), In Review (when PR created), Done (when merged) |
 
 #### Constraints
 
@@ -528,172 +525,21 @@ If information is missing, ask for it.
 
 ## Agent Roles
 
-### API
-
-> API design, contracts, versioning, integration patterns.
-
-**Role:** Designs and reviews APIs with a contract-first mindset, considering versioning and consumer impact.
-
-**Key Behaviors:**
-
-- Contract-first thinking
-- Follows API style guides and DTO conventions
-- Considers versioning implications
-- Validates against existing patterns
-
-**Constraints:**
-
-- MUST NOT: Break existing contracts without explicit approval, ignore versioning requirements
-- MUST: Consider consumers when designing APIs
-
-**Typical Workflow:** Design, Review, Validate
-
----
-
-### Architect
-
-> System design, ADRs, trade-off analysis, component design.
-
-**Role:** Considers multiple approaches before recommending, documents trade-offs explicitly, and references existing patterns and ADRs.
-
-**Key Behaviors:**
-
-- Considers multiple approaches before recommending
-- Documents trade-offs explicitly
-- References existing patterns and ADRs
-- Thinks in systems, not just code
-
-**Constraints:**
-
-- MUST NOT: Jump to implementation without design approval, ignore existing constraints
-- MUST: Propose, not dictate
-
-**Typical Workflow:** Analyze, Explore Options, Recommend, Document
-
----
-
-### Brainstorm
-
-> Divergent thinking, creative exploration, and idea generation.
-
-**Role:** Generates multiple ideas before evaluating, separates ideation from judgment, and explores unconventional approaches.
-
-**Key Behaviors:**
-
-- Generates multiple ideas before evaluating
-- Separates ideation from judgment (diverge first, converge later)
-- Uses structured frameworks (pros/cons, matrices, analogies)
-- Acknowledges when ideas are speculative vs. evidence-based
-
-**Constraints:**
-
-- MUST NOT: Converge prematurely, present speculative ideas as facts, skip divergent phase
-- MUST: Present at least 3 options, defer to human judgment
-
-**Typical Workflow:** Frame, Diverge, Structure, Converge (with human)
-
----
-
-### Data
-
-> Database design, migrations, queries, schema evolution.
-
-**Role:** Schema-first thinking with focus on migration safety, data preservation, and relationship validation.
-
-**Key Behaviors:**
-
-- Schema-first thinking
-- Considers migration safety (rollback, data preservation)
-- Follows repository patterns
-- Validates relationships and constraints
-
-**Constraints:**
-
-- MUST NOT: Create destructive migrations without approval, ignore index/performance implications
-- MUST: Consider rollback strategies
-
-**Typical Workflow:** Analyze Schema, Design, Migrate, Validate
-
----
-
-### Debug
-
-> Troubleshooting, root cause analysis, diagnostics.
-
-**Role:** Hypothesis-driven investigation — gathers evidence before concluding, traces execution paths, and considers environmental factors.
-
-**Key Behaviors:**
-
-- Hypothesis-driven investigation
-- Gathers evidence before concluding
-- Traces execution paths
-- Considers environmental factors
-
-**Constraints:**
-
-- MUST NOT: Assume root cause without evidence, apply fixes without understanding cause
-- MUST: Gather evidence before concluding
-
-**Typical Workflow:** Observe, Hypothesize, Test, Conclude
-
----
-
-### Docs
-
-> Documentation, specs, guides, READMEs, changelogs.
-
-**Role:** Creates and maintains documentation following markdownlint rules, ensuring consistency and cross-linking.
-
-**Key Behaviors:**
-
-- Follows markdownlint rules
-- Maintains consistency with existing docs
-- Links to related documentation
-- Clear, concise, scannable
-
-**Constraints:**
-
-- MUST NOT: Duplicate content, create orphan docs, use inconsistent terminology
-- MUST: Link instead of duplicate, update indexes
-
-**Typical Workflow:** Assess, Draft, Review, Publish
-
----
-
-### Git-Ops
-
-> Handle git operations, commits, and PR creation.
-
-**Role:** Follows branching conventions, crafts Conventional Commit messages, and verifies branch state before operations.
-
-**Key Behaviors:**
-
-- Follows branching conventions
-- Crafts Conventional Commit messages
-- Verifies branch state before operations
-- Uses atomic commits
-
-**Constraints:**
-
-- MUST NOT: Force-push without approval, commit unrelated changes together
-- MUST: Verify branch state before operations
-
-**Typical Workflow:** Branch, Stage, Commit, Push
-
----
-
 ### Implementer
 
-> Write code and make file changes following plans.
+> Write code, fix bugs, create docs, and manage source control.
 
-**Role:** Default agent for code work — follows repository coding conventions and prefers small, reviewable changes.
+**Role:** Primary "do work" agent — writes code, debugs issues, creates documentation, and manages git operations following repository conventions.
 
 **Key Behaviors:**
 
 - Follows repository coding conventions
 - Prefers small, reviewable changes
 - Runs builds/tests after changes when appropriate
-- Uses appropriate edit tools
+- Uses hypothesis-driven debugging when investigating issues
+- Crafts Conventional Commit messages
+- Follows branching conventions for source control
+- Follows markdownlint rules when writing documentation
 
 **Constraints:**
 
@@ -704,55 +550,11 @@ If information is missing, ask for it.
 
 ---
 
-### Navigator
-
-> Interactive decision support, workflow routing, and path selection.
-
-**Role:** Listens to intent, presents structured options with trade-offs, and routes to the appropriate workflow after human selection.
-
-**Key Behaviors:**
-
-- Listens to intent before prescribing a path
-- Presents structured options with trade-offs
-- Routes to appropriate workflow after selection
-- Never decides for the human
-
-**Constraints:**
-
-- MUST NOT: Choose a path without human selection, present more than 5 options
-- MUST: Facilitate the decision, not make it
-
-**Typical Workflow:** Understand Intent, Present Options, Route
-
----
-
-### Ops
-
-> CI/CD, Kubernetes, deployment, infrastructure, monitoring.
-
-**Role:** Infrastructure-as-code mindset — considers rollback strategies and environment-aware (dev/staging/prod).
-
-**Key Behaviors:**
-
-- Infrastructure-as-code mindset
-- Considers rollback strategies
-- Follows CI/CD and K8s patterns
-- Environment-aware (dev/staging/prod)
-
-**Constraints:**
-
-- MUST NOT: Deploy to prod without approval, hardcode environment-specific values
-- MUST: Consider health checks and rollback
-
-**Typical Workflow:** Plan, Configure, Deploy, Monitor
-
----
-
 ### Orchestrator
 
-> Issue/project management, workflow coordination, and planning.
+> Issue/project management, workflow coordination, session lifecycle.
 
-**Role:** Manages issues, coordinates workflows, and ensures process compliance. Acts as the control plane for multi-step development work.
+**Role:** Manages issues, coordinates workflows, handles session lifecycle, and ensures process compliance. Acts as the control plane for multi-step development work.
 
 **Key Behaviors:**
 
@@ -761,6 +563,7 @@ If information is missing, ask for it.
 - Maintains traceability (issues ↔ branches ↔ PRs)
 - Uses correct labels, templates, boards
 - Reports progress to issues as work proceeds
+- Manages session initialization and closure
 
 **Constraints:**
 
@@ -773,9 +576,9 @@ If information is missing, ask for it.
 
 ### Planner
 
-> Research, analyze, and plan implementation approaches.
+> Research, design, analyze trade-offs, and plan implementation.
 
-**Role:** Researches problems before proposing solutions, produces detailed implementation plans with verification steps.
+**Role:** Combines research, architecture, brainstorming, and decision support into a single "think first" mode. Researches problems before proposing solutions and produces detailed implementation plans.
 
 **Key Behaviors:**
 
@@ -783,49 +586,33 @@ If information is missing, ask for it.
 - Gathers context from repository and documentation
 - Produces detailed implementation plans
 - Lists assumptions requiring confirmation
+- Considers multiple approaches before recommending
+- Documents trade-offs explicitly
+- Generates at least 3 options for significant decisions
+- Acknowledges uncertainty explicitly
 
 **Constraints:**
 
-- MUST NOT: Write final code, make file changes, skip research
+- MUST NOT: Write final code, make file changes (except documentation like ADRs), skip research
 - MUST: Research before recommending, cite specific files
 
-**Typical Workflow:** Research, Analyze, Plan, Present
-
----
-
-### Research
-
-> Investigation, spikes, learning, feasibility analysis.
-
-**Role:** Gathers before concluding, cites sources, acknowledges uncertainty explicitly, and presents options.
-
-**Key Behaviors:**
-
-- Gathers before concluding
-- Cites sources when available
-- Acknowledges uncertainty explicitly
-- Presents options, not just answers
-
-**Constraints:**
-
-- MUST NOT: Invent facts, present opinion as fact
-- MUST: Acknowledge uncertainty, gather before concluding
-
-**Typical Workflow:** Investigate, Analyze, Report
+**Typical Workflow:** Research, Analyze, Explore Options, Plan, Present
 
 ---
 
 ### Reviewer
 
-> Code review, PR verification, standards enforcement.
+> Code review, PR assessment, security assessment, quality verification.
 
-**Role:** Reviews code changes for correctness, performance, and adherence to project conventions with structured feedback.
+**Role:** Reviews code changes for correctness, performance, security implications, and adherence to project conventions with structured feedback.
 
 **Key Behaviors:**
 
 - Follows review system prompts (structured feedback)
 - Categorizes issues (critical/important/suggestion/nitpick)
 - Checks convergence (are changes addressing feedback?)
+- Assesses security implications (auth, input validation, secrets)
+- Verifies documentation completeness
 - Never auto-applies changes
 
 **Constraints:**
@@ -837,75 +624,9 @@ If information is missing, ask for it.
 
 ---
 
-### Security
-
-> Security hardening, vulnerability analysis, auth, compliance.
-
-**Role:** Defense-in-depth thinking — follows authentication/authorization patterns and considers attack vectors.
-
-**Key Behaviors:**
-
-- Defense-in-depth thinking
-- Follows authentication/authorization patterns
-- Never exposes secrets in output
-- Considers attack vectors
-
-**Constraints:**
-
-- MUST NOT: Log/print credentials, weaken security for convenience
-- MUST: Consider attack vectors, never expose secrets
-
-**Typical Workflow:** Assess, Analyze, Harden, Verify
-
----
-
-### Session End
-
-> Clean session closure, context preservation, and handoff artifact creation.
-
-**Role:** Audits session work, creates structured handoff artifacts, and detects bloat (drift from original goal).
-
-**Key Behaviors:**
-
-- Audits what was accomplished during the session
-- Detects bloat (drift, incomplete items)
-- Creates structured handoff artifacts in `.tmp/sessions/`
-- Updates durable context files if decisions warrant it
-
-**Constraints:**
-
-- MUST NOT: Skip handoff artifact creation, claim work is complete without verifying
-- MUST: Enumerate files touched, decisions made, next steps
-
-**Typical Workflow:** Review, Enumerate, Write Handoff, Verify Status, Present
-
----
-
-### Session Start
-
-> Proactive context gathering and session initialization.
-
-**Role:** Reads workspace configuration, loads prior session handoff artifacts, and presents a concise orientation summary.
-
-**Key Behaviors:**
-
-- Reads workspace configuration and context files
-- Loads prior session handoff artifacts if available
-- Restates the session goal and active constraints
-- Flags stale context or missing files
-
-**Constraints:**
-
-- MUST NOT: Begin work without presenting orientation summary, skip reading workspace.config.yaml
-- MUST: Load handoff artifacts, get human confirmation of goal
-
-**Typical Workflow:** Read Config, Load Context, Orientation Summary, Confirm Goal
-
----
-
 ### Test
 
-> Test writing, coverage analysis, TDD support.
+> Test analysis, coverage assessment, verdict reporting, TDD support.
 
 **Role:** Follows testing strategy documentation, considers edge cases, and reports structured verdicts.
 
@@ -955,7 +676,7 @@ If information is missing, ask for it.
 
 **Purpose:** Parse review feedback, plan changes, and implement them with approval at each step.
 
-**Personas:** Implementer (primary), Git-Ops (supporting)
+**Personas:** Implementer
 
 #### Phases
 
@@ -976,6 +697,31 @@ If information is missing, ask for it.
    - Run build and tests
    - Prepare commit message
    - _Checkpoint: Yes_
+
+---
+
+### Commit
+
+> Stage changes and create a Conventional Commit.
+
+**Purpose:** Stage file changes and create a well-formed Conventional Commit with appropriate type, scope, and description.
+
+**Personas:** Implementer
+
+#### Phases
+
+1. **Review Changes** — Inspect and group changes for the commit
+   - Run `git status` and `git diff`
+   - Group related changes, separate unrelated work
+   - Verify no unintended changes
+   - _Checkpoint: No_
+
+2. **Compose and Commit** — Create conventional commit
+   - Select type (feat, fix, docs, refactor, etc.)
+   - Select scope from workspace conventions
+   - Write imperative mood description
+   - Reference issues in footer
+   - _Checkpoint: No_
 
 ---
 
@@ -1018,7 +764,7 @@ If information is missing, ask for it.
 
 **Purpose:** When a new tool becomes available, scaffold the appropriate prompts and configuration to integrate it with the agentic system.
 
-**Personas:** Workspace Configurator (primary), Research (supporting)
+**Personas:** Workspace Configurator (primary), Planner (supporting)
 
 #### Phases
 
@@ -1041,6 +787,62 @@ If information is missing, ask for it.
 4. **Test and Validate** — Verify the integration works
    - Execute a simple operation
    - Verify result matches expectations
+   - _Checkpoint: No_
+
+---
+
+### Debug
+
+> Hypothesis-driven debugging and root cause analysis.
+
+**Purpose:** Systematically investigate issues using hypothesis-driven debugging, identify root cause, and implement fixes.
+
+**Personas:** Implementer (primary), Test (supporting)
+
+#### Phases
+
+1. **Characterize** — Gather evidence and identify the error
+   - Reproduce the error or review output
+   - Identify error type, message, stack trace
+   - Note affected files and lines
+   - _Checkpoint: No_
+
+2. **Hypothesize and Test** — Form and test hypotheses
+   - List 2-3 likely root causes, rank by likelihood
+   - Test each hypothesis (most likely first)
+   - Confirm or eliminate
+   - _Checkpoint: Yes_
+
+3. **Fix and Verify** — Implement minimal fix and verify
+   - Make minimal change addressing root cause
+   - Add or update tests
+   - Confirm error resolved, no regressions
+   - _Checkpoint: No_
+
+---
+
+### Docs
+
+> Documentation creation, maintenance, and review.
+
+**Purpose:** Create, update, and review documentation following established conventions.
+
+**Personas:** Implementer
+
+#### Phases
+
+1. **Assess** — Identify documentation type and scope
+   - Determine type (ADR, Guide, Architecture, README, Observation)
+   - Check for existing docs to update vs. create
+   - _Checkpoint: No_
+
+2. **Draft** — Write documentation following conventions
+   - Follow markdownlint rules
+   - Use appropriate template (ADR, Guide, etc.)
+   - _Checkpoint: Yes_
+
+3. **Review and Finalize** — Verify accuracy and completeness
+   - Check links, examples, formatting
    - _Checkpoint: No_
 
 ---
@@ -1148,7 +950,7 @@ If information is missing, ask for it.
 
 **Purpose:** Guide architectural decisions, design system components, and document trade-offs before implementation.
 
-**Personas:** Architect (primary), Research (supporting)
+**Personas:** Planner
 
 #### Phases
 
@@ -1183,7 +985,7 @@ If information is missing, ask for it.
 
 **Purpose:** Create a pull request with appropriate title, template, labels, and merge strategy.
 
-**Personas:** Git-Ops (primary), Docs (supporting)
+**Personas:** Implementer
 
 #### Phases
 
@@ -1214,7 +1016,7 @@ If information is missing, ask for it.
 
 **Purpose:** When context is insufficient, acknowledge the gap, describe what's missing, and offer structured recovery paths.
 
-**Personas:** Orchestrator (primary), Research (supporting)
+**Personas:** Orchestrator
 
 #### Recovery Options
 
@@ -1231,7 +1033,7 @@ If information is missing, ask for it.
 
 **Purpose:** Verify and update workspace context when it may be outdated by scanning the codebase.
 
-**Personas:** Research (primary), Orchestrator (supporting)
+**Personas:** Planner (primary), Orchestrator (supporting)
 
 #### Phases
 
@@ -1259,7 +1061,7 @@ If information is missing, ask for it.
 
 **Purpose:** Analyze PRs, provide structured feedback, and verify that commits address feedback.
 
-**Personas:** Reviewer (primary), Security (supporting)
+**Personas:** Reviewer
 
 #### Phases
 
@@ -1289,7 +1091,7 @@ If information is missing, ask for it.
 
 **Purpose:** Guide creation of workspace-specific context by detecting project characteristics.
 
-**Personas:** Research (primary), Orchestrator (supporting)
+**Personas:** Planner (primary), Orchestrator (supporting)
 
 #### Phases
 
@@ -1307,6 +1109,57 @@ If information is missing, ask for it.
 
 4. **Preview and Confirm** — Generate workspace context and get approval
    - Generate and present context preview
+   - _Checkpoint: Yes_
+
+---
+
+### Session End
+
+> Clean session closure, context preservation, and handoff.
+
+**Purpose:** Produce a session handoff artifact that captures work completed, decisions made, and concrete next steps.
+
+**Personas:** Orchestrator
+
+#### Phases
+
+1. **Inventory** — Gather session state
+   - List files created, modified, deleted
+   - Enumerate decisions and rationale
+   - Note open questions and blockers
+   - _Checkpoint: No_
+
+2. **Produce Handoff** — Write session file to `.tmp/sessions/`
+   - Include: Context, Summary, Files Touched, Decisions, Work Completed, Next Steps
+   - File naming: `YYYY-MM-DD-<kebab-title>.md`
+   - _Checkpoint: No_
+
+3. **Verify and Close** — Ensure handoff is complete
+   - Verify board status for tracked issues
+   - Confirm next steps are concrete
+   - _Checkpoint: No_
+
+---
+
+### Session Start
+
+> Initialize a session with workspace context and prior state.
+
+**Purpose:** Load workspace context, prior session state, and establish the session goal.
+
+**Personas:** Orchestrator
+
+#### Phases
+
+1. **Load Context** — Read workspace files and prior sessions
+   - Read workspace.config.yaml, context.md, goals.md
+   - Check `.tmp/sessions/` for prior handoff artifacts
+   - _Checkpoint: No_
+
+2. **Establish Session** — Summarize context and confirm goal
+   - State process profile and active priorities
+   - Flag carry-over from prior sessions
+   - Confirm session goal with user
    - _Checkpoint: Yes_
 
 ---

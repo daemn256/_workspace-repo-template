@@ -5,7 +5,7 @@ description: From committed changes to merged PR.
 
 # PR
 
-Git-Ops drives this workflow with Docs support for PR description quality. Create a pull request with appropriate title, template, labels, and merge strategy.
+The Implementer drives this workflow. Create a pull request with appropriate title, template, labels, and merge strategy.
 
 **Prerequisites:** Branch exists with commits, changes pushed to remote, verification passed (build, tests).
 

@@ -5,7 +5,7 @@ description: Recover from missing workspace context.
 
 # Recover Context
 
-The Orchestrator enforces this protocol with Research support for finding missing information. When the AI agent encounters insufficient context to proceed, this workflow provides a structured protocol for acknowledging the gap, describing what's missing, and offering recovery paths.
+The Orchestrator enforces this protocol. When the AI agent encounters insufficient context to proceed, this workflow provides a structured protocol for acknowledging the gap, describing what's missing, and offering recovery paths.
 
 **Prerequisites:** Agent has identified a context gap, work is blocked by missing information.
 

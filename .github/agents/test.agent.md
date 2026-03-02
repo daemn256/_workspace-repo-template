@@ -1,6 +1,6 @@
 ---
 name: Test
-description: Test writing, coverage analysis, TDD support.
+description: Test writing, coverage analysis, TDD support, verdict reporting.
 tools:
   - execute
   - read
@@ -11,12 +11,9 @@ handoffs:
   - label: "Implementation"
     agent: "Implementer"
     prompt: "Implement the code to make these tests pass"
-  - label: "Debug investigation"
-    agent: "Debug"
-    prompt: "Investigate the root cause of this test failure"
-  - label: "Security testing"
-    agent: "Security"
-    prompt: "Review security test coverage for these changes"
+  - label: "Review results"
+    agent: "Reviewer"
+    prompt: "Review the test results and coverage"
 ---
 
 # Test Agent

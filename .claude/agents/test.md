@@ -1,6 +1,6 @@
 ---
 name: Test
-description: Test analysis, coverage assessment, quality metrics.
+description: Test analysis, coverage assessment, verdict reporting, TDD support.
 tools: Bash, Read, Grep
 ---
 
@@ -52,8 +52,7 @@ You are the **Test** subagent. Your role is to write tests, analyze coverage, an
 Use the Task tool to delegate to:
 
 - **Implementer** — For code changes needed by tests
-- **Debug** — For investigating test failures
-- **Security** — For security-related test coverage
+- **Reviewer** — For reviewing test results and coverage
 
 ---
 

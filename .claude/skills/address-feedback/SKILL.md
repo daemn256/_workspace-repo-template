@@ -5,7 +5,7 @@ description: Implement review feedback on a PR.
 
 # Address Feedback
 
-The Implementer drives this workflow with Git-Ops handling commits. Parse review feedback, plan changes, and implement them with approval at each step.
+The Implementer drives this workflow. Parse review feedback, plan changes, and implement them with approval at each step.
 
 **Prerequisites:** Review feedback (what was requested), access to codebase, PR context (branch, changes).
 

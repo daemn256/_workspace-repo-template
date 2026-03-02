@@ -5,7 +5,7 @@ description: Structured review of PRs and verification of feedback implementatio
 
 # Review
 
-The Reviewer drives this workflow with Security support for security implications. Analyze PRs, provide structured feedback, and verify that commits address feedback.
+The Reviewer drives this workflow. Analyze PRs, provide structured feedback, assess security implications, and verify that commits address feedback.
 
 **Prerequisites:** PR diff available (pasted or accessible), context about the PR's purpose.
 

@@ -4,7 +4,7 @@ description: Update stale workspace context
 
 # Refresh Context
 
-Uses **Research** (primary) with **Orchestrator** support. Verify and update the workspace context file when it may be outdated. Scans the codebase for changes and reconciles with documented state.
+Uses **Planner** (primary) with **Orchestrator** support. Verify and update the workspace context file when it may be outdated. Scans the codebase for changes and reconciles with documented state.
 
 **Prerequisites:** Existing workspace context file, access to codebase
 

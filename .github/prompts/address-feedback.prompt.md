@@ -4,7 +4,7 @@ description: Implement review feedback on a PR
 
 # Address Feedback
 
-Uses **Implementer** (primary) with **Git-Ops** support. Parse review feedback, plan changes, and implement them with approval at each step. Ensures feedback is addressed systematically without introducing unrelated changes.
+Uses **Implementer**. Parse review feedback, plan changes, and implement them with approval at each step. Ensures feedback is addressed systematically without introducing unrelated changes.
 
 **Prerequisites:** Review feedback available, PR context (branch, changes)
 

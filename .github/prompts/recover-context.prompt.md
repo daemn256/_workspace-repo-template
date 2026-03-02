@@ -4,7 +4,7 @@ description: Recover from missing workspace context
 
 # Recover Context
 
-Uses **Orchestrator** (primary) with **Research** support. When the AI agent encounters insufficient context to proceed, this provides a structured protocol for acknowledging the gap, describing what's missing, and offering recovery paths.
+Uses **Orchestrator**. When the AI agent encounters insufficient context to proceed, this provides a structured protocol for acknowledging the gap, describing what's missing, and offering recovery paths.
 
 **Prerequisites:** Agent has identified a context gap, work is blocked by missing information
 

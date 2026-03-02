@@ -106,8 +106,7 @@ Guided updates to workspace.config.yaml:
 Use the Task tool to delegate to:
 
 - **Orchestrator** — For project-level configuration
-- **Research** — For investigating available integrations
-- **Session Start** — For workspace orientation
+- **Planner** — For researching available integrations
 
 ---
 

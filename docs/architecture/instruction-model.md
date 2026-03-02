@@ -40,8 +40,8 @@ Junie currently supports only global instructions — a single monolithic file. 
 | ------------------- | ------- | ------ | ----- |
 | Global instructions | 1       | 1      | 1     |
 | Path-specific rules | 10      | 10     | —     |
-| Agents              | 19      | 19     | —     |
-| Skills / Prompts    | 14      | 13     | —     |
+| Agents              | 6       | 6      | —     |
+| Skills / Prompts    | 21      | 20     | —     |
 
 Path-specific rules have identical body content across runtimes — only the frontmatter differs.
 
@@ -61,7 +61,7 @@ Agent definitions share ~80% of their body content. The structural differences a
 ```yaml
 ---
 name: Implementer
-description: Write code and make file changes following plans.
+description: Write code, fix bugs, create docs, and manage source control.
 tools:
   - edit
   - execute
@@ -79,7 +79,7 @@ handoffs:
 ```yaml
 ---
 name: Implementer
-description: Write code and make file changes following plans.
+description: Write code, fix bugs, create docs, and manage source control.
 tools: Read, Write, Edit, Bash, Grep, Glob
 ---
 ```

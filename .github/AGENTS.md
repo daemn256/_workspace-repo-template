@@ -13,27 +13,14 @@ Read `docs/workspace/project-overlay.md` for project-specific context.
 
 ## Available Agents
 
-| Agent                  | Description                                                                    | When to Use                                                           |
-| ---------------------- | ------------------------------------------------------------------------------ | --------------------------------------------------------------------- |
-| API                    | API design, contracts, versioning, integration patterns.                       | API endpoint design, contract-first development, versioning decisions |
-| Architect              | System design, architectural patterns, and technical guidance.                 | Architecture decisions, design patterns, system structure             |
-| Brainstorm             | Divergent thinking, option exploration, and creative ideation.                 | Creative exploration, option generation, unconstrained thinking       |
-| Data                   | Database design, query optimization, data modeling.                            | Schema design, migration planning, query optimization                 |
-| Debug                  | Root cause analysis, systematic debugging, diagnostic investigation.           | Error investigation, "Why is X failing", diagnostic workflows         |
-| Docs                   | Documentation creation, maintenance, and quality.                              | README updates, ADR creation, guide writing, documentation review     |
-| Git-Ops                | Source control operations, branch management, commits, and PRs.                | Branch creation, committing, PR creation, push operations             |
-| Implementer            | Code implementation, refactoring, and feature development.                     | Writing code, refactoring, feature implementation                     |
-| Navigator              | Intent classification and workflow routing.                                    | "How do I...", ambiguous requests, choosing the right approach        |
-| Ops                    | Infrastructure, deployment, CI/CD, and monitoring.                             | Deployment config, CI pipeline, monitoring setup                      |
-| Orchestrator           | Issue/project management, workflow coordination, and process enforcement.      | GitHub issue work, project board operations, workflow coordination    |
-| Planner                | Research, analysis, and technical planning.                                    | Architecture decisions, design proposals, trade-off analysis          |
-| Research               | Information gathering, codebase analysis, and documentation review.            | Finding patterns, scanning docs, surveying code, feasibility          |
-| Reviewer               | Code review, PR assessment, and quality enforcement.                           | PR reviews, commit verification, review feedback                      |
-| Security               | Security analysis, vulnerability assessment, and auth review.                  | Security reviews, auth flows, vulnerability checks                    |
-| Session End            | Clean session closure, context preservation, and handoff artifact creation.    | Session end, handoff preparation, context preservation                |
-| Session Start          | Proactive context gathering and session initialization.                        | Session start, context loading, orientation                           |
-| Test                   | Test writing, coverage analysis, TDD support.                                  | Writing tests, coverage analysis, test verdict interpretation         |
-| Workspace Configurator | Create and maintain workspace-level prompts, agents, and forge configurations. | Workspace setup, forge integration, prompt/agent scaffolding          |
+| Agent                  | Description                                                                    | When to Use                                                         |
+| ---------------------- | ------------------------------------------------------------------------------ | ------------------------------------------------------------------- |
+| Implementer            | Write code, fix bugs, create docs, and manage source control.                  | Writing code, debugging, documentation, refactoring, git operations |
+| Orchestrator           | Issue/project management, workflow coordination, session lifecycle.            | GitHub issue work, project board ops, session start/end             |
+| Planner                | Research, design, analyze trade-offs, and plan implementation.                 | Architecture decisions, research, brainstorming, design proposals   |
+| Reviewer               | Code review, PR assessment, security assessment, quality verification.         | PR reviews, security review, commit verification, feedback          |
+| Test                   | Test analysis, coverage assessment, verdict reporting, TDD support.            | Writing tests, coverage analysis, test verdict interpretation       |
+| Workspace Configurator | Create and maintain workspace-level prompts, agents, and forge configurations. | Workspace configuration, tool integration, prompt/agent scaffolding |
 
 ---
 
@@ -42,8 +29,11 @@ Read `docs/workspace/project-overlay.md` for project-specific context.
 | Workflow              | Description                                                  | Invoke                   |
 | --------------------- | ------------------------------------------------------------ | ------------------------ |
 | address-feedback      | Implement review feedback on a PR                            | `/address-feedback`      |
+| commit                | Stage changes and create a Conventional Commit               | `/commit`                |
 | configure-forge       | Generate forge binding prompts from workspace.config.yaml    | `/configure-forge`       |
 | configure-integration | Set up a new MCP server, tool integration, or extension      | `/configure-integration` |
+| debug                 | Hypothesis-driven debugging and root cause analysis          | `/debug`                 |
+| docs                  | Documentation creation, maintenance, and review              | `/docs`                  |
 | issue                 | From issue selection to implementation completion            | `/issue`                 |
 | issue-create          | Create a new issue with proper structure, labels, and links  | `/issue-create`          |
 | issue-spawn           | Create a follow-up issue linked to existing work             | `/issue-spawn`           |
@@ -53,6 +43,8 @@ Read `docs/workspace/project-overlay.md` for project-specific context.
 | refresh-context       | Update stale workspace context                               | `/refresh-context`       |
 | review                | Structured review of PRs and feedback verification           | `/review`                |
 | scaffold-file         | Create or update a scaffold file in `scaffolds/`             | `/scaffold-file`         |
+| session-end           | Clean session closure, context preservation, and handoff     | `/session-end`           |
+| session-start         | Initialize a session with workspace context and prior state  | `/session-start`         |
 | setup-workspace       | Configure workspace context for the agentic kernel           | `/setup-workspace`       |
 | sync-templates        | Sync workspace content to template repos via manifest        | `/sync-templates`        |
 | test                  | Parse test output and produce a structured verdict           | `/test`                  |

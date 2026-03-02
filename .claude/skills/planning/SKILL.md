@@ -5,7 +5,7 @@ description: Architecture design, trade-off analysis, and technical decision-mak
 
 # Planning
 
-The Architect drives this workflow with Research support for feasibility analysis. Guide architectural decisions, design system components, and document trade-offs before implementation.
+The Planner drives this workflow. Guide architectural decisions, design system components, and document trade-offs before implementation.
 
 **Prerequisites:** Clear problem statement or requirement, access to existing architecture documentation and related ADRs.
 

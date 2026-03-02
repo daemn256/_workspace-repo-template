@@ -4,7 +4,7 @@ description: Architecture design, trade-off analysis, and technical decision-mak
 
 # Planning
 
-Uses **Architect** (primary) with **Research** support. Guide architectural decisions, design system components, and document trade-offs before implementation.
+Uses **Planner**. Guide architectural decisions, design system components, and document trade-offs before implementation.
 
 **Prerequisites:** Clear problem statement or requirement, access to existing architecture documentation and ADRs
 

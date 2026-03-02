@@ -4,7 +4,7 @@ description: Set up a new MCP server, tool integration, or workspace extension
 
 # Configure Integration
 
-Uses **Workspace Configurator** (primary) with **Research** support. When a new tool becomes available in the workspace (MCP server enabled, CLI installed, extension activated), scaffold the appropriate prompts and configuration to integrate it with the agentic system.
+Uses **Workspace Configurator** (primary) with **Planner** support. When a new tool becomes available in the workspace (MCP server enabled, CLI installed, extension activated), scaffold the appropriate prompts and configuration to integrate it with the agentic system.
 
 **Prerequisites:** Integration is available (MCP server running, CLI installed, etc.), `workspace.config.yaml` exists
 

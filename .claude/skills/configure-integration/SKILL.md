@@ -5,7 +5,7 @@ description: Set up a new MCP server, tool integration, or workspace extension.
 
 # Configure Integration
 
-The Workspace Configurator drives this workflow with Research support for discovering tool capabilities. When a new tool becomes available in the workspace, scaffold the appropriate prompts and configuration to integrate it with the agentic system.
+The Workspace Configurator drives this workflow with Planner support for discovering tool capabilities. When a new tool becomes available in the workspace, scaffold the appropriate prompts and configuration to integrate it with the agentic system.
 
 **Prerequisites:** The integration is available (MCP server running, CLI installed, etc.), `workspace.config.yaml` exists.
 

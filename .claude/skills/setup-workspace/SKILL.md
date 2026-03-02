@@ -5,7 +5,7 @@ description: Configure workspace context for the agentic kernel.
 
 # Setup Workspace
 
-Research drives this workflow with Orchestrator support for process setup. Guide the creation or update of workspace-specific context by detecting project characteristics and gathering information.
+The Planner drives this workflow with Orchestrator support for process setup. Guide the creation or update of workspace-specific context by detecting project characteristics and gathering information.
 
 **Prerequisites:** Access to project root, project files exist (at minimum a README or package manifest).
 

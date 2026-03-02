@@ -4,7 +4,7 @@ description: From committed changes to merged PR
 
 # PR
 
-Uses **Git-Ops** (primary) with **Docs** support. Create a pull request with appropriate title, template, labels, and merge strategy.
+Uses **Implementer**. Create a pull request with appropriate title, template, labels, and merge strategy.
 
 **Prerequisites:** Branch exists with commits, changes pushed to remote, verification passed (build, tests)
 

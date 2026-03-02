@@ -4,7 +4,7 @@ description: Configure workspace context for the agentic kernel
 
 # Setup Workspace
 
-Uses **Research** (primary) with **Orchestrator** support. Guide the creation or update of workspace-specific context. Detects project characteristics and gathers information needed for the agentic kernel to work effectively.
+Uses **Planner** (primary) with **Orchestrator** support. Guide the creation or update of workspace-specific context. Detects project characteristics and gathers information needed for the agentic kernel to work effectively.
 
 **Prerequisites:** Access to project root, project files exist (at minimum a README or package manifest)
 

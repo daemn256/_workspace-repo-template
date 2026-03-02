@@ -7,15 +7,12 @@ tools:
   - search
   - todo
 handoffs:
-  - label: "Project configuration"
+  - label: "Project coordination"
     agent: "Orchestrator"
     prompt: "Coordinate project-level configuration for this workspace"
-  - label: "Integration research"
-    agent: "Research"
-    prompt: "Research available integrations for this workspace"
-  - label: "Workspace orientation"
-    agent: "Session Start"
-    prompt: "Initialize session context for workspace configuration"
+  - label: "Research integrations"
+    agent: "Planner"
+    prompt: "Research available integrations and plan the configuration approach"
 ---
 
 # Workspace Configurator Agent

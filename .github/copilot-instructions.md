@@ -576,13 +576,10 @@ The workspace-level prompts or agents provide the concrete commands for the conf
 
 ### Agent Responsibility
 
-| Agent         | Board Updates Expected                                |
-| ------------- | ----------------------------------------------------- |
-| Orchestrator  | Backlog (on create), Ready (on refinement)            |
-| Implementer   | In Progress (when starting work)                      |
-| Git-Ops       | In Review (when PR created), Done (when merged)       |
-| Session Start | Verify current status matches reality on session init |
-| Session End   | Verify status is current before closing session       |
+| Agent        | Board Updates Expected                                                            |
+| ------------ | --------------------------------------------------------------------------------- |
+| Orchestrator | Backlog (on create), Ready (on refinement), verify on session start/end           |
+| Implementer  | In Progress (when starting work), In Review (when PR created), Done (when merged) |
 
 ---
 

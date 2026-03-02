@@ -1,20 +1,35 @@
 # Workspace Tools
 
-Automation scripts for **workspace-level operations** — git configuration, instruction rendering, and maintenance.
+Automation scripts for workspace-level operations — setup, git configuration, maintenance, and instruction rendering.
 
-## Setup Scripts
+---
+
+## Setup
+
+### setup.sh
+
+**One-time workspace setup after creating from the template.**
+
+```bash
+./tools/setup.sh
+```
+
+- Seeds real files from `.template` variants (first init only — skips if real file exists)
+- Configures git to use `.githooks/` directory
+- Adds `upstream` remote (this template — fetch-only)
+- Adds `upstream-repo` remote (parent template — fetch-only)
+- Blocks push to both upstream remotes
 
 ### setup-githooks.sh
 
-**Configures git to use the `.githooks/` directory for branch protection.**
+**Configures git to use the `.githooks/` directory.**
 
 ```bash
 ./tools/setup-githooks.sh
 ```
 
 - Sets `core.hooksPath` to `.githooks/`
-- Idempotent — safe to re-run at any time
-- Can be run standalone from anywhere in the repository
+- Idempotent — safe to re-run
 
 ### setup-remotes.sh
 
@@ -24,26 +39,46 @@ Automation scripts for **workspace-level operations** — git configuration, ins
 ./tools/setup-remotes.sh
 ```
 
-- Adds `upstream-workspace` remote (this workspace template)
-- Adds `upstream-repo` remote (parent repository template)
-- Blocks push to both remotes (fetch-only)
+- Adds `upstream-workspace` and `upstream-repo` remotes (fetch-only)
 - Migrates legacy `upstream` remotes to `upstream-workspace`
-- Idempotent — safe to re-run at any time
+- Idempotent — safe to re-run
+
+---
 
 ## Rendering
 
 ### render-instructions.sh
 
-**Replaces `{{{placeholder}}}` tokens in instruction files with values from `workspace.config.yaml`.**
+**Renders instruction files from templates, replacing `{{{tokens}}}` with values from `workspace.config.yaml`.**
 
 ```bash
 ./tools/render-instructions.sh
 ```
 
-- Finds files with consumer-fill tokens and replaces them with config values
-- Adds a generated-file header comment
-- Reports unfilled tokens as warnings
-- See [Configuration](../docs/architecture/configuration.md) for the token reference
+- Renders `.github/copilot-instructions.md`, `CLAUDE.md`, and other instruction files
+- Reads token values from `workspace.config.yaml`
+- Run after changing workspace configuration
+
+> **Note:** This script is transitional. A future config-reference model will replace token substitution — agents will read `workspace.config.yaml` directly.
+
+---
+
+## Validation
+
+### validate-templates.sh
+
+**Validates template repos in `repos/` for structural consistency.**
+
+```bash
+./tools/validate-templates.sh
+```
+
+- Checks `.template.yaml` metadata
+- Validates directory structure per template type
+- Checks for stale references
+- Verifies setup.sh URL consistency
+
+---
 
 ## Purpose
 
@@ -51,64 +86,13 @@ This directory contains utilities that help maintain and operate the workspace a
 
 ## What Belongs Here
 
-- Workspace maintenance scripts (batch operations, validation)
-- Environment setup or verification
+- Workspace maintenance scripts (batch operations, cleanup, validation)
+- Environment setup or verification scripts
 - Git workflow helpers
-- Documentation generators or validators
-
-## What Doesn't Belong Here
-
-- Project-specific build or test scripts (belong in individual repos)
-- One-off scripts (use `sandbox/` or `.tmp/scratch/`)
-- Secrets, credentials, or environment-specific configs
-- Workspace export/import utilities
-
-✅ **Cross-cutting automation:**
-
-- Scripts that operate on workspace structure
-- Tools that work with `.github/`, `docs/`, or workspace settings
-- Utilities referenced by `.vscode/tasks.json`
+- Tools referenced by `.vscode/tasks.json`
 
 ## What Does NOT Belong Here
 
-❌ **Project scaffolding** — Users clone or create projects directly in `repos/`
-❌ **Project-specific tools** — Those belong in the project's own directory
-❌ **Build/test/run scripts** — Those belong in individual project repos
-❌ **One-off experiments** — Use `sandbox/` or `.tmp/scratch/` instead
-
-## Philosophy
-
-**Real projects are too complex to scaffold.**
-
-The workspace template is meant to be forked as-is. When you need a new project in `repos/`, you either:
-
-1. Clone an existing repository
-2. Create manually with AI assistance using workspace instructions
-3. Use project-specific generators (e.g., `dotnet new`, `ng new`, etc.)
-
-Don't prematurely create scaffolding tools. Build them only when a clear, repeated pattern emerges.
-
-## Example Tools (Not Included)
-
-If you find yourself repeatedly needing these, consider adding them:
-
-```bash
-# Check git status across all repos
-./tools/git-status-all.sh
-
-# Verify workspace structure integrity
-./tools/validate-workspace.sh
-
-# Update all repos to latest
-./tools/sync-repos.sh
-
-# Export workspace configuration
-./tools/export-config.sh
-
-# Clean temporary files workspace-wide
-./tools/cleanup.sh
-```
-
----
-
-**Last updated:** February 7, 2026
+- Project-specific tools (those belong in the project's own directory)
+- Build/test/run scripts (those belong in individual project repos)
+- One-off experiments (use `sandbox/` or `.tmp/scratch/` instead)

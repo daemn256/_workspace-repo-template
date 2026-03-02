@@ -1,24 +1,24 @@
 ---
-description: "Create a new issue from scratch with proper structure, labels, and links"
+description: Create a new issue from scratch with proper structure, labels, and links
 ---
 
 # Issue Create
 
-Orchestrator-led workflow. Draft a well-formed issue with structured content, appropriate labels, and traceability links, then create it via the issue tracker with human approval.
+Uses **Orchestrator** for issue management. Draft a well-formed issue with structured content, appropriate labels, and traceability links, then create it via the issue tracker with human approval.
 
-**Prerequisites:** Clear understanding of what needs to be done, knowledge of appropriate labels, access to issue tracker (`gh` CLI)
+**Prerequisites:** Clear understanding of what needs to be done, knowledge of appropriate labels and templates
 
 ---
 
 ## Phase 1: Gather Context
 
-### Understand and Classify
+### Understand the Issue
 
 1. Clarify the problem or feature with the human
 2. Search for related issues, ADRs, and documentation
 3. Identify the affected area and classify the work type
 
-**Entry points:**
+**Entry Points:**
 
 - "Create an issue for..." — Start here
 - "File a bug about..." — Start here with `type:bug`
@@ -35,11 +35,11 @@ Orchestrator-led workflow. Draft a well-formed issue with structured content, ap
 
 ## Understanding
 
-<what the issue should address>
+<Summary of what the issue should address>
 
-## Related
+## Related Work
 
-- <related issues, ADRs, docs found>
+- <related issues, ADRs, or docs found>
 
 ## Next Step
 
@@ -50,7 +50,11 @@ Confirm understanding before drafting.
 
 ### ⛔ CHECKPOINT
 
-**STOP.** Do not proceed until human confirms understanding is correct.
+**STOP.** Do not proceed until human explicitly approves:
+
+- Problem/feature understanding is correct
+- Work type classification is accurate
+- Related work has been identified
 
 ---
 
@@ -58,7 +62,7 @@ Confirm understanding before drafting.
 
 ### Compose Issue Body
 
-Draft the issue with proper structure:
+**Issue Structure:**
 
 ```markdown
 ## Summary
@@ -105,6 +109,19 @@ Draft the issue with proper structure:
 - **Requirements:** Concrete, testable items
 - **Acceptance criteria:** How we know it's done
 
+### Required Fields
+
+| Field               | Required      | Notes                                        |
+| ------------------- | ------------- | -------------------------------------------- |
+| Title               | Yes           | Concise, action-oriented                     |
+| Summary             | Yes           | What and why — enough context for any reader |
+| Acceptance Criteria | Yes           | Checkable conditions that define "done"      |
+| Type                | Yes           | Categorization (`type:` label)               |
+| Priority            | Yes           | Urgency level (P0–P3)                        |
+| Size                | Should        | Effort estimate (XS–XL)                      |
+| Milestone           | Should        | Which milestone this issue targets           |
+| Parent Link         | If applicable | Spawned issues must link to the parent issue |
+
 ### Output
 
 ```markdown
@@ -116,12 +133,10 @@ Draft the issue with proper structure:
 
 ## Proposed Issue
 
-- **Title:** <title>
-- **Labels:** `type:<type>`, `area:<area>`
+**Title:** <title>
+**Labels:** <label list>
 
-## Issue Body
-
-<full issue body content>
+<full issue body>
 
 ## Next Step
 
@@ -132,60 +147,77 @@ Awaiting approval of draft content, title, and labels.
 
 ### ⛔ CHECKPOINT
 
-**STOP.** Do not create the issue until human approves the draft content, title, and labels.
+**STOP.** Do not proceed until human explicitly approves:
+
+- Issue title and content
+- Label selection
+- Requirements and acceptance criteria
 
 ---
 
-## Phase 3: Create
+## Phase 3: Create and Track
 
-### Create via CLI
+### Create Issue and Configure Board
 
-1. Write the issue body to a temporary file
-2. Create the issue via CLI:
+1. Write the issue body to `.tmp/scratch/issue-body.md`
+2. Execute the forge's issue creation operation with:
+   - **Title:** derived from Phase 1
+   - **Body:** from `.tmp/scratch/issue-body.md`
+   - **Labels:** from Phase 2 label selection (use labels that exist on the repo)
+3. Add the created issue to the project board
+4. Set board fields:
+   - **Status:** Backlog (default for new issues)
+   - **Priority:** as determined in Phase 1
+   - **Size:** as determined in Phase 1
+5. Report the created issue number and URL
 
-```bash
-gh issue create \
-  --title "<title>" \
-  --body-file .tmp/scratch/issue-body.md \
-  --label "type:<type>" \
-  --label "area:<area>"
-```
+### Board Integration
 
-3. Report the created issue number and URL
+Read `workspace.config.yaml` for:
+
+- `board.project_id` — which project to add the issue to
+- `board.fields.status.field_id` — status field identifier
+- `board.status_options.backlog.option_id` — Backlog status value
+- `board.fields.priority.field_id` — priority field identifier
+- `board.fields.size.field_id` — size field identifier
+
+The workspace's forge adapter determines the specific tool/command.
 
 ### Output
 
 ```markdown
 ## Context Anchors
 
-- **Type:** <feature | bug | docs | chore>
-- **Area:** <affected area>
-- **Phase:** 3 — Create
-
-## Issue Created
-
 - **Issue:** #<number> - <title>
+- **Phase:** 3 — Create and Track
+
+## Created Issue
+
+- **Number:** #<number>
 - **URL:** <url>
-- **Labels:** <labels>
+- **Board status:** Backlog
+- **Priority:** <priority>
 
 ## Next Step
 
-Issue created successfully.
+Issue created and tracked. Ready for work.
 
-**Approval Required:** No
+**Approval Required:** Yes
 ```
 
 ### ⛔ CHECKPOINT
 
-**STOP.** Confirm issue created successfully.
+**STOP.** Do not proceed until human confirms:
+
+- Issue created correctly
+- Board fields are set
 
 ---
 
 ## Error Handling
 
-| Error                      | Recovery                                           |
-| -------------------------- | -------------------------------------------------- |
-| Requirements unclear       | Ask clarifying questions, do not guess at scope    |
-| Duplicate issue found      | Report duplicate with link, ask whether to proceed |
-| Label taxonomy unknown     | Use the label selection table, ask if unsure       |
-| `gh` CLI not authenticated | Run `gh auth login`                                |
+| Error                  | Recovery                                               |
+| ---------------------- | ------------------------------------------------------ |
+| Requirements unclear   | Ask clarifying questions — do not guess                |
+| Duplicate issue found  | Report the duplicate with link, ask whether to proceed |
+| Label taxonomy unknown | Use the label selection table above, ask if unsure     |

@@ -1,47 +1,27 @@
-````skill
 ---
 name: pr
-description: Create pull requests with proper structure
+description: From committed changes to merged PR.
 ---
 
-# PR Workflow
+# PR
 
-From committed changes to a merged PR. Create a pull request with appropriate title, template, labels, and merge strategy.
+Git-Ops drives this workflow with Docs support for PR description quality. Create a pull request with appropriate title, template, labels, and merge strategy.
 
-## Personas
-
-- **Primary:** Git-Ops (source control operations)
-- **Secondary:** Docs (PR description)
-
-## Prerequisites
-
-- Branch exists with commits
-- Changes pushed to remote
-- Verification passed (build, tests)
-
-## Entry Points
-
-- "Create a PR for this branch" — Start at Phase 1
-- "Let's open a pull request" — Start at Phase 1
-- "PR time" — Start at Phase 1
+**Prerequisites:** Branch exists with commits, changes pushed to remote, verification passed (build, tests).
 
 ---
 
 ## Phase 1: Determine Configuration
 
-**Goal:** Determine PR title, template, labels, target branch, and merge method.
+Determine PR title, template, labels, target branch, and merge method.
 
 ### Steps
 
-1. Determine PR title from branch type (`<type>(<scope>): <description>`)
-2. Select template based on work type (feat, fix, docs, chore, etc.)
+1. Determine PR title: `<type>(<scope>): <description>`
+2. Select template based on work type
 3. Determine labels (type, topic, area)
-4. Determine target branch (dev, epic branch, or main)
-5. Determine merge method (merge commit or squash)
-
-### PR Title Format
-
-`<type>(<scope>): <description>`
+4. Determine target branch
+5. Determine merge method
 
 ### Template Selection
 
@@ -55,17 +35,17 @@ From committed changes to a merged PR. Create a pull request with appropriate ti
 
 ### Target Branch
 
-| Scenario           | Target              |
-| ------------------ | ------------------- |
-| Standalone work    | `{{{base_branch}}}` |
-| Part of epic/phase | Epic/phase branch   |
-| Hotfix             | `main`              |
+| Scenario           | Target            |
+| ------------------ | ----------------- |
+| Standalone work    | `main`            |
+| Part of epic/phase | Epic/phase branch |
+| Hotfix             | `main`            |
 
 ---
 
 ## Phase 2: Create PR Body
 
-**Goal:** Compose the PR description.
+Compose the PR description.
 
 ### Steps
 
@@ -79,56 +59,56 @@ From committed changes to a merged PR. Create a pull request with appropriate ti
 ```markdown
 ## Summary
 
-{{{what-this-pr-does-and-why}}}
+<What this PR does and why>
 
 ## Scope
 
-- Files changed: {{{key-files}}}
-- Areas affected: {{{areas}}}
+- Files changed: <key files>
+- Areas affected: <areas>
 
 ## Validation
 
 - [x] Build passes
-- [x] Tests pass ({{{test-counts}}})
+- [x] Tests pass (<counts>)
 - [x] Manual verification (if applicable)
 
 ## Links
 
-- Closes #{{{issue-number}}}
-- Related: {{{other-issues-or-adrs}}}
+- Closes #<issue-number>
+- Related: <other issues, ADRs>
 ```
 
 ---
 
 ## Phase 3: Present Proposal
 
-**Goal:** Present PR configuration for approval before creation.
+Present PR configuration for approval before creation.
 
 ### Steps
 
 1. Show all configuration (title, template, target, merge method, labels)
 2. Show PR body content
-3. Show `gh` CLI command that will be used
+3. Show the forge operation that will be executed
 4. Wait for approval
 
-### Output Template
+### Output
 
 ```markdown
 ## Context Anchors
 
-- **Issue:** #{{{issue-number}}} - {{{issue-title}}}
-- **Branch:** `{{{head-branch}}}` → `{{{target-branch}}}`
-- **Changes:** {{{file-count}}} files changed
+- **Issue:** #<number> - <title>
+- **Branch:** `<branch>` → `<target>`
+- **Changes:** <X files changed>
 
 ## PR Configuration
 
 | Property     | Value                            |
-| ------------ | -------------------------------- |
-| Title        | `{{{type}}}({{{scope}}}): {{{description}}}` |
-| Template     | `{{{template}}}.md`             |
-| Target       | `{{{target-branch}}}`           |
-| Merge method | {{{merge-method}}}              |
-| Labels       | `type:{{{type}}}`, `topic:{{{topic}}}` |
+| ------------ | -------------------------------- | ------- |
+| Title        | `<type>(<scope>): <description>` |
+| Template     | `<template>.md`                  |
+| Target       | `<target-branch>`                |
+| Merge method | <Merge commit                    | Squash> |
+| Labels       | `type:...`, `topic:...`          |
 
 ## Next Step
 
@@ -139,57 +119,49 @@ Awaiting approval to create PR.
 
 ### ⛔ CHECKPOINT
 
-Present PR configuration and body for approval before creation. Do not execute `gh pr create` until explicitly approved.
+**STOP.** Do not proceed until human approves PR configuration.
 
 ---
 
 ## Phase 4: Create & Report
 
-**Goal:** Execute PR creation and report result.
+Execute PR creation, update board status, and report result.
 
 ### Steps
 
-1. Create PR body file at `.tmp/pr-body.md`
-2. Execute `gh pr create` command
-3. Report PR number and URL
-4. Note next steps (awaiting review)
+1. Write PR body to `.tmp/pr-body.md`
+2. Execute the forge's PR creation operation with:
+   - **Base:** `main` (or epic/phase branch)
+   - **Head:** feature branch
+   - **Title:** `<type>(<scope>): <description>`
+   - **Body:** from `.tmp/pr-body.md`
+   - **Labels:** from Phase 1
+3. Update board status to **In Review** for the linked issue
+4. Report PR number and URL
 
-### Commands
-
-```bash
-gh pr create \
-  --base {{{base_branch}}} \
-  --head {{{head_branch}}} \
-  --title "{{{type}}}({{{scope}}}): {{{description}}}" \
-  --body-file .tmp/pr-body.md \
-  --label "type:{{{type}}}"
-```
-
-### Output Template
+### Output
 
 ```markdown
 ## Context Anchors
 
-- **PR:** #{{{pr-number}}} - {{{title}}}
-- **Issue:** #{{{issue-number}}}
+- **PR:** #<pr-number> - <title>
+- **Issue:** #<issue-number>
 - **Status:** Open, awaiting review
 
 ## Next Step
 
 PR created. Awaiting review.
-
-**Approval Required:** No
 ```
 
 ---
 
 ## Review Requirements by Profile
 
-| Profile       | Reviewers | CI Required | Self-Merge |
-| ------------- | --------- | ----------- | ---------- |
-| `lightweight` | 0         | No          | Yes        |
-| `standard`    | 1         | Yes         | No         |
-| `regulated`   | 2         | Yes         | No         |
+| Profile       | Reviewers | CI Required | Self-Merge | Approval Expires |
+| ------------- | --------- | ----------- | ---------- | ---------------- |
+| `lightweight` | 0         | No          | Yes        | Never            |
+| `standard`    | 1         | Yes         | No         | On new commits   |
+| `regulated`   | 2         | Yes         | No         | On new commits   |
 
 Check `process.profile` in `workspace.config.yaml` to determine which rules apply.
 
@@ -205,24 +177,11 @@ Check `process.profile` in `workspace.config.yaml` to determine which rules appl
 
 ---
 
-## Knowledge Gates
-
-| Transition        | Required Before Proceeding                 |
-| ----------------- | ------------------------------------------ |
-| Config → Body     | Title, template, labels, target determined |
-| Body → Proposal   | PR body composed                           |
-| Proposal → Create | Human approval of PR configuration         |
-| Create → Complete | PR created, URL reported                   |
-
----
-
 ## Error Handling
 
-| Error                    | Recovery               |
-| ------------------------ | ---------------------- |
-| Branch not pushed        | Push first, then retry |
-| Build/tests not passing  | Fix issues before PR   |
-| Missing issue link       | Confirm issue number   |
-| gh CLI not authenticated | Run `gh auth login`    |
-
-````
+| Error                   | Recovery                    |
+| ----------------------- | --------------------------- |
+| Branch not pushed       | Push first, then retry      |
+| Build/tests not passing | Fix issues before PR        |
+| Missing issue link      | Confirm issue number        |
+| Forge not authenticated | Check authentication status |

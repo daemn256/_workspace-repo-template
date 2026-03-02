@@ -4,13 +4,13 @@
 
 ---
 
-## Two Tiers
+## Three Tiers
 
-Every file in the workspace belongs to one of two ownership tiers. The tier determines what happens during upstream sync.
+Every file in the workspace belongs to one of three ownership tiers, defined by `template-manifest.yaml`. The tier determines what happens during upstream sync.
 
-### Template-Provided
+### Copy (Template-Owned)
 
-Files that originate from the template repository. Updated by syncing with upstream.
+Files that are copied verbatim from the workspace to template repos. Updated by syncing with upstream.
 
 **On sync:** Accept the upstream version. Your customizations (if any) are overwritten.
 
@@ -18,85 +18,91 @@ Files that originate from the template repository. Updated by syncing with upstr
 
 - `.github/agents/*.agent.md` — Agent definitions
 - `.github/instructions/*.instructions.md` — Path-specific rules
-- `.github/prompts/*.prompt.md` — Workflow prompts
+- `.github/prompts/*.prompt.md` — Workflow prompts (except `forge-ops`)
 - `.claude/agents/*.md` — Claude agent definitions
 - `.claude/rules/*.md` — Claude path-specific rules
 - `.claude/skills/*/SKILL.md` — Claude skills
+- `.junie/**` — Junie configuration
 - `.githooks/*` — Git hooks
 - `tools/*` — Workspace tooling
+- `docs/architecture/*` — Architecture documentation
+- `docs/guides/*` — Guides
 
-### Consumer-Owned
+### Scaffold (Initial Structure)
 
-Files created and maintained by the workspace user. Never overwritten by sync.
+Files that exist in templates with example structure. Consumer fills in real values after creating a workspace. Never overwritten by sync.
 
-**On sync:** Keep your version. Upstream never touches these.
+**On sync:** Keep your version. Scaffold provides the starting point only.
 
 **Examples:**
 
 - `workspace.config.yaml` — Workspace configuration
-- `docs/workspace/context.md` — Domain knowledge and architecture
+- `README.md` — Project README
+- `CHANGELOG.md` — Project changelog
+- `docs/workspace/context.md` — Domain knowledge
 - `docs/workspace/goals.md` — Current priorities
 - `docs/workspace/project-overlay.md` — Project identity for agents
-- `docs/adr/*` — Your architecture decisions
-- `docs/observations/*` — Your working notes
-- `docs/proposals/*` — Your design proposals
-- `README.md` — Your project README
-- `CHANGELOG.md` — Your changelog
-- `LICENSE` — Your license
+- `.vscode/tasks.json` — VS Code task definitions
+
+### Ignore (Consumer-Only)
+
+Files that are never propagated. Created and maintained entirely by the consumer.
+
+**On sync:** Not involved — these files don't exist in templates.
+
+**Examples:**
+
+- `docs/adr/*.md` — Architecture decisions (except README)
+- `docs/observations/*.md` — Working notes (except README)
+- `docs/proposals/*.md` — Design proposals (except README)
+- `.github/prompts/forge-ops.prompt.md` — Consumer-specific forge bindings
+- `repos/*` — Project repositories (multi-repo workspaces)
+- `.tmp/*` — Ephemeral working directory
 
 ---
 
 ## File Classification
 
-| Directory               | Tier     | Sync behavior   |
-| ----------------------- | -------- | --------------- |
-| `.github/agents/`       | Template | Replace on sync |
-| `.github/instructions/` | Template | Replace on sync |
-| `.github/prompts/`      | Template | Replace on sync |
-| `.claude/agents/`       | Template | Replace on sync |
-| `.claude/rules/`        | Template | Replace on sync |
-| `.claude/skills/`       | Template | Replace on sync |
-| `.junie/`               | Template | Replace on sync |
-| `.githooks/`            | Template | Replace on sync |
-| `.vscode/`              | Template | Replace on sync |
-| `tools/`                | Template | Replace on sync |
-| `workspace.config.yaml` | Consumer | Never touch     |
-| `docs/workspace/`       | Consumer | Never touch     |
-| `docs/adr/`             | Consumer | Never touch     |
-| `docs/observations/`    | Consumer | Never touch     |
-| `docs/proposals/`       | Consumer | Never touch     |
-| `docs/guides/`          | Template | Replace on sync |
-| `docs/architecture/`    | Template | Replace on sync |
-| `README.md`             | Consumer | Never touch     |
-| `CHANGELOG.md`          | Consumer | Never touch     |
+| Path                          | Tier     | Sync Behavior     |
+| ----------------------------- | -------- | ----------------- |
+| `.github/agents/`             | Copy     | Replaced on sync  |
+| `.github/instructions/`       | Copy     | Replaced on sync  |
+| `.github/prompts/*`           | Copy     | Replaced on sync  |
+| `.github/prompts/forge-ops.*` | Ignore   | Consumer-specific |
+| `.claude/agents/`             | Copy     | Replaced on sync  |
+| `.claude/rules/`              | Copy     | Replaced on sync  |
+| `.claude/skills/`             | Copy     | Replaced on sync  |
+| `.junie/`                     | Copy     | Replaced on sync  |
+| `.githooks/`                  | Copy     | Replaced on sync  |
+| `.vscode/tasks.json`          | Scaffold | Keep yours        |
+| `.vscode/settings.json`       | Copy     | Replaced on sync  |
+| `tools/`                      | Copy     | Replaced on sync  |
+| `docs/architecture/`          | Copy     | Replaced on sync  |
+| `docs/guides/`                | Copy     | Replaced on sync  |
+| `docs/workspace/templates/`   | Copy     | Replaced on sync  |
+| `workspace.config.yaml`       | Scaffold | Keep yours        |
+| `README.md`                   | Scaffold | Keep yours        |
+| `CHANGELOG.md`                | Scaffold | Keep yours        |
+| `docs/workspace/context.md`   | Scaffold | Keep yours        |
+| `docs/workspace/goals.md`     | Scaffold | Keep yours        |
+| `docs/workspace/overlay.md`   | Scaffold | Keep yours        |
+| `docs/adr/*.md`               | Ignore   | Consumer-only     |
+| `docs/observations/*.md`      | Ignore   | Consumer-only     |
+| `docs/proposals/*.md`         | Ignore   | Consumer-only     |
+| `repos/*`                     | Ignore   | Consumer-only     |
+| `.tmp/*`                      | Ignore   | Consumer-only     |
 
----
-
-## Transitional: Rendered Files
-
-Some files currently have a hybrid ownership model. They originate from template files with `{{{placeholder}}}` tokens that are replaced by `tools/render-instructions.sh` using values from `workspace.config.yaml`.
-
-These files carry a `<!-- GENERATED by tools/render-instructions.sh -->` header comment:
-
-| File                                              | Status                  |
-| ------------------------------------------------- | ----------------------- |
-| `CLAUDE.md`                                       | Rendered (transitional) |
-| `.github/copilot-instructions.md`                 | Rendered (transitional) |
-| `.github/AGENTS.md`                               | Rendered (transitional) |
-| `.junie/guidelines.md`                            | Rendered (transitional) |
-| Some prompts/skills (issue, pr, address-feedback) | Rendered (transitional) |
-
-**Direction:** Moving toward a model where these files are either directly template-provided (with agents reading config at runtime) or the render step is simplified. See [Configuration](configuration.md) for the config-reference pattern.
+The full classification is defined in `template-manifest.yaml` at the workspace root.
 
 ---
 
 ## Sync Model
 
-1. Consumer fetches upstream template: `git fetch upstream`
-2. Merge: `git merge upstream/main`
-3. Template-provided files: accept upstream changes
-4. Consumer-owned files: keep your version, resolve any conflicts
-5. If rendered files changed: re-run `tools/render-instructions.sh`
+1. Consumer fetches upstream template: `git fetch upstream-workspace`
+2. Merge: `git merge upstream-workspace/main`
+3. Copy-tier files: accept upstream changes
+4. Scaffold-tier files: keep your version, resolve any conflicts
+5. Ignore-tier files: not involved in sync
 
 The [Upstream Sync](../guides/upstream-sync.md) guide covers the full procedure.
 
@@ -104,6 +110,7 @@ The [Upstream Sync](../guides/upstream-sync.md) guide covers the full procedure.
 
 ## Related
 
-- [Configuration](configuration.md) — The config-reference pattern and token system
+- [Operating Model](operating-model.md) — How content flows from workspace to templates
+- [Configuration](configuration.md) — The config-reference pattern
 - [Instruction Model](instruction-model.md) — What the template-provided instruction files contain
 - [Upstream Sync](../guides/upstream-sync.md) — Step-by-step sync procedure

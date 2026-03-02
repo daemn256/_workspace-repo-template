@@ -1,78 +1,90 @@
 ---
 name: issue-create
-description: Create a new issue from scratch with proper structure, labels, and links
+description: Create a new issue from scratch with proper structure, labels, and links.
 ---
 
-# Issue Create Workflow
+# Issue Create
 
-Draft a well-formed issue with structured content, appropriate labels, and traceability links, then create it via the issue tracker with human approval.
+The Orchestrator drives this workflow. Draft a well-formed issue with structured content, appropriate labels, and traceability links, then create it via the issue tracker with human approval.
 
-## Personas
-
-- **Primary:** Orchestrator (issue management)
-
-## Prerequisites
-
-- Clear understanding of what needs to be done
-- Knowledge of appropriate labels and templates
-- Access to issue tracker (`gh` CLI)
-
-## Entry Points
-
-- "Create an issue for..." — Start at Phase 1
-- "File a bug about..." — Start at Phase 1 with `type:bug`
-- "We need a feature for..." — Start at Phase 1 with `type:feature`
+**Prerequisites:** Clear understanding of what needs to be done, knowledge of appropriate labels and templates, access to issue tracker.
 
 ---
 
 ## Phase 1: Gather Context
 
-**Goal:** Understand what the issue should address and how it fits.
+Understand what the issue should address and how it fits.
+
+### Steps
 
 1. Clarify the problem or feature with the human
 2. Search for related issues, ADRs, and documentation
 3. Identify the affected area and classify the work type
 
+### Entry Points
+
+- "Create an issue for..." — Start here
+- "File a bug about..." — Start here with `type:bug`
+- "We need a feature for..." — Start here with `type:feature`
+
+### Output
+
+```markdown
+## Context Anchors
+
+- **Type:** <feature | bug | docs | chore>
+- **Area:** <affected area>
+
+## Understanding
+
+<What the issue should address and why>
+
+## Next Step
+
+Confirm understanding before drafting.
+
+**Approval Required:** Yes
+```
+
 ### ⛔ CHECKPOINT
 
-Confirm understanding before drafting. Present the problem summary and classification for approval.
+**STOP.** Do not proceed until human confirms understanding.
 
 ---
 
 ## Phase 2: Draft
 
-**Goal:** Compose the issue body with proper structure.
+Compose the issue body with proper structure.
 
 ### Issue Structure
 
 ```markdown
 ## Summary
 
-{{{brief-description}}}
+<Brief description of what this issue addresses>
 
 ## Context
 
-{{{background-and-motivation}}}
+<Background information and motivation>
 
 ## Requirements
 
-- [ ] {{{requirement-1}}}
-- [ ] {{{requirement-2}}}
-- [ ] {{{requirement-3}}}
+- [ ] <Requirement 1>
+- [ ] <Requirement 2>
 
 ## Acceptance Criteria
 
-- [ ] {{{criterion-1}}}
-- [ ] {{{criterion-2}}}
+- [ ] <Criterion 1>
+- [ ] <Criterion 2>
 
 ## Technical Notes
 
-{{{implementation-hints-files-constraints}}}
+<Implementation hints, relevant files, constraints>
 
 ## Related
 
-- Related to #{{{number}}}
-- See also: {{{adr-or-doc-link}}}
+- Related to #<number>
+- See also: <ADR or doc link>
 ```
 
 ### Label Selection
@@ -83,87 +95,54 @@ Confirm understanding before drafting. Present the problem summary and classific
 | `area:`  | Codebase area | `area:api`, `area:ui`, `area:core`           |
 | `topic:` | Cross-cutting | `topic:auth`, `topic:perf`, `topic:security` |
 
-### Guidelines
+### Required Fields
 
-- **Title:** Start with area/component, be specific
-- **Summary:** One paragraph explaining what and why
-- **Requirements:** Concrete, testable items
-- **Acceptance criteria:** How we know it's done
-
-### Output Template
-
-```markdown
-## Context Anchors
-
-- **Type:** {{{feature | bug | docs | chore}}}
-- **Area:** {{{affected-area}}}
-
-## Proposed Issue
-
-**Title:** {{{concise-title}}}
-
-**Labels:** `type:{{{type}}}`, `area:{{{area}}}`
-
-**Body:**
-
-{{{issue-body-content}}}
-
-## Next Step
-
-Awaiting approval to create issue.
-
-**Approval Required:** Yes
-```
+| Field               | Required      | Notes                                        |
+| ------------------- | ------------- | -------------------------------------------- |
+| Title               | Yes           | Concise, action-oriented                     |
+| Summary             | Yes           | What and why — enough context for any reader |
+| Acceptance Criteria | Yes           | Checkable conditions that define "done"      |
+| Type                | Yes           | Categorization (`type:` label)               |
+| Priority            | Yes           | Urgency level (P0–P3)                        |
+| Size                | Should        | Effort estimate (XS–XL)                      |
+| Milestone           | Should        | Which milestone this issue targets           |
+| Parent Link         | If applicable | Spawned issues must link to the parent issue |
 
 ### ⛔ CHECKPOINT
 
-Await approval of draft content, title, and labels before creating.
+**STOP.** Await approval of draft content, title, and labels.
 
 ---
 
-## Phase 3: Create
+## Phase 3: Create and Track
 
-**Goal:** Create the issue in the tracker.
+Create the issue in the tracker and add it to the project board.
 
-1. Write the issue body to a temporary file
-2. Create the issue via CLI
-3. Report the created issue number and URL
+### Steps
 
-### Commands
+1. Write the issue body to `.tmp/scratch/issue-body.md`
+2. Execute the forge's issue creation operation with title, body, and labels
+3. Add the created issue to the project board
+4. Set board fields:
+   - **Status:** Backlog
+   - **Priority:** as determined
+   - **Size:** as determined
+5. Report the created issue number and URL
 
-```bash
-gh issue create \
-  --title "{{{title}}}" \
-  --body-file .tmp/scratch/issue-body.md \
-  --label "type:{{{type}}}" \
-  --label "area:{{{area}}}"
-```
+### Board Integration
 
-### Output Template
-
-```markdown
-## Context Anchors
-
-- **Issue:** #{{{number}}} - {{{title}}}
-- **URL:** {{{url}}}
-
-## Next Step
-
-Issue created successfully.
-
-**Approval Required:** No
-```
+Read `workspace.config.yaml` for `board.project_id`, `board.fields.*`, and `board.status_options.*`. The workspace's forge adapter determines the specific tool/command.
 
 ### ⛔ CHECKPOINT
 
-Confirm issue created successfully.
+**STOP.** Confirm issue created and board fields set.
 
 ---
 
 ## Error Handling
 
-| Error                  | Recovery                                                                     |
-| ---------------------- | ---------------------------------------------------------------------------- |
-| Requirements unclear   | Ask clarifying questions; do not guess at scope or acceptance criteria       |
-| Duplicate issue found  | Report the duplicate with link; ask whether to proceed or close as duplicate |
-| Label taxonomy unknown | Use the label selection table above; ask if unsure about area classification |
+| Error                  | Recovery                                     |
+| ---------------------- | -------------------------------------------- |
+| Requirements unclear   | Ask clarifying questions                     |
+| Duplicate issue found  | Report the duplicate, ask whether to proceed |
+| Label taxonomy unknown | Use the label selection table, ask if unsure |

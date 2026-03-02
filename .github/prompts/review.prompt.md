@@ -1,10 +1,10 @@
 ---
-description: "Structured review of PRs and verification of feedback implementation"
+description: Structured review of PRs and verification of feedback implementation
 ---
 
 # Review
 
-Reviewer-led workflow with Security support. Analyze PRs, provide structured feedback, and verify that commits address feedback.
+Uses **Reviewer** (primary) with **Security** support. Analyze PRs, provide structured feedback, and verify that commits address feedback.
 
 **Prerequisites:** PR diff available (pasted or accessible), context about the PR's purpose
 
@@ -12,12 +12,35 @@ Reviewer-led workflow with Security support. Analyze PRs, provide structured fee
 
 ## Phase 1: Understand Scope
 
-### Read and Contextualize
+### Gather PR Context
 
 1. Read PR title and description
 2. Identify the issue being addressed
 3. Understand the intended behavior change
 4. Note the scope (files, areas affected)
+
+### Output
+
+```markdown
+## Context Anchors
+
+- **PR:** #<number> - <title>
+- **Author:** <author>
+- **Target:** `<branch>` → `<base>`
+- **Phase:** 1 — Understand Scope
+
+## Scope
+
+- **Issue:** #<number>
+- **Areas affected:** <list>
+- **Files changed:** <count>
+
+## Next Step
+
+Continue to analysis.
+
+**Approval Required:** No
+```
 
 ---
 
@@ -31,7 +54,7 @@ Reviewer-led workflow with Security support. Analyze PRs, provide structured fee
 4. **Security** — Any security implications?
 5. **Tests** — Adequate coverage?
 
-**Review Principles:**
+### Review Principles
 
 | Principle             | Application                             |
 | --------------------- | --------------------------------------- |
@@ -41,18 +64,37 @@ Reviewer-led workflow with Security support. Analyze PRs, provide structured fee
 | Acknowledge good work | Reinforcement helps                     |
 | Stay in scope         | Review what's in the PR, not wishlist   |
 
+### Output
+
+```markdown
+## Context Anchors
+
+- **PR:** #<number> - <title>
+- **Phase:** 2 — Analyze Changes
+
+## Analysis
+
+<findings organized by category>
+
+## Next Step
+
+Continue to feedback.
+
+**Approval Required:** No
+```
+
 ---
 
 ## Phase 3: Provide Feedback
 
-### Structured Review
+### Structure and Present
 
 1. Determine verdict (Approve, Request Changes, Comment)
 2. List blocking issues (must fix before merge)
 3. List suggestions (non-blocking improvements)
 4. Note positive observations (reinforce good patterns)
 
-**Feedback Categories:**
+### Feedback Categories
 
 | Category   | Meaning                               |
 | ---------- | ------------------------------------- |
@@ -100,11 +142,17 @@ Reviewer-led workflow with Security support. Analyze PRs, provide structured fee
 <If Request Changes: "Address blocking issues and re-request review">
 <If Approve: "Ready to merge">
 <If Comment: "Consider suggestions; no changes required">
+
+**Approval Required:** Yes
 ```
 
 ### ⛔ CHECKPOINT
 
-**STOP.** Present review for confirmation before posting.
+**STOP.** Do not post review until human explicitly approves:
+
+- Verdict is appropriate
+- Feedback is accurate
+- Tone is constructive
 
 ---
 

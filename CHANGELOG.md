@@ -1,8 +1,6 @@
-<!-- Source: _workspace-repo-template | File: CHANGELOG.md -->
-
 # Changelog
 
-All notable changes to this project will be documented in this file.
+All notable changes to this workspace will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
@@ -10,7 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Added
 
-- Initial project setup
+- Initial workspace setup
 
 ### Changed
 
@@ -38,7 +36,7 @@ Track when you sync with the upstream template:
 
 - After significant features or releases
 - After syncing with upstream template
-- After adding/removing major components
+- After adding/removing projects
 
 ### Entry Format
 
@@ -51,9 +49,9 @@ Track when you sync with the upstream template:
 
 ### Changed
 
-- Modification to existing behavior
+- Modified behavior
 
-### Removed
+### Fixed
 
-- Deprecated feature or file
+- Bug fix description
 ```

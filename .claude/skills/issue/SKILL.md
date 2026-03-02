@@ -1,39 +1,28 @@
 ---
 name: issue
-description: From issue selection to implementation completion
+description: From issue selection to implementation completion.
 ---
 
-# Issue Workflow
+# Issue
 
-Analyze an issue, propose approach, create branch, and implement changes with human approval at each checkpoint.
+The Orchestrator drives this workflow with the Implementer handling code changes. Analyze an issue, propose approach, create branch, and implement changes with human approval at each checkpoint.
 
-## Personas
-
-- **Primary:** Orchestrator (workflow coordination)
-- **Secondary:** Implementer (implementation)
-
-## Prerequisites
-
-- Issue number or context available
-- Access to version control
-- Access to issue tracker
+**Prerequisites:** Issue number or context available, access to version control and issue tracker.
 
 ---
 
 ## Phase 1: Analyze
 
-**Goal:** Gather context and classify the work.
+Gather context and classify the work.
+
+### Steps
 
 1. Read the issue (title, description, labels, acceptance criteria)
-2. Search for related documentation:
-   - Architecture decisions (ADRs)
-   - Existing patterns
-   - Implementation guides
-   - Parent/child issues
-3. Classify complexity
-4. Propose branch name
+2. Search for related documentation — ADRs, existing patterns, implementation guides, parent/child issues
+3. Classify complexity using the criteria below
+4. Propose branch name: `<type>/<issue-number>-<kebab-description>`
 
-### Complexity Classification
+### Complexity Criteria
 
 | Criterion     | Simple     | Complex             |
 | ------------- | ---------- | ------------------- |
@@ -44,206 +33,211 @@ Analyze an issue, propose approach, create branch, and implement changes with hu
 
 **Rule:** ANY Complex criterion → Issue is Complex
 
-### Branch Pattern
-
-`{{{type}}}/{{{issue-number}}}-{{{kebab-description}}}`
-
-Types: `feat`, `fix`, `docs`, `chore`, `refactor`, `test`, `perf`
-
-### Output Template
+### Output
 
 ```markdown
 ## Context Anchors
 
-- **Issue:** #{{{number}}} - {{{title}}}
-- **Labels:** {{{labels}}}
-- **Related:** {{{adrs-docs}}}
-- **Branch:** `{{{proposed-branch}}}` from `{{{base}}}`
+- **Issue:** #<number> - <title>
+- **Phase:** Analyze
+- **Branch:** `<proposed-branch-name>`
 
-## Verification Block
+## Analysis
 
-- [x] Issue exists and is open
-- [x] Labels verified
-- [x] Related docs reviewed: {{{list}}}
-- [x] Complexity classified: {{{Simple|Complex}}}
-
-## Decision Rationale
-
-**Complexity: {{{Simple|Complex}}}**
-
-- {{{reason}}}
-
-**Branch strategy:** {{{rationale}}}
+**Complexity:** Simple | Complex
+**Scope:** <files/areas affected>
+**Approach:** <proposed implementation approach>
 
 ## Next Step
 
-Awaiting approval to create branch and begin implementation.
+Approve complexity classification, branch name, and approach.
 
 **Approval Required:** Yes
 ```
 
 ### ⛔ CHECKPOINT
 
-Await approval of complexity classification, branch name, and approach.
+**STOP.** Do not proceed until human explicitly approves:
+
+- Complexity classification
+- Branch name
+- Implementation approach
 
 ---
 
 ## Phase 2: Branch
 
-**Goal:** Create the feature branch.
+Create the feature branch.
 
-1. Checkout base branch and pull latest
-2. Create feature branch
+### Steps
+
+1. Checkout base branch and pull latest:
+   ```bash
+   git checkout main && git pull origin main
+   ```
+2. Create feature branch:
+   ```bash
+   git checkout -b <type>/<issue-number>-<kebab-description>
+   ```
 3. Verify branch created
 
-### Commands
+### Output
 
-```bash
-git checkout {{{base}}} && git pull origin {{{base}}} && git checkout -b {{{branch}}}
+```markdown
+## Context Anchors
+
+- **Issue:** #<number> - <title>
+- **Phase:** Branch
+- **Branch:** `<branch-name>`
+
+## Branch Created
+
+Branch `<branch-name>` created from `main`.
+
+## Next Step
+
+Begin implementation.
+
+**Approval Required:** Yes
 ```
 
 ### ⛔ CHECKPOINT
 
-Await approval to proceed with implementation.
+**STOP.** Do not proceed until human approves to begin implementation.
 
 ---
 
 ## Phase 3: Implement
 
-**Goal:** Make changes iteratively, one logical unit at a time.
+Make changes iteratively, one logical unit at a time.
 
-1. Make focused changes
-2. Run builds/tests
+### Steps
+
+1. Make focused changes for one logical unit
+2. Run the workspace's build and test commands (read from `workspace.config.yaml`)
 3. Report progress
 4. Checkpoint before next unit (if significant)
 
-### Iteration Pattern
+### Output
 
-- Complete one logical unit
-- Verify (build, test)
-- Report status
-- Continue or checkpoint
+```markdown
+## Context Anchors
+
+- **Issue:** #<number> - <title>
+- **Phase:** Implement
+- **Branch:** `<branch-name>`
+
+## Changes Made
+
+<description of changes in this unit>
+
+## Verification Block
+
+- [x] Build passes
+- [x] Tests pass
+
+## Next Step
+
+<continue implementation | proceed to review>
+
+**Approval Required:** Yes | No
+```
 
 ### ⛔ CHECKPOINT
 
-Per significant unit — pause and confirm direction before continuing.
+**STOP.** Checkpoint after each significant logical unit.
 
 ---
 
 ## Phase 4: Review
 
-**Goal:** Verify implementation before committing.
+Verify implementation before committing.
 
-1. Run full build
-2. Run all relevant tests
-3. Check lint/format
+### Steps
+
+1. Run the workspace's build command (read from `workspace.config.yaml`)
+2. Run the workspace's test command (read from `workspace.config.yaml`)
+3. Run the workspace's lint command if configured
 4. Summarize all changes
 
-### Verification Checklist
-
-- [ ] Build passes
-- [ ] Tests pass
-- [ ] Lint clean
-- [ ] Changes summarized
-
-### Output Template
+### Output
 
 ```markdown
 ## Context Anchors
 
-- **Issue:** #{{{number}}} - {{{title}}}
-- **Branch:** `{{{branch}}}`
+- **Issue:** #<number> - <title>
+- **Phase:** Review
+- **Branch:** `<branch-name>`
 
 ## Changes Summary
 
-{{{summary-of-all-changes}}}
+<summary of all changes made>
 
 ## Verification Block
 
-- [{{{x-or-space}}}] Build passes
-- [{{{x-or-space}}}] Tests pass
-- [{{{x-or-space}}}] Lint clean
-- [{{{x-or-space}}}] Changes summarized
+- [x] Build passes
+- [x] Tests pass
+- [x] Lint clean
+- [x] Changes summarized
 
 ## Next Step
 
-Ready to commit.
+Approve changes to proceed to commit.
 
 **Approval Required:** Yes
 ```
 
 ### ⛔ CHECKPOINT
 
-Await approval to commit.
+**STOP.** Do not proceed until human approves all changes.
 
 ---
 
 ## Phase 5: Commit
 
-**Goal:** Create a well-formed commit.
-
-### Commit Format
-
-```
-{{{type}}}({{{scope}}}): {{{description}}}
-
-{{{body}}}
-
-Closes #{{{issue-number}}}
-```
+Create a well-formed commit.
 
 ### Steps
 
-1. Stage changes
-2. Create commit with conventional format
+1. Stage changes:
+   ```bash
+   git add -A
+   ```
+2. Create commit with conventional format:
+
+   ```bash
+   git commit -m "<type>(<scope>): <description>
+
+   <body>
+
+   Closes #<issue-number>"
+   ```
+
 3. Report commit details
 
-### Commands
-
-```bash
-git add -A
-git commit -m "{{{type}}}({{{scope}}}): {{{description}}}
-
-{{{body}}}
-
-Closes #{{{issue-number}}}"
-```
-
-### Output Template
+### Output
 
 ```markdown
 ## Context Anchors
 
-- **Issue:** #{{{number}}} - {{{title}}}
-- **Branch:** `{{{branch}}}`
-- **Commit:** `{{{sha}}}`
+- **Issue:** #<number> - <title>
+- **Phase:** Commit
+- **Branch:** `<branch-name>`
 
-## Commit Details
+## Commit
 
-{{{commit-message}}}
+`<sha>` — `<type>(<scope>): <description>`
 
 ## Next Step
 
-Ready to push and/or create PR.
+Approve to push and create PR.
 
 **Approval Required:** Yes
 ```
 
 ### ⛔ CHECKPOINT
 
-Await approval to push/create PR.
-
----
-
-## Knowledge Gates
-
-| Transition         | Required Before Proceeding                  |
-| ------------------ | ------------------------------------------- |
-| Analyze → Branch   | Complexity classified, approach approved    |
-| Branch → Implement | Branch created, approval to proceed         |
-| Implement → Review | Logical unit complete, build passes         |
-| Review → Commit    | Build + tests + lint pass, changes approved |
-| Commit → Push/PR   | Commit created, approval to push            |
+**STOP.** Do not proceed until human approves to push/create PR.
 
 ---
 
@@ -252,10 +246,7 @@ Await approval to push/create PR.
 When implementation reveals work outside the current issue's scope:
 
 1. **Do NOT expand scope** — stay within the original issue boundary
-2. **Create a spawned issue** with:
-   - Clear title referencing the parent: `<type>: <description> (from #<parent>)`
-   - Link to parent issue
-   - Enough context to be independently actionable
+2. **Create a spawned issue** with clear title, link to parent, and enough context
 3. **Note in the parent issue** that a spawned issue was created
 4. **Continue with the original scope**
 
@@ -263,8 +254,8 @@ When implementation reveals work outside the current issue's scope:
 
 ## Error Handling
 
-| Error                          | Recovery                                                                |
-| ------------------------------ | ----------------------------------------------------------------------- |
-| Blocked by external dependency | Report the blocker clearly; do not proceed; await human guidance        |
-| Complexity escalates mid-work  | Re-classify and report; may require returning to Phase 1                |
-| Tests fail                     | Report failure details; do not proceed to commit; fix or await guidance |
+| Error                | Recovery                                         |
+| -------------------- | ------------------------------------------------ |
+| Blocked              | Report the blocker clearly, await guidance       |
+| Complexity escalates | Re-classify and report, may return to Phase 1    |
+| Tests fail           | Report failure details, do not proceed to commit |

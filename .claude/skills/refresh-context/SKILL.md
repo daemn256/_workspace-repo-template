@@ -1,34 +1,19 @@
-````skill
 ---
 name: refresh-context
-description: Update stale workspace context
+description: Update stale workspace context.
 ---
 
-# Refresh Context Workflow
+# Refresh Context
 
-Verify and update the workspace context file when it may be outdated. Scans the codebase for changes and reconciles with documented state.
+Research drives this workflow with Orchestrator support. Verify and update the workspace context file when it may be outdated by scanning the codebase for changes and reconciling with documented state.
 
-## Personas
-
-- **Primary:** Research (scanning, discovery)
-- **Secondary:** Orchestrator (process)
-
-## Prerequisites
-
-- Existing workspace context file
-- Access to codebase
-
-## Entry Points
-
-- "Refresh the workspace context" — Start at Phase 1
-- "The context file is outdated" — Start at Phase 1
-- "Check if workspace context is still accurate" — Start at Phase 1
+**Prerequisites:** Existing workspace context file, access to codebase.
 
 ---
 
 ## Phase 1: Read Current Context
 
-**Goal:** Understand what the workspace context currently states.
+Understand what the workspace context currently states.
 
 ### Steps
 
@@ -40,7 +25,7 @@ Verify and update the workspace context file when it may be outdated. Scans the 
 
 ## Phase 2: Scan Codebase
 
-**Goal:** Detect changes since last context refresh.
+Detect changes since last context refresh.
 
 ### Steps
 
@@ -50,21 +35,11 @@ Verify and update the workspace context file when it may be outdated. Scans the 
 4. Check for moved documentation
 5. Verify convention adherence
 
-### Staleness Indicators
-
-Signs that workspace context might be stale:
-
-- References files that no longer exist
-- Mentions patterns not seen in recent code
-- Lists stack components that have changed
-- Documentation links are broken
-- Conventions don't match observed code
-
 ---
 
 ## Phase 3: Report Inconsistencies
 
-**Goal:** Present findings for human review.
+Present findings for human review.
 
 ### Steps
 
@@ -72,42 +47,47 @@ Signs that workspace context might be stale:
 2. List items that need updating, removal, or verification
 3. Highlight questions about ambiguous changes
 
-### Output Template
+### Staleness Indicators
+
+- References files that no longer exist
+- Mentions patterns not seen in recent code
+- Lists stack components that have changed
+- Documentation links are broken
+- Conventions don't match observed code
+
+### Output
 
 ```markdown
 ## Context Anchors
 
-- **Workspace context file:** {{{context-file-path}}}
-- **Last updated:** {{{last-updated-timestamp}}}
+- **Phase:** Report Inconsistencies
 
-## Detected Changes
+## Inconsistencies Found
 
-| Item             | Current State         | Detected State        | Action              |
-| ---------------- | --------------------- | --------------------- | ------------------- |
-| {{{item-1}}}     | {{{current-state-1}}} | {{{detected-state-1}}}| {{{action-1}}}      |
-| {{{item-2}}}     | {{{current-state-2}}} | {{{detected-state-2}}}| {{{action-2}}}      |
+| Item   | Current State | Detected State | Action Needed          |
+| ------ | ------------- | -------------- | ---------------------- |
+| <item> | <current>     | <detected>     | <update/remove/verify> |
 
-## Questions for Review
+## Questions
 
-- {{{question-1}}}
-- {{{question-2}}}
+- <ambiguous change needing input>
 
 ## Next Step
 
-Awaiting approval to apply updates.
+Approve changes before applying.
 
 **Approval Required:** Yes
 ```
 
 ### ⛔ CHECKPOINT
 
-Present inconsistencies and proposed changes for human review. Await approval before making any modifications to the workspace context file.
+**STOP.** Await human input before making changes.
 
 ---
 
 ## Phase 4: Apply Updates
 
-**Goal:** Update the workspace context file with approved changes.
+Update the workspace context file with approved changes.
 
 ### Steps
 
@@ -116,34 +96,12 @@ Present inconsistencies and proposed changes for human review. Await approval be
 3. Remove obsolete content
 4. Update timestamp
 
-### Output Template
-
-```markdown
-## Context Anchors
-
-- **Workspace context file:** {{{context-file-path}}}
-- **Updates applied:** {{{update-count}}}
-
-## Changes Made
-
-- {{{change-1}}}
-- {{{change-2}}}
-
-## Next Step
-
-Workspace context refreshed. No further action needed.
-
-**Approval Required:** No
-```
-
 ---
 
 ## Error Handling
 
 | Error                              | Recovery                                   |
 | ---------------------------------- | ------------------------------------------ |
-| No workspace context file exists   | Offer to create one via setup workflow      |
-| File has incompatible format       | Note format issues, propose migration       |
-| Too many changes to review at once | Batch into sections, process incrementally  |
-
-````
+| No workspace context file exists   | Offer to create one via setup workflow     |
+| File has incompatible format       | Note format issues, propose migration      |
+| Too many changes to review at once | Batch into sections, process incrementally |

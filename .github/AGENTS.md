@@ -6,86 +6,93 @@
 
 ## Project Overview
 
-**Name:** {{{project_name}}}
-**Purpose:** {{{project_purpose}}}
+Read `workspace.config.yaml` for workspace identity, forge topology, and commands.
+Read `docs/workspace/project-overlay.md` for project-specific context.
 
 ---
 
 ## Available Agents
 
-| Agent        | Description                                                    | When to Use                                                                                      |
-| ------------ | -------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| API          | API design, contracts, versioning, integration patterns.       | Controller/endpoint work, OpenAPI/Swagger concerns, API design discussions, integration patterns |
-| Architect    | System design, ADRs, trade-off analysis, component design.     | System design, ADR creation or review, architectural decisions, component boundary definition    |
-| Data         | Database design, migrations, queries, schema evolution.        | Entity/model changes, migration creation, query optimization, schema design                      |
-| Debug        | Troubleshooting, root cause analysis, diagnostics.             | Error investigation, test failures, unexpected behavior, root cause analysis                     |
-| Docs         | Documentation, specs, guides, READMEs, changelogs.             | Documentation work, README updates, spec authoring, changelog updates                            |
-| Git-Ops      | Handle git operations, commits, and PR creation.               | Branch management, commits, PR creation, conflict resolution, rebasing                           |
-| Implementer  | Write code and make file changes following plans.              | Default when no other persona matches, feature implementation, refactoring, source code changes  |
-| Ops          | CI/CD, Kubernetes, deployment, infrastructure, monitoring.     | Pipeline work, K8s manifests, deployment issues, monitoring/observability setup                  |
-| Orchestrator | Issue/project management, workflow coordination, and planning. | GitHub issue work, project board operations, workflow coordination, process compliance           |
-| Planner      | Research, analyze, and plan implementation approaches.         | Complex work requiring upfront design, option analysis, implementation planning                  |
-| Research     | Investigation, spikes, learning, feasibility analysis.         | Feasibility questions, technology evaluation, spike investigations, unknown territory            |
-| Reviewer     | Code review, PR verification, standards enforcement.           | PR reviews, code quality verification, standards enforcement, commit review                      |
-| Security     | Security hardening, vulnerability analysis, auth, compliance.  | Auth/authz work, security reviews, secrets management, vulnerability assessment                  |
-| Test         | Test writing, coverage analysis, TDD support.                  | Writing tests, coverage analysis, TDD workflows, test file work                                  |
+| Agent                  | Description                                                                    | When to Use                                                           |
+| ---------------------- | ------------------------------------------------------------------------------ | --------------------------------------------------------------------- |
+| API                    | API design, contracts, versioning, integration patterns.                       | API endpoint design, contract-first development, versioning decisions |
+| Architect              | System design, architectural patterns, and technical guidance.                 | Architecture decisions, design patterns, system structure             |
+| Brainstorm             | Divergent thinking, option exploration, and creative ideation.                 | Creative exploration, option generation, unconstrained thinking       |
+| Data                   | Database design, query optimization, data modeling.                            | Schema design, migration planning, query optimization                 |
+| Debug                  | Root cause analysis, systematic debugging, diagnostic investigation.           | Error investigation, "Why is X failing", diagnostic workflows         |
+| Docs                   | Documentation creation, maintenance, and quality.                              | README updates, ADR creation, guide writing, documentation review     |
+| Git-Ops                | Source control operations, branch management, commits, and PRs.                | Branch creation, committing, PR creation, push operations             |
+| Implementer            | Code implementation, refactoring, and feature development.                     | Writing code, refactoring, feature implementation                     |
+| Navigator              | Intent classification and workflow routing.                                    | "How do I...", ambiguous requests, choosing the right approach        |
+| Ops                    | Infrastructure, deployment, CI/CD, and monitoring.                             | Deployment config, CI pipeline, monitoring setup                      |
+| Orchestrator           | Issue/project management, workflow coordination, and process enforcement.      | GitHub issue work, project board operations, workflow coordination    |
+| Planner                | Research, analysis, and technical planning.                                    | Architecture decisions, design proposals, trade-off analysis          |
+| Research               | Information gathering, codebase analysis, and documentation review.            | Finding patterns, scanning docs, surveying code, feasibility          |
+| Reviewer               | Code review, PR assessment, and quality enforcement.                           | PR reviews, commit verification, review feedback                      |
+| Security               | Security analysis, vulnerability assessment, and auth review.                  | Security reviews, auth flows, vulnerability checks                    |
+| Session End            | Clean session closure, context preservation, and handoff artifact creation.    | Session end, handoff preparation, context preservation                |
+| Session Start          | Proactive context gathering and session initialization.                        | Session start, context loading, orientation                           |
+| Test                   | Test writing, coverage analysis, TDD support.                                  | Writing tests, coverage analysis, test verdict interpretation         |
+| Workspace Configurator | Create and maintain workspace-level prompts, agents, and forge configurations. | Workspace setup, forge integration, prompt/agent scaffolding          |
 
 ---
 
 ## Available Workflows
 
-| Workflow         | Description                                                              | Invoke              |
-| ---------------- | ------------------------------------------------------------------------ | ------------------- |
-| Address Feedback | Implement review feedback on a PR                                        | `/address-feedback` |
-| Issue            | From issue selection to implementation completion                        | `/issue`            |
-| Issue Create     | Create a new issue from scratch with proper structure, labels, and links | `/issue-create`     |
-| Issue Spawn      | Create a follow-up issue linked to existing work                         | `/issue-spawn`      |
-| Modes            | Route to workflow modes based on intent                                  | `/modes`            |
-| Planning         | Architecture design, trade-off analysis, and technical decision-making   | `/planning`         |
-| PR               | From committed changes to merged PR                                      | `/pr`               |
-| Recover Context  | Recover from missing workspace context                                   | `/recover-context`  |
-| Refresh Context  | Update stale workspace context                                           | `/refresh-context`  |
-| Review           | Structured review of PRs and verification of feedback implementation     | `/review`           |
-| Setup Workspace  | Configure workspace context for the agentic kernel                       | `/setup-workspace`  |
-| Test             | Parse test output and produce a structured verdict                       | `/test`             |
+| Workflow              | Description                                                  | Invoke                   |
+| --------------------- | ------------------------------------------------------------ | ------------------------ |
+| address-feedback      | Implement review feedback on a PR                            | `/address-feedback`      |
+| configure-forge       | Generate forge binding prompts from workspace.config.yaml    | `/configure-forge`       |
+| configure-integration | Set up a new MCP server, tool integration, or extension      | `/configure-integration` |
+| issue                 | From issue selection to implementation completion            | `/issue`                 |
+| issue-create          | Create a new issue with proper structure, labels, and links  | `/issue-create`          |
+| issue-spawn           | Create a follow-up issue linked to existing work             | `/issue-spawn`           |
+| planning              | Architecture design, trade-off analysis, and decision-making | `/planning`              |
+| pr                    | From committed changes to merged PR                          | `/pr`                    |
+| recover-context       | Recover from missing workspace context                       | `/recover-context`       |
+| refresh-context       | Update stale workspace context                               | `/refresh-context`       |
+| review                | Structured review of PRs and feedback verification           | `/review`                |
+| scaffold-file         | Create or update a scaffold file in `scaffolds/`             | `/scaffold-file`         |
+| setup-workspace       | Configure workspace context for the agentic kernel           | `/setup-workspace`       |
+| sync-templates        | Sync workspace content to template repos via manifest        | `/sync-templates`        |
+| test                  | Parse test output and produce a structured verdict           | `/test`                  |
 
 ---
 
 ## Technology Conventions
 
-| Convention | Applies To                                                                                    | Description                                           |
-| ---------- | --------------------------------------------------------------------------------------------- | ----------------------------------------------------- |
-| Angular    | `**/*.component.ts`, `**/*.service.ts`, `**/*.directive.ts`, `**/*.pipe.ts`, `**/*.module.ts` | Conventions for Angular development                   |
-| API        | `**/Controllers/**`, `**/Endpoints/**`                                                        | Guidelines for API design and implementation          |
-| Docs       | `docs/**/*.md`                                                                                | Conventions for documentation files                   |
-| Dotnet     | `**/*.cs`                                                                                     | Guidelines for C# development                         |
-| Jamstack   | `**/jamstack/**`, `**/*.astro`, `**/netlify.toml`, `**/vercel.json`                           | Conventions for Jamstack and static site development  |
-| Java       | `**/*.java`, `**/pom.xml`                                                                     | Conventions for Java and Maven development            |
-| JFrog      | `**/.jfrog/**`, `**/artifactory/**`, `**/*jfrog*`                                             | Conventions for JFrog Artifactory integration         |
-| Migrations | `**/Migrations/**`                                                                            | Guidelines for database schema changes and migrations |
-| Testing    | `**/tests/**`, `**/*.test.ts`, `**/*.spec.ts`, `**/*.Tests.csproj`, `**/*Tests.cs`            | Guidelines for writing and running tests              |
-| TypeScript | `**/*.ts`, `**/*.tsx`                                                                         | Guidelines for TypeScript development                 |
+| Convention | Applies To                                                                        | Description                                          |
+| ---------- | --------------------------------------------------------------------------------- | ---------------------------------------------------- |
+| angular    | `**/*.component.ts,**/*.service.ts,**/*.directive.ts,**/*.pipe.ts,**/*.module.ts` | Conventions for Angular development                  |
+| api        | `**/Controllers/**,**/Endpoints/**`                                               | Guidelines for API design and implementation         |
+| docs       | `docs/**/*.md`                                                                    | Conventions for documentation files                  |
+| dotnet     | `**/*.cs`                                                                         | Guidelines for C# development                        |
+| jamstack   | `**/jamstack/**,**/*.astro,**/netlify.toml,**/vercel.json`                        | Conventions for Jamstack and static site development |
+| java       | `**/*.java,**/pom.xml`                                                            | Conventions for Java and Maven development           |
+| jfrog      | `**/.jfrog/**,**/artifactory/**,**/*jfrog*`                                       | Conventions for JFrog Artifactory integration        |
+| migrations | `**/Migrations/**`                                                                | Guidelines for database schema changes               |
+| testing    | `**/tests/**,**/*.test.ts,**/*.spec.ts,**/*.Tests.csproj,**/*Tests.cs`            | Guidelines for writing and running tests             |
+| typescript | `**/*.ts,**/*.tsx`                                                                | Guidelines for TypeScript development                |
 
 ---
 
 ## Core Principles
 
-AI proposes; human approves — never take action without explicit approval. Work in small, reviewable steps, checkpointing after each logical unit. Every action must link to its rationale through Context Anchors, ensuring full traceability. Quality takes precedence over speed: verify before claiming success. When corrected, acknowledge the specific error, re-anchor to the correct constraint, and revise the approach without defensiveness.
+AI proposes, human approves — never act without explicit approval. Work in small, reviewable steps with checkpoints after each logical unit. Every action links to its rationale via Context Anchors. Quality over speed: verify before claiming success. When corrected, acknowledge the error, explain the cause, re-anchor to the correct constraint, and revise the plan.
 
 ---
 
 ## Quick Start
 
-### Build
+Read `workspace.config.yaml` for build/test/run/lint commands.
+Read `docs/workspace/goals.md` for current priorities.
 
-```bash
-{{{build_command}}}
-```
+---
 
-### Test
+## Project Structure
 
-```bash
-{{{test_command}}}
+Read `docs/workspace/context.md` for project-specific architecture and structure.
+
 ```
 
 ---
@@ -96,3 +103,4 @@ AI proposes; human approves — never take action without explicit approval. Wor
 - Use path-specific instructions in `.github/instructions/` for detailed conventions
 - Follow the approval protocol for destructive operations
 - When uncertain, ask rather than assume
+```

@@ -1,34 +1,19 @@
-````skill
 ---
 name: review
-description: Structured review of PRs and verification of feedback implementation
+description: Structured review of PRs and verification of feedback implementation.
 ---
 
-# Review Workflow
+# Review
 
-Analyze PRs, provide structured feedback, and verify that commits address feedback.
+The Reviewer drives this workflow with Security support for security implications. Analyze PRs, provide structured feedback, and verify that commits address feedback.
 
-## Personas
-
-- **Primary:** Reviewer (code review, standards enforcement)
-- **Secondary:** Security (security implications)
-
-## Prerequisites
-
-- PR diff available (pasted or accessible)
-- Context about the PR's purpose
-
-## Entry Points
-
-- "Review this PR" — Start at Phase 1
-- "Check if this commit addresses feedback" — Start at Entry Point: Commit Verify
-- "Help me address this review feedback" — Start at Entry Point: Address Feedback
+**Prerequisites:** PR diff available (pasted or accessible), context about the PR's purpose.
 
 ---
 
 ## Phase 1: Understand Scope
 
-**Goal:** Understand what the PR is trying to accomplish.
+Understand what the PR is trying to accomplish.
 
 ### Steps
 
@@ -41,7 +26,7 @@ Analyze PRs, provide structured feedback, and verify that commits address feedba
 
 ## Phase 2: Analyze Changes
 
-**Goal:** Review the implementation against requirements and standards.
+Review the implementation against requirements and standards.
 
 ### Steps
 
@@ -65,14 +50,14 @@ Analyze PRs, provide structured feedback, and verify that commits address feedba
 
 ## Phase 3: Provide Feedback
 
-**Goal:** Present structured, actionable feedback.
+Present structured, actionable feedback.
 
 ### Steps
 
 1. Determine verdict (Approve, Request Changes, Comment)
 2. List blocking issues (must fix before merge)
 3. List suggestions (non-blocking improvements)
-4. Note positive observations (reinforce good patterns)
+4. Note positive observations
 
 ### Feedback Categories
 
@@ -83,54 +68,56 @@ Analyze PRs, provide structured feedback, and verify that commits address feedba
 | Suggestion | Nice to have improvement              |
 | Nitpick    | Style preference, optional            |
 
-### Output Template
+### Output
 
 ```markdown
 ## Context Anchors
 
-- **PR:** #{{{pr-number}}} - {{{title}}}
-- **Author:** {{{author}}}
-- **Target:** `{{{head-branch}}}` → `{{{base-branch}}}`
-- **Scope:** {{{brief-description}}}
+- **PR:** #<number> - <title>
+- **Author:** <author>
+- **Target:** `<branch>` → `<base>`
+- **Scope:** <brief description>
 
 ## Review Summary
 
-**Verdict:** {{{Approve | Request Changes | Comment}}}
+**Verdict:** <Approve | Request Changes | Comment>
 
-{{{one-paragraph-summary}}}
+<One paragraph summary>
 
 ## Feedback
 
 ### Blocking Issues
 
-1. **[{{{file}}}:{{{line}}}] {{{issue-title}}}**
-   - Problem: {{{what-is-wrong}}}
-   - Suggestion: {{{how-to-fix}}}
+1. **[File:Line] <Issue title>**
+   - Problem: <what's wrong>
+   - Suggestion: <how to fix>
 
 ### Suggestions
 
-1. **[{{{file}}}:{{{line}}}] {{{suggestion-title}}}**
-   - Current: {{{what-it-does-now}}}
-   - Suggested: {{{what-would-be-better}}}
+1. **[File:Line] <Suggestion title>**
+   - Current: <what it does now>
+   - Suggested: <what would be better>
 
 ### Positive Notes
 
-- {{{positive-observation}}}
+- <positive observation>
 
 ## Next Step
 
-{{{next-step-based-on-verdict}}}
+<If Request Changes: "Address blocking issues and re-request review">
+<If Approve: "Ready to merge">
+<If Comment: "Consider suggestions; no changes required">
 ```
 
 ### ⛔ CHECKPOINT
 
-Present the review for confirmation before posting. Do not submit review comments until explicitly approved.
+**STOP.** Present review for confirmation before posting.
 
 ---
 
 ## Entry Point: Commit Verify
 
-**Purpose:** Verify that a commit addresses specific review feedback.
+Verify that a commit addresses specific review feedback.
 
 ### Process
 
@@ -139,37 +126,38 @@ Present the review for confirmation before posting. Do not submit review comment
 3. Match — Does the change address the feedback?
 4. Check for over-correction — Did they change more than needed?
 
-### Output Template
+### Output
 
 ```markdown
 ## Context Anchors
 
-- **PR:** #{{{pr-number}}}
-- **Commit:** {{{sha}}} - {{{message}}}
-- **Feedback being addressed:** {{{summary}}}
+- **PR:** #<number>
+- **Commit:** <sha> - <message>
+- **Feedback being addressed:** <summary>
 
 ## Verification Result
 
-**Verdict:** {{{Resolved | Partially Resolved | Not Resolved | Over-corrected}}}
+**Verdict:** <Resolved | Partially Resolved | Not Resolved | Over-corrected>
 
 ### Feedback Items
 
-| Item             | Status           | Notes            |
-| ---------------- | ---------------- | ---------------- |
-| {{{feedback-1}}} | ✅ Resolved      | {{{how}}}        |
-| {{{feedback-2}}} | ⚠️ Partial       | {{{missing}}}    |
-| {{{feedback-3}}} | ❌ Not addressed | {{{still-needed}}}|
+| Item         | Status           | Notes            |
+| ------------ | ---------------- | ---------------- |
+| <feedback 1> | ✅ Resolved      | <how>            |
+| <feedback 2> | ⚠️ Partial       | <what's missing> |
+| <feedback 3> | ❌ Not addressed | <still needed>   |
 
 ## Next Step
 
-{{{next-step-based-on-verdict}}}
+<If Resolved: "Feedback addressed. Ready for re-review.">
+<If Partial/Not: "Still needs: <what>">
 ```
 
 ---
 
 ## Entry Point: Address Feedback
 
-**Purpose:** Help implement review feedback on a PR.
+Help implement review feedback on a PR.
 
 ### Process
 
@@ -179,19 +167,19 @@ Present the review for confirmation before posting. Do not submit review comment
 4. Verify — Ensure changes address feedback
 5. Report — Summarize what was done
 
-### Output Template
+### Output
 
 ```markdown
 ## Context Anchors
 
-- **PR:** #{{{pr-number}}}
-- **Feedback items:** {{{count}}}
+- **PR:** #<number>
+- **Feedback items:** <count>
 
 ## Feedback Analysis
 
-| #   | Feedback      | Location        | Action              |
-| --- | ------------- | --------------- | ------------------- |
-| 1   | {{{summary}}} | {{{file:line}}} | {{{planned-change}}}|
+| #   | Feedback  | Location    | Action           |
+| --- | --------- | ----------- | ---------------- |
+| 1   | <summary> | <file:line> | <planned change> |
 
 ## Next Step
 
@@ -199,10 +187,6 @@ Ready to implement these changes.
 
 **Approval Required:** Yes
 ```
-
-### ⛔ CHECKPOINT
-
-Present the feedback analysis and planned changes for approval before implementing.
 
 ---
 
@@ -228,5 +212,3 @@ Before providing any review verdict, verify these mechanically:
 | Missing PR context       | Request PR number or diff     |
 | Unclear feedback         | Ask for clarification         |
 | Conflicting requirements | Escalate to author/maintainer |
-
-````

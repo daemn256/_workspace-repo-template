@@ -1,33 +1,19 @@
 ---
 name: issue-spawn
-description: Create follow-up issue linked to existing work
+description: Create follow-up issue linked to existing work.
 ---
 
-# Issue Spawn Workflow
+# Issue Spawn
 
-When work-in-progress reveals additional scope, technical debt, or related tasks, spawn a new issue with full traceability back to the parent.
+The Orchestrator drives this workflow. When work-in-progress reveals additional scope, technical debt, or related tasks, spawn a new issue with full traceability back to the parent.
 
-## Personas
-
-- **Primary:** Orchestrator (issue management)
-
-## Prerequisites
-
-- Active work context (parent issue number and title)
-- Clear reason why this is separate work
-- Access to issue tracker (`gh` CLI)
-
-## Entry Points
-
-- "This is out of scope, let's file it separately" — Start at Phase 1
-- "I found a bug while implementing" — Start at Phase 1 with `type:bug`
-- "This needs its own issue" — Start at Phase 1
+**Prerequisites:** Active work context (parent issue number and title), clear reason why this is separate work, access to issue tracker.
 
 ---
 
 ## Phase 1: Identify
 
-**Goal:** Classify why the spawn is needed and confirm separation.
+Classify why the spawn is needed and confirm separation.
 
 ### Spawn Categories
 
@@ -45,38 +31,57 @@ When work-in-progress reveals additional scope, technical debt, or related tasks
 2. Confirm with the human that this should be separate work
 3. Note the parent issue context
 
+### Output
+
+```markdown
+## Context Anchors
+
+- **Parent Issue:** #<number> - <title>
+- **Reason for Spawn:** <category>
+
+## Spawn Rationale
+
+<Why this should be separate work>
+
+## Next Step
+
+Confirm spawn is warranted.
+
+**Approval Required:** Yes
+```
+
 ### ⛔ CHECKPOINT
 
-Confirm spawn is warranted. Present the category and separation rationale for approval.
+**STOP.** Do not proceed until human confirms spawn is warranted.
 
 ---
 
 ## Phase 2: Draft
 
-**Goal:** Compose the spawned issue with traceability links.
+Compose the spawned issue with traceability links.
 
 ### Issue Structure
 
 ```markdown
 ## Summary
 
-{{{what-this-spawned-issue-addresses}}}
+<What this spawned issue addresses>
 
 ## Context
 
-Spawned from #{{{parent-number}}} during {{{activity}}}.
+Spawned from #<parent-number> during <activity>.
 
-{{{why-this-is-separate-work}}}
+<Why this is separate work>
 
 ## Requirements
 
-- [ ] {{{requirement-1}}}
-- [ ] {{{requirement-2}}}
+- [ ] <Requirement 1>
+- [ ] <Requirement 2>
 
 ## Links
 
-- Spawned from #{{{parent-number}}}
-- Related to #{{{other-related}}}
+- Spawned from #<parent-number>
+- Related to #<other-related>
 ```
 
 ### Traceability Requirements
@@ -87,91 +92,45 @@ Spawned issues MUST include:
 2. **Context** — Why this was discovered
 3. **Separation rationale** — Why it is separate work
 
-### Output Template
+### Inheritance Rules
 
-```markdown
-## Context Anchors
-
-- **Parent Issue:** #{{{parent-number}}} - {{{parent-title}}}
-- **Reason for Spawn:** {{{category}}}
-
-## Proposed Issue
-
-**Title:** {{{concise-title}}}
-
-**Labels:** `type:{{{type}}}`, `area:{{{area}}}`
-
-**Body:**
-
-{{{issue-body-content}}}
-
-## Next Step
-
-Awaiting approval to create spawned issue.
-
-**Approval Required:** Yes
-```
+- Spawned issues **inherit** the parent's milestone unless explicitly reassigned
+- Spawned issues do **NOT** inherit priority or size — those are set independently
 
 ### ⛔ CHECKPOINT
 
-Await approval of draft content, title, and labels before creating.
+**STOP.** Await approval of draft content, title, and labels.
 
 ---
 
 ## Phase 3: Create and Link
 
-**Goal:** Create the issue and update the parent.
+Create the issue, add to board, and update the parent.
 
 ### Steps
 
-1. Write the issue body to a temporary file
-2. Create the issue via CLI
-3. Update the parent issue with a spawn reference
+1. Write the issue body to `.tmp/scratch/issue-body.md`
+2. Execute the forge's issue creation operation with title, body, and labels
+3. Add the created issue to the project board
+4. Set board fields: Status → Backlog, Priority, Size
+5. Update the parent issue with a spawn reference:
 
-### Commands
+   ```markdown
+   ## Spawned Issues
 
-```bash
-gh issue create \
-  --title "{{{title}}}" \
-  --body-file .tmp/scratch/issue-body.md \
-  --label "type:{{{type}}}"
-```
-
-### Parent Issue Update
-
-After spawning, add to the parent issue body:
-
-```markdown
-## Spawned Issues
-
-- #{{{new-number}}} - {{{title}}} (spawned during implementation)
-```
-
-### Output Template
-
-```markdown
-## Context Anchors
-
-- **Parent Issue:** #{{{parent-number}}} - {{{parent-title}}}
-- **Spawned Issue:** #{{{new-number}}} - {{{new-title}}}
-
-## Next Step
-
-Spawned issue created. Parent issue updated with reference.
-
-**Approval Required:** No
-```
+   - #<new-number> - <title> (spawned during implementation)
+   ```
 
 ### ⛔ CHECKPOINT
 
-Confirm issue created and parent updated.
+**STOP.** Confirm issue created, board fields set, and parent updated.
 
 ---
 
 ## Error Handling
 
-| Error                          | Recovery                                                                                         |
-| ------------------------------ | ------------------------------------------------------------------------------------------------ |
-| Parent issue context missing   | Ask for the parent issue number; do not guess at parent linkage                                  |
-| Separation rationale is weak   | Suggest keeping the work in the parent issue instead; let human decide                           |
-| Parent issue cannot be updated | Report the failure; the spawned issue still has the "Spawned from" link as fallback traceability |
+| Error                          | Recovery                                                               |
+| ------------------------------ | ---------------------------------------------------------------------- |
+| Parent issue context missing   | Ask for the parent issue number                                        |
+| Separation rationale weak      | Suggest keeping work in parent instead                                 |
+| Parent issue cannot be updated | The spawned issue's "Spawned from" link provides fallback traceability |

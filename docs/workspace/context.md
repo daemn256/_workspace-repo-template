@@ -1,57 +1,85 @@
-<!-- Source: _workspace-repo-template | File: context.md -->
-
 # Workspace Context
 
-> Project-specific information that helps the AI agent understand this workspace.
+> Project-specific information that helps AI agents understand this workspace.
+
+---
 
 ## Identity
 
-<!-- Required: Workspace name, type, and upstream template -->
+| Field    | Value                       |
+| -------- | --------------------------- |
+| Name     |                             |
+| Purpose  |                             |
+| Type     | Single-repository workspace |
+| Template | `_workspace-repo-template`  |
 
-**Name:** {project-name}
-**Purpose:** {brief-description}
-**Type:** Single-repository workspace
-**Upstream:** `_workspace-repo-template`
+---
+
+## Project Board
+
+| Field      | Value |
+| ---------- | ----- |
+| Provider   |       |
+| URL        |       |
+| Project ID |       |
+
+<!-- Fill in board field IDs from workspace.config.yaml -->
+
+---
 
 ## Tech Stack
 
-<!-- Required: Languages, frameworks, databases, infrastructure -->
+- **Backend:** Language and framework
+- **Frontend:** Language and framework
+- **Database:** Type and version
+- **Infrastructure:** Hosting, CI/CD
 
-- **Backend:** {language and framework}
-- **Frontend:** {language and framework}
-- **Database:** {type and version}
-- **Infrastructure:** {hosting, CI/CD}
+---
 
 ## Domain Terminology
 
-<!-- Required: Business terms the agent must understand -->
+| Term | Definition |
+| ---- | ---------- |
+|      |            |
 
-| Term   | Definition   |
-| ------ | ------------ |
-| {term} | {definition} |
+---
 
-## Architecture
+## Architecture Overview
 
-<!-- Required: How the system is structured -->
+- **Pattern:** Monolith / Microservices / Jamstack / ...
+- **Key components:** Major system components
+- **Data flow:** How data moves through the system
 
-- **Pattern:** {Microservices / Monolith / Jamstack / ...}
-- **Key components:** {list major components}
-- **Data flow:** {how data moves through the system}
+---
 
 ## Repository Structure
 
-<!-- Required: Where things live -->
+```
+project-root/
+├── src/          # Source code
+├── tests/        # Test suites
+├── docs/         # Documentation
+└── tools/        # Build and automation scripts
+```
 
-```
-{project-root}/
-├── src/                # Source code
-├── tests/              # Test suites
-├── docs/               # Documentation
-└── tools/              # Build and automation scripts
-```
+---
 
 ## Key Conventions
 
-<!-- Required: Project-specific rules not covered by copilot-instructions.md -->
+- Convention 1
+- Convention 2
 
-- {project-specific conventions}
+---
+
+## Key Files
+
+| File                                     | Purpose                                   |
+| ---------------------------------------- | ----------------------------------------- |
+| `workspace.config.yaml`                  | Workspace configuration                   |
+| `.github/copilot-instructions.md`        | Behavioral rules for AI agents            |
+| `.github/AGENTS.md`                      | Agent onboarding and project map          |
+| `CLAUDE.md`                              | Claude Code instructions                  |
+| `docs/architecture/instruction-model.md` | 4-layer instruction hierarchy             |
+| `docs/architecture/configuration.md`     | Configuration schema and patterns         |
+| `docs/architecture/file-ownership.md`    | Template-provided vs consumer-owned files |
+| `docs/guides/upstream-sync.md`           | How to sync from upstream template        |

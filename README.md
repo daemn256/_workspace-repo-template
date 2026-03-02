@@ -1,6 +1,4 @@
-<!-- Source: _workspace-repo-template | File: README.md -->
-
-# {project-name}
+# Your Project Name
 
 > Brief one-line description of what this project does.
 
@@ -16,8 +14,8 @@ This project was scaffolded from [`_workspace-repo-template`](https://github.com
 
 ```bash
 # Clone and setup
-git clone git@github.com:{your-username}/{project-name}.git
-cd {project-name}
+git clone git@github.com:your-org/your-project.git
+cd your-project
 ./tools/setup.sh
 code .
 ```
@@ -34,20 +32,20 @@ npm test
 
 ## AI Assistance
 
-This workspace includes GitHub Copilot configuration:
+This workspace includes AI agent configuration:
 
-- `.github/AGENTS.md` — Project context (customize after setup)
 - `.github/copilot-instructions.md` — Behavioral rules
 - `.github/agents/` — Specialized AI personas
 - `.github/instructions/` — Language-specific conventions
 - `.github/prompts/` — Workflow templates
+- `CLAUDE.md` — Claude Code instructions
 
 ## Documentation
 
 - [Architecture Decisions](docs/adr/) — ADRs for significant choices
 - [Architecture](docs/architecture/) — System design documentation
 - [Guides](docs/guides/) — How-to guides
-- [Workspace Context](docs/workspace/) — Copilot context files
+- [Workspace Context](docs/workspace/) — AI agent context files
 - [Contributing](CONTRIBUTING.md) — Workflow conventions
 
 ## License

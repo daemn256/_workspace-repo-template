@@ -65,36 +65,18 @@ These files form the **session orientation** set — agents read all of them at 
 
 ---
 
-## Transitional: Token System
-
-Template repos currently use `{{{placeholder}}}` tokens in some instruction files. Consumers run `tools/render-instructions.sh` after initial setup to replace tokens with values from `workspace.config.yaml`.
-
-| Token                   | Config source                      |
-| ----------------------- | ---------------------------------- |
-| `{{{project_name}}}`    | `workspace.name`                   |
-| `{{{project_purpose}}}` | `workspace.description`            |
-| `{{{project_overlay}}}` | Contents of `project.overlay-file` |
-| `{{{build_command}}}`   | `commands.build`                   |
-| `{{{test_command}}}`    | `commands.test`                    |
-| `{{{base_branch}}}`     | `project.base-branch`              |
-
-Convention: Underscored tokens (`{{{project_name}}}`) are consumer-fill — replaced by the render tool. Hyphenated tokens (`{{{issue-number}}}`) are AI-runtime-fill — left for the AI to fill at runtime.
-
-**Direction:** Moving toward full config-reference, where agents read config directly and no render step is needed. The token system is transitional.
-
----
-
 ## For Consumers
 
 1. Copy `workspace.config.yaml` from the template
 2. Fill in real values (workspace name, board IDs, commands, forge topology)
-3. Run `tools/render-instructions.sh` to fill tokens in instruction files
+3. Fill in `docs/workspace/project-overlay.md`, `context.md`, and `goals.md`
 4. Agent behavior adapts automatically based on config values
 
 ---
 
 ## Related
 
+- [Operating Model](operating-model.md) — How workspace content flows to template repos
 - [Instruction Model](instruction-model.md) — The four layers of AI instructions
 - [File Ownership](file-ownership.md) — Which files come from the template vs consumer
 - [Getting Started](../guides/getting-started.md) — Setup checklist for new workspaces

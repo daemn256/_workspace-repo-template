@@ -1,0 +1,145 @@
+# Operating Model
+
+> How workspace content flows from authoring to consumer workspaces.
+
+---
+
+## Overview
+
+The agentic kernel workspace is the **single source of truth** for all agentic content — agents, prompts, skills, instructions, and tooling. Consumer workspaces receive this content through template repos, which are synced from the workspace using a manifest-driven process.
+
+```
+Workspace (authoring)
+  ├── copy files ──→ Template Repos ──→ Consumer Workspaces
+  ├── scaffold files ──→ (example structure)
+  └── ignore files (never propagate)
+```
+
+---
+
+## Manifest-Driven Sync
+
+### template-manifest.yaml
+
+The manifest declares what propagates and how. Located at the workspace root.
+
+Three propagation actions:
+
+| Action     | Meaning                                                     | Example                                  |
+| ---------- | ----------------------------------------------------------- | ---------------------------------------- |
+| **copy**   | Verbatim copy — file is workspace-agnostic                  | `.github/agents/**`, `.claude/**`        |
+| **scaffold** | Example structure from `scaffolds/` — consumer fills values | `workspace.config.yaml`, `README.md`     |
+| **ignore** | Never propagated — consumer-only or workspace-specific      | `docs/adr/*.md`, `.tmp/`, `repos/*`      |
+
+Rules are evaluated **first-match-wins**. Everything not matched is ignored by default.
+
+### Sync Targets
+
+The manifest defines two sync targets:
+
+| Target | Template Repo                  | Purpose                          |
+| ------ | ------------------------------ | -------------------------------- |
+| root   | `_workspace-root-template`     | Multi-repo coordination workspace |
+| repo   | `_workspace-repo-template`     | Single-repo workspace            |
+
+Some rules apply only to specific targets (e.g., `repos/README.md` → root only).
+
+### Tooling
+
+| Tool                        | Purpose                                           |
+| --------------------------- | ------------------------------------------------- |
+| `tools/sync-to-templates.sh`    | Sync workspace → template repos per manifest      |
+| `tools/validate-templates.sh`   | Validate templates for completeness, drift, leakage |
+| `tools/render-instructions.sh`  | **Deprecated** — replaced by config-reference     |
+
+---
+
+## Config-Reference Pattern
+
+Agentic files do not embed workspace-specific content. Instead, they instruct agents to read consumer-owned files at runtime:
+
+```markdown
+## Project Context
+
+On session start, read these consumer-owned files for project-specific context:
+
+- `docs/workspace/project-overlay.md` — Project identity
+- `docs/workspace/context.md` — Domain terminology, architecture
+- `docs/workspace/goals.md` — Current priorities
+- `workspace.config.yaml` — Board IDs, forge topology, commands
+```
+
+This means:
+- **Copy-action files work in any workspace** without modification
+- **One source of truth** — edit the workspace, sync to templates
+- **No rendering step** — agents read config directly
+
+---
+
+## Scaffold Resolution
+
+For scaffold-action files, the source is resolved by target:
+
+```
+scaffolds/<target-id>/<path>  →  if exists, use this
+scaffolds/common/<path>       →  fallback
+```
+
+Example: `workspace.config.yaml` uses `scaffolds/common/workspace.config.yaml` for both targets, but `README.md` uses `scaffolds/root/README.md` for root and `scaffolds/repo/README.md` for repo.
+
+---
+
+## File Ownership Tiers
+
+The manifest defines three ownership tiers:
+
+| Tier          | Manifest Action | Sync Behavior        | Who Edits                |
+| ------------- | --------------- | -------------------- | ------------------------ |
+| **Copy**      | `copy`          | Replaced on sync     | Workspace authors only   |
+| **Scaffold**  | `scaffold`      | Initial structure    | Consumer fills in values |
+| **Ignore**    | (default)       | Never synced         | Consumer owns entirely   |
+
+---
+
+## Sync Workflow
+
+### For Template Authors (this workspace)
+
+1. Edit files in the workspace root (agents, prompts, tools, etc.)
+2. Run `tools/sync-to-templates.sh --dry-run` to preview changes
+3. Run `tools/sync-to-templates.sh` to sync
+4. Run `tools/validate-templates.sh` to verify
+5. Commit changes in both workspace and template repos
+6. Push template repos to make changes available to consumers
+
+### For Consumers (downstream workspaces)
+
+1. `git fetch upstream-workspace`
+2. `git merge upstream-workspace/main`
+3. Copy-action files update automatically (template-owned)
+4. Scaffold-action files may conflict — keep your version
+5. See [Upstream Sync](../guides/upstream-sync.md)
+
+---
+
+## Consumer-Specific Content
+
+Some files are inherently workspace-specific and must not propagate:
+
+| File                              | Why It's Consumer-Only                    |
+| --------------------------------- | ----------------------------------------- |
+| `forge-ops.prompt.md`             | Generated by `/configure-forge` with real board IDs |
+| `workspace.config.yaml` (values)  | Consumer fills in real project values     |
+| `docs/workspace/context.md`       | Consumer's domain knowledge               |
+| `docs/workspace/goals.md`         | Consumer's current priorities             |
+| `docs/adr/*.md`                   | Consumer's architecture decisions         |
+
+The manifest explicitly ignores `forge-ops.prompt.md` even though it's in `.github/prompts/`.
+
+---
+
+## Related
+
+- [File Ownership](file-ownership.md) — Detailed file classification
+- [Configuration](configuration.md) — How config reaches agents
+- [ADR-0002](../adr/0002-manifest-driven-template-authoring.md) — Decision record for this model

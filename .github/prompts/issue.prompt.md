@@ -1,10 +1,10 @@
 ---
-description: "From issue selection to implementation completion"
+description: From issue selection to implementation completion
 ---
 
 # Issue
 
-Orchestrator-led workflow with Implementer support. Analyze an issue, propose approach, create branch, and implement changes with human approval at each checkpoint.
+Uses **Orchestrator** (primary) with **Implementer** support. Analyze an issue, propose approach, create branch, and implement changes with human approval at each checkpoint.
 
 **Prerequisites:** Issue number or context available, access to version control and issue tracker
 
@@ -16,13 +16,14 @@ Orchestrator-led workflow with Implementer support. Analyze an issue, propose ap
 
 1. Read the issue (title, description, labels, acceptance criteria)
 2. Search for related documentation:
-   - ADRs in `docs/adr/`
-   - Architecture docs in `docs/architecture/`
-   - Implementation guides in `docs/guides/`
+   - Architecture decisions (ADRs) in `docs/adr/`
+   - Existing patterns in `docs/architecture/`
+   - Implementation guides
    - Parent/child issues (`Part of #N`)
-3. Check for existing patterns in the codebase
+3. Classify complexity
+4. Propose branch name
 
-### Classify Complexity
+### Complexity Criteria
 
 | Criterion     | Simple     | Complex             |
 | ------------- | ---------- | ------------------- |
@@ -33,9 +34,9 @@ Orchestrator-led workflow with Implementer support. Analyze an issue, propose ap
 
 **Rule:** ANY Complex criterion → Issue is Complex
 
-### Propose Branch
+### Branch Pattern
 
-Branch pattern: `<type>/<issue-number>-<kebab-description>`
+`<type>/<issue-number>-<kebab-description>`
 
 Types: `feat`, `fix`, `docs`, `chore`, `refactor`, `test`, `perf`
 
@@ -46,20 +47,20 @@ Types: `feat`, `fix`, `docs`, `chore`, `refactor`, `test`, `perf`
 
 - **Issue:** #<number> - <title>
 - **Phase:** 1 — Analyze
-- **Branch:** (proposed) `<type>/<number>-<description>`
+- **Branch:** (proposed) `<branch-name>`
 
 ## Analysis
 
-<findings summary>
+<findings from documentation search>
 
-## Complexity
+## Classification
 
-**Classification:** Simple | Complex
-<rationale>
+- **Complexity:** <Simple | Complex>
+- **Rationale:** <why>
 
-## Approach
+## Proposed Approach
 
-<proposed implementation approach>
+<implementation plan>
 
 ## Next Step
 
@@ -82,10 +83,15 @@ Await approval for classification, branch name, and approach.
 
 ### Create Feature Branch
 
-```bash
-git checkout {{{base_branch}}} && git pull origin {{{base_branch}}}
-git checkout -b <type>/<issue-number>-<kebab-description>
-```
+1. Checkout base branch and pull latest:
+   ```bash
+   git checkout main && git pull origin main
+   ```
+2. Create feature branch:
+   ```bash
+   git checkout -b <type>/<issue-number>-<kebab-description>
+   ```
+3. Verify branch created
 
 ### Output
 
@@ -98,8 +104,8 @@ git checkout -b <type>/<issue-number>-<kebab-description>
 
 ## Branch Created
 
-- Base: `{{{base_branch}}}`
-- Branch: `<branch-name>`
+- **From:** `main`
+- **Name:** `<branch-name>`
 
 ## Next Step
 
@@ -110,7 +116,7 @@ Await approval to proceed with implementation.
 
 ### ⛔ CHECKPOINT
 
-**STOP.** Do not proceed until human explicitly approves moving to implementation.
+**STOP.** Do not proceed until human explicitly approves proceeding to implementation.
 
 ---
 
@@ -118,10 +124,17 @@ Await approval to proceed with implementation.
 
 ### Make Changes Iteratively
 
-1. Complete one logical unit of work
-2. Run build and tests to verify: `{{{build_command}}}` / `{{{test_command}}}`
-3. Report status and progress
-4. Checkpoint before next significant unit
+1. Make focused changes (one logical unit at a time)
+2. Run the workspace's build and test commands (read from `workspace.config.yaml`) after each unit
+3. Report progress
+4. Checkpoint before next unit (if significant)
+
+### Iteration Pattern
+
+- Complete one logical unit
+- Verify (build, test)
+- Report status
+- Continue or checkpoint
 
 ### Output
 
@@ -131,10 +144,11 @@ Await approval to proceed with implementation.
 - **Issue:** #<number> - <title>
 - **Phase:** 3 — Implement
 - **Branch:** `<branch-name>`
+- **Unit:** <N of total>
 
 ## Progress
 
-<what was completed in this unit>
+<what was changed in this unit>
 
 ## Verification
 
@@ -143,14 +157,14 @@ Await approval to proceed with implementation.
 
 ## Next Step
 
-<Continue with next unit | Ready for review>
+<Continue to next unit or proceed to review>
 
-**Approval Required:** Per significant unit
+**Approval Required:** Yes
 ```
 
 ### ⛔ CHECKPOINT
 
-**STOP.** Checkpoint after each significant unit of work.
+**STOP** after each significant logical unit. Await approval before proceeding.
 
 ---
 
@@ -158,10 +172,17 @@ Await approval to proceed with implementation.
 
 ### Verify Implementation
 
-1. Run full build: `{{{build_command}}}`
-2. Run all relevant tests: `{{{test_command}}}`
-3. Run lint/format check: `{{{lint_command}}}`
-4. Summarize all changes made
+1. Run the workspace's build command (read from `workspace.config.yaml`)
+2. Run the workspace's test command (read from `workspace.config.yaml`)
+3. Run the workspace's lint command if configured
+4. Summarize all changes
+
+### Verification Checklist
+
+- [ ] Build passes
+- [ ] Tests pass
+- [ ] Lint clean
+- [ ] Changes summarized
 
 ### Output
 
@@ -174,14 +195,13 @@ Await approval to proceed with implementation.
 
 ## Changes Summary
 
-<summary of all changes>
+<list of all files changed and what was done>
 
 ## Verification Block
 
 - [x] Build passes
-- [x] Tests pass
+- [x] Tests pass (<counts>)
 - [x] Lint clean
-- [x] Changes summarized
 
 ## Next Step
 
@@ -192,22 +212,33 @@ Awaiting approval to commit.
 
 ### ⛔ CHECKPOINT
 
-**STOP.** Do not commit until human explicitly approves.
+**STOP.** Do not commit until human explicitly approves:
+
+- All changes are correct
+- Verification passes
+- No unintended modifications
 
 ---
 
 ## Phase 5: Commit
 
-### Create Conventional Commit
+### Create Well-Formed Commit
 
-```bash
-git add -A
-git commit -m "<type>(<scope>): <description>
+1. Stage changes:
+   ```bash
+   git add -A
+   ```
+2. Create commit with conventional format:
 
-<body>
+   ```bash
+   git commit -m "<type>(<scope>): <description>
 
-Closes #<issue-number>"
-```
+   <body>
+
+   Closes #<issue-number>"
+   ```
+
+3. Report commit details
 
 ### Output
 
@@ -220,13 +251,13 @@ Closes #<issue-number>"
 
 ## Commit
 
+- **Hash:** <sha>
 - **Message:** `<type>(<scope>): <description>`
-- **SHA:** `<sha>`
-- **Files:** <count> files changed
+- **Closes:** #<issue-number>
 
 ## Next Step
 
-Awaiting approval to push or create PR.
+Awaiting approval to push and create PR.
 
 **Approval Required:** Yes
 ```
@@ -265,9 +296,8 @@ When implementation reveals work outside the current issue's scope:
 
 ## Error Handling
 
-| Error                   | Recovery                                      |
-| ----------------------- | --------------------------------------------- |
-| Blocked by missing info | Report blocker clearly, await human guidance  |
-| Complexity escalates    | Re-classify and report, may return to Phase 1 |
-| Tests fail              | Report failure details, fix or await guidance |
-| Build fails             | Report failure details, do not proceed        |
+| Error                | Recovery                                                                |
+| -------------------- | ----------------------------------------------------------------------- |
+| Blocked              | Report blocker clearly, do not proceed, await guidance                  |
+| Complexity escalates | Re-classify and report, may require returning to Phase 1                |
+| Tests fail           | Report failure details, do not proceed to commit, fix or await guidance |

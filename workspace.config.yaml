@@ -1,12 +1,11 @@
-# Source: _workspace-repo-template | File: workspace.config.yaml
-# This file is consumer-owned. Template sync never overwrites your real config.
-#
+# Workspace Configuration
+# Consumer-owned — template sync never overwrites this file.
 # Schema: docs/architecture/configuration.md
 
 # ─── Identity ──────────────────────────────────────────────
 workspace:
-  name: "{workspace-name}"
-  description: "{workspace-description}"
+  name: "" # Your workspace or project name
+  description: "" # What this workspace is for
 
 # ─── Forge Topology ───────────────────────────────────────
 # Which provider handles each concern.
@@ -17,6 +16,8 @@ forge:
     boards: github # github | ado | jira
     ci: github-actions # github-actions | ado-pipelines | gitlab-ci
     releases: github # github | ado | gitlab
+  tooling:
+    preferred: cli # mcp | cli | api — default tool preference
 
 # ─── AI Runtimes ──────────────────────────────────────────
 # Which AI assistants are active in this workspace.
@@ -35,9 +36,11 @@ process:
 
 # ─── Board Configuration ─────────────────────────────────
 # Provider-specific wiring. Fill in your board's real IDs.
+# To find GitHub Projects v2 field IDs, use:
+#   gh api graphql -f query='{ ... }' (see docs/guides/getting-started.md)
 board:
   provider: "github-projects-v2"
-  url: "" # e.g., https://github.com/users/you/projects/1
+  url: "" # e.g., https://github.com/orgs/your-org/projects/1
   project_id: "" # e.g., PVT_kwHO...
 
   fields:
@@ -52,30 +55,29 @@ board:
     in-review: { option_id: "" }
     done: { option_id: "" }
 
-  # Override standard profile defaults (uncomment to customize):
-  # status_columns:
-  #   - { name: To Do, maps_to_phase: not-started }
-  #   - { name: Doing, maps_to_phase: active }
-  #   - { name: Done, maps_to_phase: completed }
-  #
-  # priority:
-  #   - { name: High, description: Must address now }
-  #   - { name: Medium, description: Address this milestone }
-  #   - { name: Low, description: Address when convenient }
+  priority_options:
+    p0: { option_id: "" } # Drop everything
+    p1: { option_id: "" } # This milestone
+    p2: { option_id: "" } # If capacity
 
-# ─── Commands ─────────────────────────────────────────────────────
-# Tech-stack-specific commands referenced by instruction file rendering.
-# Used by tools/render-instructions.sh to fill {{{placeholder}}} tokens.
+  size_options:
+    xs: { option_id: "" } # < 1 hour
+    s: { option_id: "" } # 1-4 hours
+    m: { option_id: "" } # 1-2 days
+    l: { option_id: "" } # 3-5 days
+    xl: { option_id: "" } # 1+ week (consider splitting)
+
+# ─── Commands ─────────────────────────────────────────────
+# Tech-stack-specific commands. Agents read these from config at runtime.
 commands:
   build: "" # e.g., npm run build, dotnet build
   test: "" # e.g., npm test, dotnet test
   run: "" # e.g., npm start, dotnet run
   lint: "" # e.g., npm run lint, dotnet format
 
-# ─── Project ─────────────────────────────────────────────────────
-# Project identity and git conventions for instruction file rendering.
+# ─── Project ─────────────────────────────────────────────
 project:
-  root: "" # Project root directory (relative to workspace)
-  base-branch: "main" # Default branch for PRs
+  root: "" # Project root (relative to workspace), empty for multi-repo
+  base-branch: "main"
   branch-pattern: "<type>/<issue-number>-<kebab-description>"
-  overlay-file: "docs/workspace/project-overlay.md" # Consumer project overlay content
+  overlay-file: "docs/workspace/project-overlay.md"

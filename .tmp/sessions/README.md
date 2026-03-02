@@ -4,7 +4,7 @@
 
 This directory contains session tracking files that help maintain context across AI assistant conversations within a workspace.
 
-For the full protocol, see [session tracking protocol](https://github.com/daemn256/_agentic-system/blob/main/src/process/session-tracking-protocol.md).
+For the full protocol, see the Session Lifecycle and Session Tracking sections in the global instructions (`CLAUDE.md` or `.github/copilot-instructions.md`).
 
 ## Purpose
 

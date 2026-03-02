@@ -1,16 +1,16 @@
 {
   "manifestVersion": "1.0",
   "platform": "claude-code",
-  "version": "3.1.0",
-  "buildDate": "2026-02-26T02:10:35Z",
-  "gitCommit": "02051a5",
+  "version": "3.2.0",
+  "buildDate": "2026-02-27T00:18:09Z",
+  "gitCommit": "8d71192",
   "gitBranch": "main",
   "outputRoot": ".claude/",
   "managedPaths": [".claude/"],
   "sourceFiles": {
-    "personas": 14,
-    "workflows": 12,
-    "principles": 9,
+    "personas": 19,
+    "workflows": 13,
+    "principles": 11,
     "skillsets": 10
   },
   "transforms": {

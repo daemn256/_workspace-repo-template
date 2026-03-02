@@ -1,10 +1,10 @@
 ---
-description: "Architecture design, trade-off analysis, and technical decision-making"
+description: Architecture design, trade-off analysis, and technical decision-making
 ---
 
 # Planning
 
-Architect-led workflow with Research support. Guide architectural decisions, design system components, and document trade-offs before implementation.
+Uses **Architect** (primary) with **Research** support. Guide architectural decisions, design system components, and document trade-offs before implementation.
 
 **Prerequisites:** Clear problem statement or requirement, access to existing architecture documentation and ADRs
 
@@ -14,12 +14,12 @@ Architect-led workflow with Research support. Guide architectural decisions, des
 
 ### Gather and Clarify
 
-1. Gather requirements from issue or request
+1. Gather requirements from issue/request
 2. Identify constraints (performance, security, compatibility)
 3. Note unknowns and assumptions
 4. Understand scope boundaries
 
-**Questions to answer:**
+### Questions to Answer
 
 - What problem are we solving?
 - What are the success criteria?
@@ -33,7 +33,7 @@ Architect-led workflow with Research support. Guide architectural decisions, des
 
 - **Issue:** #<number> - <title>
 - **Area:** <architectural area>
-- **Phase:** 1 — Requirements Gathering
+- **Phase:** 1 — Understand Requirements
 
 ## Requirements Summary
 
@@ -58,20 +58,24 @@ Confirm this understanding is correct before exploring options.
 
 ### ⛔ CHECKPOINT
 
-**STOP.** Do not proceed until human confirms requirements understanding is correct.
+**STOP.** Do not proceed until human explicitly approves:
+
+- Requirements understanding is correct
+- Constraints are complete
+- Scope boundaries are agreed
 
 ---
 
 ## Phase 2: Explore Options
 
-### Identify and Evaluate Approaches
+### Identify Approaches
 
 1. Brainstorm potential approaches
-2. Research existing patterns (in codebase, ADRs, external references)
+2. Research existing patterns (in codebase, ADRs, external)
 3. Evaluate each option against requirements
 4. Identify pros/cons and trade-offs
 
-**Option Evaluation Criteria:**
+### Option Evaluation Criteria
 
 | Criterion     | Questions                                 |
 | ------------- | ----------------------------------------- |
@@ -82,11 +86,35 @@ Confirm this understanding is correct before exploring options.
 | Compatibility | Does it work with existing systems?       |
 | Reversibility | Can we change course if needed?           |
 
+### Output
+
+```markdown
+## Context Anchors
+
+- **Issue:** #<number> - <title>
+- **Area:** <architectural area>
+- **Phase:** 2 — Explore Options
+
+## Options Considered
+
+| Option    | Pros   | Cons   |
+| --------- | ------ | ------ |
+| A: <name> | <pros> | <cons> |
+| B: <name> | <pros> | <cons> |
+| C: <name> | <pros> | <cons> |
+
+## Next Step
+
+Continue to recommendation.
+
+**Approval Required:** No
+```
+
 ---
 
 ## Phase 3: Present Recommendation
 
-### Recommend with Rationale
+### Recommend and Justify
 
 1. State recommended option
 2. Explain why it's preferred
@@ -102,14 +130,6 @@ Confirm this understanding is correct before exploring options.
 - **Issue:** #<number> - <title>
 - **Area:** <architectural area>
 - **Phase:** 3 — Recommendation
-
-## Options Considered
-
-| Option    | Pros   | Cons   |
-| --------- | ------ | ------ |
-| A: <name> | <pros> | <cons> |
-| B: <name> | <pros> | <cons> |
-| C: <name> | <pros> | <cons> |
 
 ## Recommendation
 
@@ -143,7 +163,11 @@ Awaiting approval to proceed with implementation (or create ADR).
 
 ### ⛔ CHECKPOINT
 
-**STOP.** Do not proceed until human explicitly approves the recommendation.
+**STOP.** Do not proceed until human explicitly approves:
+
+- Recommended option
+- Trade-offs acknowledged
+- Implementation approach
 
 ---
 
@@ -153,25 +177,25 @@ Awaiting approval to proceed with implementation (or create ADR).
 
 1. Create ADR (if architectural decision):
 
-```markdown
-# ADR-XXXX: <Title>
+   ```markdown
+   # ADR-XXXX: <Title>
 
-## Status
+   ## Status
 
-Proposed
+   Proposed
 
-## Context
+   ## Context
 
-<What is the issue that we're seeing that is motivating this decision?>
+   <What is the issue that we're seeing that is motivating this decision?>
 
-## Decision
+   ## Decision
 
-<What is the change that we're proposing?>
+   <What is the change that we're proposing?>
 
-## Consequences
+   ## Consequences
 
-<What becomes easier or more difficult to do because of this change?>
-```
+   <What becomes easier or more difficult to do because of this change?>
+   ```
 
 2. Or create design doc (if implementation plan)
 3. Link to related issues/PRs
@@ -186,10 +210,10 @@ Proposed
 - **Area:** <architectural area>
 - **Phase:** 4 — Document Decision
 
-## Document Created
+## Documentation Created
 
-- **Type:** ADR | Design Doc
-- **Path:** <file path>
+- **File:** <path to ADR or design doc>
+- **Status:** Proposed
 
 ## Next Step
 

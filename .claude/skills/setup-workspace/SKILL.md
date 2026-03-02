@@ -1,48 +1,26 @@
-````skill
 ---
 name: setup-workspace
-description: Configure workspace context for the agentic kernel
+description: Configure workspace context for the agentic kernel.
 ---
 
-# Setup Workspace Workflow
+# Setup Workspace
 
-Guide the creation or update of workspace-specific context. Detects project characteristics and gathers information needed for the agentic kernel to work effectively.
+Research drives this workflow with Orchestrator support for process setup. Guide the creation or update of workspace-specific context by detecting project characteristics and gathering information.
 
-## Personas
+**Prerequisites:** Access to project root, project files exist (at minimum a README or package manifest).
 
-- **Primary:** Research (detection, scanning)
-- **Secondary:** Orchestrator (process)
-
-## Prerequisites
-
-- Access to project root
-- Project files exist (at minimum a README or package manifest)
-
-## Entry Points
-
-- "Set up the workspace" — Start at Mode selection
-- "Initialize workspace context" — Start at Mode selection
-- "Quick setup" — Start at Phase 1, Quick Start mode
+---
 
 ## Modes
 
-### Quick Start (Minimum Viable)
-
-For fast setup, only needs:
-
-1. Project name and purpose
-2. Stack confirmation (auto-detected)
-3. Key documentation pointers
-
-### Comprehensive
-
-For full setup, covers all sections in the workspace context schema.
+- **Quick Start (Minimum Viable):** Project name, purpose, stack confirmation, key documentation pointers
+- **Comprehensive:** All sections in the workspace context schema
 
 ---
 
 ## Phase 1: Detection
 
-**Goal:** Scan for project markers and report findings.
+Scan for project markers and report findings.
 
 ### Steps
 
@@ -52,17 +30,21 @@ For full setup, covers all sections in the workspace context schema.
 4. Scan for configuration files
 5. Report findings
 
-### Output Template
+### Output
 
 ```markdown
+## Context Anchors
+
+- **Phase:** Detection
+
 ## Detection Results
 
-| Marker               | Found | Details           |
-| -------------------- | ----- | ----------------- |
-| README.md            | {{{yes/no}}} | {{{details}}} |
-| Package manifest     | {{{yes/no}}} | {{{manifest-type}}} |
-| Documentation dir    | {{{yes/no}}} | {{{doc-structure}}} |
-| Configuration files  | {{{yes/no}}} | {{{config-list}}} |
+| Marker           | Found  | Details       |
+| ---------------- | ------ | ------------- |
+| README.md        | Yes/No | <details>     |
+| Package manifest | Yes/No | <type>        |
+| Documentation    | Yes/No | <structure>   |
+| Configuration    | Yes/No | <files found> |
 
 ## Next Step
 
@@ -73,13 +55,13 @@ Confirm detection findings are correct.
 
 ### ⛔ CHECKPOINT
 
-Confirm detection findings are correct before proceeding to stack inference.
+**STOP.** Do not proceed until human confirms detection findings.
 
 ---
 
 ## Phase 2: Stack Inference
 
-**Goal:** Infer technology stack from detected files.
+Infer technology stack from detected files.
 
 ### Steps
 
@@ -94,33 +76,15 @@ Confirm detection findings are correct before proceeding to stack inference.
 - Frontend: Angular / React / Vue / None
 - Docs: ADR structure / Custom / None
 
-### Output Template
-
-```markdown
-## Stack Inference
-
-| Layer    | Detected  | Confidence |
-| -------- | --------- | ---------- |
-| Backend  | {{{backend-tech}}} | {{{confidence}}} |
-| Frontend | {{{frontend-tech}}} | {{{confidence}}} |
-| Docs     | {{{doc-structure}}} | {{{confidence}}} |
-
-## Next Step
-
-Confirm stack inference is correct.
-
-**Approval Required:** Yes
-```
-
 ### ⛔ CHECKPOINT
 
-Confirm stack inference is correct before proceeding to project identity gathering.
+**STOP.** Do not proceed until human confirms stack inference.
 
 ---
 
 ## Phase 3: Project Identity
 
-**Goal:** Gather project-specific information.
+Gather project-specific information.
 
 ### Steps
 
@@ -133,7 +97,7 @@ Confirm stack inference is correct before proceeding to project identity gatheri
 
 ## Phase 4: Preview and Confirm
 
-**Goal:** Generate workspace context and get approval.
+Generate workspace context and get approval.
 
 ### Steps
 
@@ -141,7 +105,13 @@ Confirm stack inference is correct before proceeding to project identity gatheri
 2. Present preview
 3. Apply after approval
 
-### Workspace Context Schema
+### ⛔ CHECKPOINT
+
+**STOP.** Approve workspace context before writing.
+
+---
+
+## Workspace Context Schema
 
 The workspace context file contains:
 
@@ -150,29 +120,6 @@ The workspace context file contains:
 - Architecture (pattern, backend, frontend)
 - Convention amendments (project-specific overrides)
 - Key documentation pointers
-
-### Output Template
-
-```markdown
-## Context Anchors
-
-- **Project:** {{{project-name}}}
-- **Mode:** {{{quick-start | comprehensive}}}
-
-## Workspace Context Preview
-
-{{{generated-workspace-context-content}}}
-
-## Next Step
-
-Approve workspace context before writing to file.
-
-**Approval Required:** Yes
-```
-
-### ⛔ CHECKPOINT
-
-Present the complete workspace context preview for approval. Do not write the file until explicitly approved.
 
 ---
 
@@ -183,5 +130,3 @@ Present the complete workspace context preview for approval. Do not write the fi
 | Empty project (no markers) | Ask user to describe project manually       |
 | Conflicting markers        | Present all detected, ask for clarification |
 | Existing context file      | Offer to update vs replace                  |
-
-````

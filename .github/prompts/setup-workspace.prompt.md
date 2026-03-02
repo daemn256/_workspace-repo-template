@@ -1,10 +1,10 @@
 ---
-description: "Configure workspace context for the agentic kernel"
+description: Configure workspace context for the agentic kernel
 ---
 
 # Setup Workspace
 
-Research-led workflow with Orchestrator support. Guide the creation or update of workspace-specific context. Detects project characteristics and gathers information needed for the agentic kernel to work effectively.
+Uses **Research** (primary) with **Orchestrator** support. Guide the creation or update of workspace-specific context. Detects project characteristics and gathers information needed for the agentic kernel to work effectively.
 
 **Prerequisites:** Access to project root, project files exist (at minimum a README or package manifest)
 
@@ -41,17 +41,16 @@ For full setup, covers all sections in the workspace context schema.
 ```markdown
 ## Context Anchors
 
-- **Project:** <detected name>
 - **Phase:** 1 — Detection
 
-## Detection Results
+## Detected Markers
 
-| Marker           | Found | Details         |
-| ---------------- | ----- | --------------- |
-| README           | ✅/❌ | <path>          |
-| Package manifest | ✅/❌ | <type and path> |
-| Docs directory   | ✅/❌ | <structure>     |
-| Config files     | ✅/❌ | <list>          |
+| Marker              | Found  | Details         |
+| ------------------- | ------ | --------------- |
+| README.md           | Yes/No | <path>          |
+| Package manifest    | Yes/No | <type and path> |
+| docs/ directory     | Yes/No | <structure>     |
+| Configuration files | Yes/No | <list>          |
 
 ## Next Step
 
@@ -62,7 +61,10 @@ Confirm detection findings are correct.
 
 ### ⛔ CHECKPOINT
 
-**STOP.** Do not proceed until human confirms detection findings.
+**STOP.** Do not proceed until human explicitly approves:
+
+- Detection findings are correct
+- No important markers were missed
 
 ---
 
@@ -75,9 +77,9 @@ Confirm detection findings are correct.
 3. Identify documentation structure
 4. Report inference
 
-**Stack Categories:**
+### Stack Categories
 
-| Category | Options                            |
+| Layer    | Options                            |
 | -------- | ---------------------------------- |
 | Backend  | .NET / Node / Java / Python / None |
 | Frontend | Angular / React / Vue / None       |
@@ -88,16 +90,15 @@ Confirm detection findings are correct.
 ```markdown
 ## Context Anchors
 
-- **Project:** <name>
 - **Phase:** 2 — Stack Inference
 
-## Stack Inference
+## Inferred Stack
 
-| Category | Detected | Confidence |
-| -------- | -------- | ---------- |
-| Backend  | <tech>   | High/Med   |
-| Frontend | <tech>   | High/Med   |
-| Docs     | <type>   | High/Med   |
+| Layer    | Detection    | Confidence        |
+| -------- | ------------ | ----------------- |
+| Backend  | <technology> | <High/Medium/Low> |
+| Frontend | <technology> | <High/Medium/Low> |
+| Docs     | <structure>  | <High/Medium/Low> |
 
 ## Next Step
 
@@ -108,7 +109,10 @@ Confirm stack inference is correct.
 
 ### ⛔ CHECKPOINT
 
-**STOP.** Do not proceed until human confirms stack inference.
+**STOP.** Do not proceed until human explicitly approves:
+
+- Stack classification is correct
+- Technology choices are accurately detected
 
 ---
 
@@ -121,14 +125,35 @@ Confirm stack inference is correct.
 3. Ask about domain terminology
 4. Ask about project-specific conventions
 
+### Output
+
+```markdown
+## Context Anchors
+
+- **Phase:** 3 — Project Identity
+
+## Project Identity
+
+- **Name:** <name>
+- **Purpose:** <one-line purpose>
+- **Domain terms:** <key terms>
+- **Conventions:** <project-specific conventions>
+
+## Next Step
+
+Continue to preview.
+
+**Approval Required:** No
+```
+
 ---
 
 ## Phase 4: Preview and Confirm
 
-### Generate and Approve
+### Generate and Present
 
 1. Generate workspace context from gathered information
-2. Present preview
+2. Present preview of the full context file
 3. Apply after approval
 
 ### Workspace Context Schema
@@ -146,23 +171,26 @@ The workspace context file contains:
 ```markdown
 ## Context Anchors
 
-- **Project:** <name>
-- **Phase:** 4 — Preview
+- **Phase:** 4 — Preview and Confirm
 
-## Workspace Context Preview
+## Generated Workspace Context
 
-<generated workspace context content>
+<full preview of docs/workspace/context.md content>
 
 ## Next Step
 
-Approve workspace context before writing.
+Awaiting approval to write workspace context file.
 
 **Approval Required:** Yes
 ```
 
 ### ⛔ CHECKPOINT
 
-**STOP.** Do not write the workspace context file until human approves.
+**STOP.** Do not write the workspace context file until human explicitly approves:
+
+- Content is accurate
+- No sections are missing
+- Terminology is correct
 
 ---
 

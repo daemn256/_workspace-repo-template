@@ -64,10 +64,10 @@ Git handles this like any merge. Template-provided files update automatically. C
 
 If conflicts occur, they'll almost always be in consumer-owned files where both you and the template made changes. Resolution rule:
 
-| File Tier             | Resolution                                  |
-| --------------------- | ------------------------------------------- |
-| **Template-provided** | Accept upstream (theirs) — template owns it |
-| **Consumer-owned**    | Keep yours (ours) — you own it              |
+| File Tier           | Resolution                                  |
+| ------------------- | ------------------------------------------- |
+| **Copy** (template) | Accept upstream (theirs) — template owns it |
+| **Scaffold**        | Keep yours (ours) — you own it              |
 
 ```bash
 # Accept upstream version for a template-provided file
@@ -94,12 +94,13 @@ git push origin main
 
 During sync, files update based on their ownership tier:
 
-| Tier                  | Examples                                                 | Sync Behavior            |
-| --------------------- | -------------------------------------------------------- | ------------------------ |
-| **Template-provided** | `.github/agents/*`, `.claude/agents/*`, `tools/*`, hooks | Updated by merge         |
-| **Consumer-owned**    | `workspace.config.yaml`, `docs/workspace/*`, `README.md` | Unchanged (you own them) |
+| Tier         | Examples                                                   | Sync Behavior            |
+| ------------ | ---------------------------------------------------------- | ------------------------ |
+| **Copy**     | `.github/agents/*`, `.claude/agents/*`, `tools/*`, hooks   | Updated by merge         |
+| **Scaffold** | `workspace.config.yaml`, `README.md`, `.vscode/tasks.json` | Unchanged (you own them) |
+| **Ignore**   | `docs/adr/*.md`, `repos/*`, `.tmp/*`                       | Not involved in sync     |
 
-Template-provided files include all agent definitions, path-specific rules/instructions, skills/prompts, Git hooks, VS Code settings, and tooling scripts. Consumer-owned files include your project configuration, documentation, and any files you created.
+Copy-tier files include all agent definitions, path-specific rules/instructions, skills/prompts, Git hooks, VS Code settings, and tooling scripts. Scaffold-tier files include your project configuration, README, and workspace context files.
 
 For the full file classification, see [File Ownership](../architecture/file-ownership.md).
 

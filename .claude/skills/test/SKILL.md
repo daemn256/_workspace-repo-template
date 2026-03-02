@@ -1,32 +1,19 @@
-````skill
 ---
 name: test
-description: Parse test output and produce a structured verdict
+description: Parse test output and produce a structured verdict.
 ---
 
-# Test Workflow
+# Test
 
-Take test execution output, parse it into structured results, produce a clear verdict, and recommend next actions.
+The Test persona drives this workflow. Take test execution output, parse it into structured results, produce a clear verdict, and recommend next actions.
 
-## Personas
-
-- **Primary:** Test (analysis, verdict)
-
-## Prerequisites
-
-- Test output provided (pasted or from execution)
-
-## Entry Points
-
-- "Parse these test results" — Start at Phase 1
-- "Did the tests pass?" — Start at Phase 1
-- "Analyze test output" — Start at Phase 1
+**Prerequisites:** Test output provided (pasted or from execution).
 
 ---
 
 ## Phase 1: Parse Output
 
-**Goal:** Extract structured data from raw test output.
+Extract structured data from raw test output.
 
 ### Steps
 
@@ -38,13 +25,7 @@ Take test execution output, parse it into structured results, produce a clear ve
 
 ## Phase 2: Produce Verdict
 
-**Goal:** Classify the result and provide analysis.
-
-### Steps
-
-1. Apply verdict criteria
-2. For failures, analyze likely cause
-3. Suggest remediation approach
+Classify the result and provide analysis.
 
 ### Verdict Criteria
 
@@ -54,18 +35,14 @@ Take test execution output, parse it into structured results, produce a clear ve
 | **PARTIAL** | Tests pass but with skipped tests or warnings |
 | **FAIL**    | One or more test failures                     |
 
-**Critical:** Never trust exit code alone. Parse and report actual counts.
-
----
-
-## Failure Analysis Guidelines
+### Failure Analysis
 
 For each failure:
 
 1. Identify the failing test name
 2. Extract the error message
 3. Note the file and line if available
-4. Analyze likely cause based on error type
+4. Analyze likely cause
 5. Suggest remediation approach
 
 ### Common Failure Patterns
@@ -78,51 +55,47 @@ For each failure:
 | Connection refused | External dependency unavailable          |
 | Not found          | Missing file, resource, or configuration |
 
----
-
-## Output Template
+### Output
 
 ```markdown
 ## Context Anchors
 
-- **Test suite:** {{{suite-name}}}
-- **Issue:** #{{{issue-number}}} (if applicable)
+- **Issue:** #<number> - <title> (if applicable)
+- **Suite:** <test suite name>
 
-## Execution Summary
+## Test Results
 
-| Metric  | Count           |
-| ------- | --------------- |
-| Total   | {{{total}}}     |
-| Passed  | {{{passed}}}    |
-| Failed  | {{{failed}}}    |
-| Skipped | {{{skipped}}}   |
+| Suite | Total | Pass | Fail | Skip |
+| ----- | ----- | ---- | ---- | ---- |
+| ...   | ...   | ...  | ...  | ...  |
 
-## Verdict: {{{PASS | PARTIAL | FAIL}}}
+## Verdict: PASS | PARTIAL | FAIL
 
-{{{verdict-summary}}}
+### Failures (if any)
 
-## Failure Details
+| Test   | Error           | Location    | Likely Cause   |
+| ------ | --------------- | ----------- | -------------- |
+| <name> | <error message> | <file:line> | <likely cause> |
 
-### {{{failing-test-name}}}
+### Recommendations
 
-- **Location:** {{{file:line}}}
-- **Error:** {{{error-message}}}
-- **Likely cause:** {{{analysis}}}
-- **Remediation:** {{{suggestion}}}
+- <next action>
 
 ## Next Step
 
-{{{recommendation-based-on-verdict}}}
+<what comes next>
+
+**Approval Required:** No
 ```
+
+**Critical:** Never trust exit code alone. Parse and report actual counts.
 
 ---
 
 ## Error Handling
 
-| Error                   | Recovery                                         |
-| ----------------------- | ------------------------------------------------ |
+| Error                   | Recovery                                          |
+| ----------------------- | ------------------------------------------------- |
 | Unparseable output      | Report what was understood, flag unknown sections |
-| Mixed framework output  | Process each framework section separately        |
-| No test output provided | Ask user to run tests and paste output           |
-
-````
+| Mixed framework output  | Process each framework section separately         |
+| No test output provided | Ask user to run tests and paste output            |

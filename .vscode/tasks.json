@@ -1,6 +1,6 @@
 {
-  // Workspace Repository Tasks
-  // Run tasks directly in the workspace root
+  // Workspace Repository Tasks (Single-Repo)
+  // Tasks run directly in the workspace root
   // Use: Ctrl+Shift+P → "Tasks: Run Task"
 
   "version": "2.0.0",
@@ -13,9 +13,7 @@
       "type": "shell",
       "command": "npm install",
       "problemMatcher": [],
-      "presentation": {
-        "reveal": "always"
-      }
+      "presentation": { "reveal": "always" }
     },
     {
       "label": "▶️ npm start",
@@ -23,28 +21,21 @@
       "command": "npm start",
       "problemMatcher": [],
       "isBackground": true,
-      "presentation": {
-        "reveal": "always",
-        "panel": "dedicated"
-      }
+      "presentation": { "reveal": "always", "panel": "dedicated" }
     },
     {
       "label": "🧪 npm test",
       "type": "shell",
       "command": "npm test",
       "problemMatcher": [],
-      "presentation": {
-        "reveal": "always"
-      }
+      "presentation": { "reveal": "always" }
     },
     {
       "label": "🔨 npm build",
       "type": "shell",
       "command": "npm run build",
       "problemMatcher": [],
-      "presentation": {
-        "reveal": "always"
-      }
+      "presentation": { "reveal": "always" }
     },
 
     // ─────────────────────────────────────────────────────────────
@@ -55,9 +46,7 @@
       "type": "shell",
       "command": "dotnet build",
       "problemMatcher": "$msCompile",
-      "presentation": {
-        "reveal": "always"
-      }
+      "presentation": { "reveal": "always" }
     },
     {
       "label": "▶️ dotnet run",
@@ -65,19 +54,14 @@
       "command": "dotnet run",
       "problemMatcher": [],
       "isBackground": true,
-      "presentation": {
-        "reveal": "always",
-        "panel": "dedicated"
-      }
+      "presentation": { "reveal": "always", "panel": "dedicated" }
     },
     {
       "label": "🧪 dotnet test",
       "type": "shell",
       "command": "dotnet test",
       "problemMatcher": "$msCompile",
-      "presentation": {
-        "reveal": "always"
-      }
+      "presentation": { "reveal": "always" }
     }
   ]
 }

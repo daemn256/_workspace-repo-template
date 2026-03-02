@@ -8,7 +8,7 @@ remote="$1"
 url="$2"
 
 # Patterns to identify template repositories (both direct and parent templates)
-TEMPLATE_PATTERNS=("_workspace-repo-template" "_repo-template")
+TEMPLATE_PATTERNS=("_workspace-root-template" "_repo-template")
 
 # Check if pushing to the template repository
 for pattern in "${TEMPLATE_PATTERNS[@]}"; do

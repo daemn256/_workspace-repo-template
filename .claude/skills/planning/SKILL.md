@@ -1,28 +1,21 @@
 ---
 name: planning
-description: Architecture design, trade-off analysis, and technical decision-making
+description: Architecture design, trade-off analysis, and technical decision-making.
 ---
 
-# Planning Workflow
+# Planning
 
-Guide architectural decisions, design system components, and document trade-offs before implementation.
+The Architect drives this workflow with Research support for feasibility analysis. Guide architectural decisions, design system components, and document trade-offs before implementation.
 
-## Personas
-
-- **Primary:** Architect (system design, trade-offs)
-- **Secondary:** Research (feasibility, options)
-
-## Prerequisites
-
-- Clear problem statement or requirement
-- Access to existing architecture documentation
-- Access to related ADRs
+**Prerequisites:** Clear problem statement or requirement, access to existing architecture documentation and related ADRs.
 
 ---
 
 ## Phase 1: Understand Requirements
 
-**Goal:** Clarify what needs to be designed and why.
+Clarify what needs to be designed and why.
+
+### Steps
 
 1. Gather requirements from issue/request
 2. Identify constraints (performance, security, compatibility)
@@ -36,28 +29,28 @@ Guide architectural decisions, design system components, and document trade-offs
 - What constraints exist?
 - What's out of scope?
 
-### Output Template
+### Output
 
 ```markdown
 ## Context Anchors
 
-- **Issue:** #{{{number}}} - {{{title}}}
-- **Area:** {{{architectural-area}}}
+- **Issue:** #<number> - <title>
+- **Area:** <architectural area>
 - **Phase:** Requirements Gathering
 
 ## Requirements Summary
 
-{{{clear-statement-of-what-needs-to-be-designed}}}
+<Clear statement of what needs to be designed>
 
 ## Constraints
 
-- {{{constraint-1}}}
-- {{{constraint-2}}}
+- <constraint 1>
+- <constraint 2>
 
 ## Unknowns
 
-- {{{unknown-1}}}
-- {{{unknown-2}}}
+- <unknown 1>
+- <unknown 2>
 
 ## Next Step
 
@@ -68,20 +61,22 @@ Confirm this understanding is correct before exploring options.
 
 ### ⛔ CHECKPOINT
 
-Confirm understanding before exploring options.
+**STOP.** Do not proceed until human confirms understanding is correct.
 
 ---
 
 ## Phase 2: Explore Options
 
-**Goal:** Identify viable approaches and their trade-offs.
+Identify viable approaches and their trade-offs.
+
+### Steps
 
 1. Brainstorm potential approaches
 2. Research existing patterns (in codebase, ADRs, external)
 3. Evaluate each option against requirements
 4. Identify pros/cons and trade-offs
 
-### Option Evaluation Criteria
+### Evaluation Criteria
 
 | Criterion     | Questions                                 |
 | ------------- | ----------------------------------------- |
@@ -92,13 +87,13 @@ Confirm understanding before exploring options.
 | Compatibility | Does it work with existing systems?       |
 | Reversibility | Can we change course if needed?           |
 
-No checkpoint — continue to recommendation.
-
 ---
 
 ## Phase 3: Present Recommendation
 
-**Goal:** Present recommended approach with rationale.
+Present recommended approach with rationale.
+
+### Steps
 
 1. State recommended option
 2. Explain why it's preferred
@@ -106,45 +101,44 @@ No checkpoint — continue to recommendation.
 4. Outline implementation approach
 5. Identify risks and mitigations
 
-### Output Template
+### Output
 
 ```markdown
 ## Context Anchors
 
-- **Issue:** #{{{number}}} - {{{title}}}
-- **Area:** {{{architectural-area}}}
+- **Issue:** #<number> - <title>
+- **Area:** <architectural area>
 - **Phase:** Recommendation
 
 ## Options Considered
 
-| Option        | Pros       | Cons       |
-| ------------- | ---------- | ---------- |
-| A: {{{name}}} | {{{pros}}} | {{{cons}}} |
-| B: {{{name}}} | {{{pros}}} | {{{cons}}} |
-| C: {{{name}}} | {{{pros}}} | {{{cons}}} |
+| Option    | Pros   | Cons   |
+| --------- | ------ | ------ |
+| A: <name> | <pros> | <cons> |
+| B: <name> | <pros> | <cons> |
+| C: <name> | <pros> | <cons> |
 
 ## Recommendation
 
-**Option {{{X}}}: {{{name}}}**
+**Option <X>: <name>**
 
-{{{rationale-for-this-choice}}}
+<Rationale for this choice>
 
 ## Trade-offs Accepted
 
-- {{{trade-off-1}}}
-- {{{trade-off-2}}}
+- <trade-off 1>
+- <trade-off 2>
 
 ## Implementation Outline
 
-1. {{{step-1}}}
-2. {{{step-2}}}
-3. {{{step-3}}}
+1. <step 1>
+2. <step 2>
 
 ## Risks & Mitigations
 
-| Risk         | Mitigation       |
-| ------------ | ---------------- |
-| {{{risk-1}}} | {{{mitigation}}} |
+| Risk     | Mitigation   |
+| -------- | ------------ |
+| <risk 1> | <mitigation> |
 
 ## Next Step
 
@@ -155,23 +149,24 @@ Awaiting approval to proceed with implementation (or create ADR).
 
 ### ⛔ CHECKPOINT
 
-Await approval before implementation or ADR creation.
+**STOP.** Do not proceed until human approves recommendation.
 
 ---
 
 ## Phase 4: Document Decision
 
-**Goal:** Create ADR or design doc if approved.
+Create ADR or design doc if approved.
 
-1. Create ADR (if architectural decision)
-2. Or create design doc (if implementation plan)
-3. Link to related issues/PRs
-4. Update relevant documentation indexes
+### Steps
+
+1. Create ADR (if architectural decision) or design doc (if implementation plan)
+2. Link to related issues/PRs
+3. Update relevant documentation indexes
 
 ### ADR Format
 
 ```markdown
-# ADR-XXXX: {{{title}}}
+# ADR-XXXX: <Title>
 
 ## Status
 
@@ -179,18 +174,16 @@ Proposed
 
 ## Context
 
-{{{what-is-the-issue-motivating-this-decision}}}
+<What is the issue that we're seeing that is motivating this decision?>
 
 ## Decision
 
-{{{what-is-the-change-being-proposed}}}
+<What is the change that we're proposing?>
 
 ## Consequences
 
-{{{what-becomes-easier-or-more-difficult}}}
+<What becomes easier or more difficult to do because of this change?>
 ```
-
-No checkpoint — workflow complete.
 
 ---
 

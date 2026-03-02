@@ -1,10 +1,10 @@
 ---
-description: "Parse test output and produce a structured verdict"
+description: Parse test output and produce a structured verdict
 ---
 
 # Test
 
-Test persona workflow. Take test execution output, parse it into structured results, produce a clear verdict, and recommend next actions.
+Uses **Test** persona. Take test execution output, parse it into structured results, produce a clear verdict, and recommend next actions.
 
 **Prerequisites:** Test output provided (pasted or from execution)
 
@@ -16,7 +16,34 @@ Test persona workflow. Take test execution output, parse it into structured resu
 
 1. Identify the test framework from output format
 2. Extract total, passed, failed, skipped counts
-3. For failures, extract test name, location, error message
+3. For failures, extract:
+   - Test name
+   - File and line location
+   - Error message
+
+### Output
+
+```markdown
+## Context Anchors
+
+- **Phase:** 1 — Parse Output
+- **Framework:** <detected framework>
+
+## Execution Summary
+
+| Metric  | Count |
+| ------- | ----- |
+| Total   | <N>   |
+| Passed  | <N>   |
+| Failed  | <N>   |
+| Skipped | <N>   |
+
+## Next Step
+
+Continue to verdict.
+
+**Approval Required:** No
+```
 
 ---
 
@@ -60,37 +87,38 @@ For each failure:
 ```markdown
 ## Context Anchors
 
-- **Suite:** <test suite name>
-- **Framework:** <detected framework>
+- **Issue:** #<number> (if applicable)
+- **Test suite:** <name>
 
 ## Execution Summary
 
 | Metric  | Count |
 | ------- | ----- |
-| Total   | <n>   |
-| Passed  | <n>   |
-| Failed  | <n>   |
-| Skipped | <n>   |
+| Total   | <N>   |
+| Passed  | <N>   |
+| Failed  | <N>   |
+| Skipped | <N>   |
 
 ## Verdict: <PASS | PARTIAL | FAIL>
 
-<summary>
+<one paragraph summary>
 
 ## Failure Details (if any)
 
-| Test   | Location    | Error   | Likely Cause |
-| ------ | ----------- | ------- | ------------ |
-| <test> | <file:line> | <error> | <cause>      |
+| Test   | Location    | Error     | Likely Cause |
+| ------ | ----------- | --------- | ------------ |
+| <name> | <file:line> | <message> | <analysis>   |
 
 ## Recommendations
 
-- <next step>
+- <next step 1>
+- <next step 2>
 
 ## Next Step
 
-<If PASS: "All tests passing. Ready to proceed.">
-<If PARTIAL: "Review skipped tests before proceeding.">
-<If FAIL: "Fix failures before proceeding.">
+<action based on verdict>
+
+**Approval Required:** No
 ```
 
 **Critical:** Never trust exit code alone. Parse and report actual counts.

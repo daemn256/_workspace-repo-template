@@ -16,7 +16,7 @@ The `.tmp` directory serves as a sandbox for:
 
 ### `sessions/`
 
-Session context tracking for AI assistant continuity. See the [session tracking protocol](https://github.com/daemn256/_agentic-system/blob/main/src/process/session-tracking-protocol.md) for conventions.
+Session context tracking for AI assistant continuity. See the Session Lifecycle section in the global instructions for conventions.
 
 Files here track what was accomplished, decisions made, and next steps across multi-turn sessions.
 

@@ -118,25 +118,13 @@ Description of what this project does and its key conventions.
 
 ---
 
-## Step 4: Render Instruction Files
-
-Run the render tool to fill your config values into instruction files:
-
-```bash
-tools/render-instructions.sh
-```
-
-This replaces `{{{placeholder}}}` tokens in template-provided files with values from your `workspace.config.yaml`. See [Configuration](../architecture/configuration.md) for details on the token system.
-
----
-
-## Step 5: Replace the README
+## Step 4: Replace the README
 
 The template's `README.md` describes the template itself. Replace it with your own.
 
 ---
 
-## Step 6: Add Your Projects
+## Step 5: Add Your Projects
 
 For multi-repo workspaces, clone or create projects in the `repos/` directory:
 
@@ -150,7 +138,7 @@ Each project under `repos/` is an independent git repository.
 
 ---
 
-## Step 7: Commit and Push
+## Step 6: Commit and Push
 
 ```bash
 git add .
@@ -167,7 +155,6 @@ Check that your setup is correct:
 - [ ] `workspace.config.yaml` has real values (not placeholders)
 - [ ] `docs/workspace/context.md` has your domain terms and repo inventory
 - [ ] `docs/workspace/project-overlay.md` describes your project
-- [ ] `tools/render-instructions.sh` ran without errors
 - [ ] Git hooks are active: `git config core.hooksPath` shows `.githooks`
 
 ---

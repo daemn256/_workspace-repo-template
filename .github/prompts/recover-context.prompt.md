@@ -1,29 +1,29 @@
 ---
-description: "Recover from missing workspace context"
+description: Recover from missing workspace context
 ---
 
 # Recover Context
 
-Orchestrator-led workflow with Research support. When insufficient context is encountered, this workflow provides a structured protocol for acknowledging the gap, describing what's missing, and offering recovery paths.
+Uses **Orchestrator** (primary) with **Research** support. When the AI agent encounters insufficient context to proceed, this provides a structured protocol for acknowledging the gap, describing what's missing, and offering recovery paths.
 
 **Prerequisites:** Agent has identified a context gap, work is blocked by missing information
 
 ---
 
-## Behavioral Contract
+## Protocol
 
 When context is insufficient:
 
 1. **Stop** — Do not proceed with incomplete information
 2. **Describe** — State what was attempted and what's missing
-3. **Offer options** — Provide structured recovery paths
+3. **Offer options** — Provide structured recovery paths from below
 
-**Anti-patterns:**
+**You MUST NOT:**
 
-- MUST NOT invent information
-- MUST NOT guess at conventions or patterns
-- MUST NOT proceed without acknowledging the gap
-- MUST NOT claim to have scanned when it hasn't
+- Invent information
+- Guess at conventions or patterns
+- Proceed without acknowledging the gap
+- Claim to have scanned when it hasn't
 
 ---
 
@@ -57,14 +57,35 @@ For low-risk situations, state assumptions explicitly:
 
 ---
 
-## Output Contract
+## Output
 
-The recovery interaction produces:
+```markdown
+## Context Anchors
 
-- Clear statement of what's missing and why
-- Recovery option selected
-- Resolution (information acquired or assumption stated)
-- Workspace context updated if applicable
+- **Phase:** Context Recovery
+- **Blocked on:** <what's missing>
+
+## Context Gap
+
+**What was attempted:** <action that revealed the gap>
+
+**What's missing:** <specific information needed>
+
+**Why it's needed:** <how it blocks progress>
+
+## Recovery Options
+
+1. Point me to the relevant documentation
+2. Tell me directly
+3. Let's create the missing documentation
+4. I'll proceed with these assumptions: <list assumptions>
+
+## Next Step
+
+Awaiting guidance on which recovery option to use.
+
+**Approval Required:** Yes
+```
 
 ---
 

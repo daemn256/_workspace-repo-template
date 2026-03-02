@@ -14,7 +14,7 @@ set -euo pipefail
 # Can be run standalone from anywhere inside the repository.
 
 WORKSPACE_DIR="$(git rev-parse --show-toplevel)"
-TEMPLATE_URL="https://github.com/daemn256/_workspace-repo-template.git"
+TEMPLATE_URL="https://github.com/daemn256/_workspace-root-template.git"
 PARENT_TEMPLATE_URL="https://github.com/daemn256/_repo-template.git"
 
 cd "$WORKSPACE_DIR"

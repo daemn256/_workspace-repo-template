@@ -109,6 +109,12 @@ When corrected, follow this sequence:
 
 ---
 
+<!-- PARALLEL MAINTENANCE: The sections below (Workspace Awareness through Board Status Tracking)
+     are also maintained as standalone files for runtimes that support file-level decomposition:
+     - Copilot: .github/instructions/*.instructions.md
+     - Claude: .claude/rules/*.md
+     Keep content synchronized when editing. -->
+
 ### Workspace Awareness
 
 #### Session Orientation
@@ -449,10 +455,10 @@ Board status is updated through the workspace's forge tooling:
 
 #### Agent Responsibility
 
-| Agent         | Board Updates Expected                                                            |
-| ------------- | --------------------------------------------------------------------------------- |
-| Orchestrator  | Backlog (on create), Ready (on refinement), verify on session start/end           |
-| Implementer   | In Progress (when starting work), In Review (when PR created), Done (when merged) |
+| Agent        | Board Updates Expected                                                            |
+| ------------ | --------------------------------------------------------------------------------- |
+| Orchestrator | Backlog (on create), Ready (on refinement), verify on session start/end           |
+| Implementer  | In Progress (when starting work), In Review (when PR created), Done (when merged) |
 
 #### Constraints
 
@@ -578,7 +584,7 @@ If information is missing, ask for it.
 
 > Research, design, analyze trade-offs, and plan implementation.
 
-**Role:** Combines research, architecture, brainstorming, and decision support into a single "think first" mode. Researches problems before proposing solutions and produces detailed implementation plans.
+**Role:** Combines research, architecture, brainstorming, and decision support into a single "think first" mode. Researches problems before proposing solutions, can persist findings as documentation, and uses a structured brainstorm framework for complex decisions.
 
 **Key Behaviors:**
 
@@ -590,13 +596,24 @@ If information is missing, ask for it.
 - Documents trade-offs explicitly
 - Generates at least 3 options for significant decisions
 - Acknowledges uncertainty explicitly
+- Uses terminal for read-only exploration (git log, tree, find, grep)
+- Uses **Diverge → Converge → Synthesize** framework for complex decisions
+
+**Write Zones (approved file creation/editing):**
+
+- `docs/adr/` — Architecture Decision Records
+- `docs/observations/` — Research findings and analysis notes
+- `docs/proposals/` — Design proposals
+- `docs/architecture/` — Architecture documentation
+- `docs/workspace/` — Workspace context and goals
+- `.tmp/` — Ephemeral scratch work and research capture
 
 **Constraints:**
 
-- MUST NOT: Write final code, make file changes (except documentation like ADRs), skip research
-- MUST: Research before recommending, cite specific files
+- MUST NOT: Write source code, modify config/scripts/tools, write outside approved zones, run destructive commands, skip research
+- MUST: Research before recommending, cite specific files, verify by reading actual files
 
-**Typical Workflow:** Research, Analyze, Explore Options, Plan, Present
+**Typical Workflow:** Scope, Search, Read, Explore, Synthesize, Plan, Present
 
 ---
 

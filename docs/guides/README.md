@@ -4,12 +4,13 @@ Operational documentation for workspace users. These guides help you set up, cus
 
 ## Contents
 
-| Guide                                               | Purpose                                          |
-| --------------------------------------------------- | ------------------------------------------------ |
-| [Choosing a Template](choosing-a-template.md)       | Which template fits your needs                   |
-| [Getting Started](getting-started.md)               | Post-template setup checklist                    |
-| [Authoring Instructions](authoring-instructions.md) | How to create agents, skills, and rules          |
-| [Upstream Sync](upstream-sync.md)                   | How to pull template updates into your workspace |
+| Guide                                               | Purpose                                              |
+| --------------------------------------------------- | ---------------------------------------------------- |
+| [Choosing a Template](choosing-a-template.md)       | Which template fits your needs                       |
+| [Getting Started](getting-started.md)               | Post-template setup checklist                        |
+| [AI Runtimes](ai-runtimes/)                         | Runtime-specific configuration and feature reference |
+| [Authoring Instructions](authoring-instructions.md) | How to create agents, skills, and rules              |
+| [Upstream Sync](upstream-sync.md)                   | How to pull template updates into your workspace     |
 
 ## Audience
 

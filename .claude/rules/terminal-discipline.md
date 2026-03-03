@@ -5,64 +5,64 @@ paths:
 
 # Terminal Discipline
 
-> Shell awareness, terminal hygiene, command safety, and scope management.
+> Terminal execution model, workspace navigation, command safety, and recovery.
 
-## Shell Awareness
+## Terminal Model
 
-### One Terminal at a Time
-
-- Execute commands sequentially, not in parallel
+- Execute commands sequentially — one terminal at a time
 - Wait for output before running the next command
 - Never assume a prior command succeeded without checking
+- Terminal sessions are stateful — cwd and environment persist within a session
+- The **workspace root** (directory containing `workspace.config.yaml`) is the anchor point for all navigation
 
-### Terminal State
+## Workspace Navigation
 
-- Track the current working directory
-- Be aware of environment context (virtual envs, node versions, etc.)
-- Reset state when switching contexts rather than assuming inheritance
+### Workspace Root
 
-### Output Handling
+The workspace root is the directory containing `workspace.config.yaml`. All terminal sessions start here, and all relative paths resolve from here.
 
-- Read and process command output before proceeding
-- If output is truncated, use targeted commands (`tail`, `grep`, `head`) to get what's needed
-- Never ask the human to interpret terminal output — parse it yourself
+### Multi-Repo Pattern
 
-## Terminal Hygiene
+In workspaces with `repos/` sub-directories, navigate explicitly:
 
-### Clean Commands
+- `repos/<name>/` — each cloned repository
+- Always `cd` to the target repo before running repo-scoped commands
+- Return to workspace root between unrelated operations
 
-- Use fully-qualified paths when the working directory is uncertain
-- Quote variables and paths that may contain spaces
-- Prefer explicit flags over positional arguments for clarity
+### Navigation Rules
 
-### Avoid Garbled Sessions
+- Verify `pwd` before consequential operations (commits, builds, destructive commands)
+- When uncertain of cwd, navigate to workspace root first: `cd /path/to/workspace`
+- Prefer absolute paths when cwd is ambiguous
+- Use relative paths within a known context for readability
 
-- Do not chain excessively long command sequences that obscure failures
-- If a command fails, diagnose the failure before retrying
-- Never blindly re-run a failed command — understand why it failed first
+## Command Taxonomy
 
-### Scope
+### Read-Only (Always OK)
 
-- Each command should have a clear, single purpose
-- Explain what a command does before running it (especially destructive commands)
-- Prefer targeted operations over broad ones (e.g., `grep -rn 'pattern' src/` not `grep -rn 'pattern' .`)
+No approval needed — these commands inspect without modifying state:
 
-## Command Safety
+- **Files:** `ls`, `cat`, `head`, `tail`, `grep`, `find`, `wc`, `tree`
+- **Git:** `git log`, `git status`, `git diff`, `git blame`, `git branch`
+- **Environment:** `which`, `type`, `echo $VAR`, `pwd`, `env`
 
-### Destructive Actions
+### Mutating (Explain First)
 
-Before running any command that modifies, deletes, or overwrites:
+Explain what the command does before running it:
 
-1. Explain what the command will do
-2. Identify what could go wrong
-3. Await human approval
+- **Git:** `git add`, `git commit`, `git push`, `git checkout`, `git switch`
+- **Packages:** `npm install`, `dotnet restore`, `pip install`
+- **Directories:** `mkdir` (when following established patterns)
+- **Build/Test:** commands from `workspace.config.yaml` `commands.*`
 
-Examples of destructive commands:
+### Destructive (Approval Required)
 
-- `rm`, `rmdir`, file overwrites
-- `git push --force`, `git reset --hard`
-- Database migrations, schema changes
-- Package uninstalls, system-level installs
+Explain → identify risks → await human approval before running:
+
+- **Deletion:** `rm`, `rmdir`, file overwrites
+- **Git history:** `git push --force`, `git reset --hard`, `git rebase`
+- **System:** database migrations, schema changes, system-level installs (`brew`, `apt`)
+- **Uninstalls:** package uninstalls, removal of dependencies
 
 ### Never Run Blindly
 
@@ -70,11 +70,21 @@ Examples of destructive commands:
 - Do not run suggested commands from error messages without reviewing them
 - Do not pipe untrusted content to shell execution
 
+## Command Checklist
+
+For non-trivial operations, follow this sequence:
+
+1. **Pre-condition** — Verify cwd, branch, clean state, and prerequisites
+2. **Execute** — Run the command with clear purpose
+3. **Verify** — Check exit code, inspect output, confirm the expected result
+
+This is especially important for: git operations, build/test runs, multi-step workflows, and any command in an unfamiliar directory.
+
 ## File Operations
 
 ### No File Creation via Terminal
 
-Do NOT use terminal commands to create or edit files. Use proper editor tooling instead.
+Do NOT use terminal commands to create or edit files. Use editor tooling instead.
 
 **Prohibited patterns:**
 
@@ -84,7 +94,9 @@ Do NOT use terminal commands to create or edit files. Use proper editor tooling 
 - `sed -i 's/old/new/' file.md` (for edits — use editor tools)
 - `tee file.md`
 
-**Exception:** Temporary files needed for CLI tool input (e.g., `--body-file`) are acceptable in `.tmp/scratch/`.
+**Rationale:** IDE terminal tools do not reliably handle multi-line input. Heredocs, multi-line quoted strings, and interactive editors garble the terminal session, producing malformed files and leaving the terminal in an unrecoverable state.
+
+**Exception:** Temporary files for CLI tool input (e.g., `--body-file`) are acceptable in `.tmp/scratch/`. Write the file content using editor tooling, then reference it in the terminal command.
 
 ### File Reading via Terminal
 
@@ -93,31 +105,41 @@ Acceptable for quick inspection:
 - `cat`, `head`, `tail`, `grep`, `wc` — fine for quick checks
 - Prefer editor tooling for reading files that need careful analysis
 
-## MCP Server Restrictions
+## Terminal Recovery
 
-### Blocked MCP Servers
+### Symptoms of a Confused Terminal
 
-Do NOT use these MCP servers even if they are available in the environment:
+- Unexpected or garbled prompt characters
+- Unresponsive to commands (no output after Enter)
+- Stuck in a pager (`less`, `more`, `man`) or editor mode (`vi`, `nano`)
+- Unclosed quotes or heredoc markers — input echoes instead of executing
+- Error messages about unexpected tokens or syntax after normal commands
 
-| Server    | Reason                                                           |
-| --------- | ---------------------------------------------------------------- |
-| GitKraken | Auto-loaded by GitLens extension; not an intentional integration |
-| GitLens   | Same — auto-loaded, not workspace-approved                       |
+### Recovery Protocol
 
-### MCP Server Usage
+1. Attempt `Ctrl-C` to break the current operation
+2. If still stuck, try closing the unclosed construct: type `'` or `"` or `EOF` + Enter
+3. If still unresponsive: **kill the terminal** and start a fresh session
+4. On the fresh session, verify `pwd` — should be workspace root
+5. Re-navigate to the target directory if needed
 
-- Only use MCP servers that are explicitly listed in the workspace configuration
-- When in doubt about whether an MCP server is approved, ask
-- Prefer the workspace's declared tooling preference (`forge.tooling.preferred` in workspace.config.yaml)
+### Prevention
+
+- **Never** use heredocs or multi-line quoted strings in terminal commands
+- Write multi-line content to a file via editor tooling, then reference the file
+- Avoid interactive commands (`vi`, `nano`, `less`) — use editor tooling instead
+- Keep command chains short (no more than 3–4 with `&&`)
 
 ## Anti-Patterns
 
-| Anti-Pattern                           | Correct Behavior                      |
-| -------------------------------------- | ------------------------------------- |
-| Running commands in parallel terminals | Execute sequentially, wait for output |
-| Using terminal to create/edit files    | Use editor tooling                    |
-| Chaining 5+ commands with `&&`         | Break into separate steps             |
-| Ignoring command exit codes            | Check and handle failures             |
-| Using `sudo` without discussion        | Never assume elevated privileges      |
-| Running commands in wrong directory    | Verify `pwd` or use absolute paths    |
-| Re-running failed commands verbatim    | Diagnose first, then fix              |
+| Anti-Pattern                           | Correct Behavior                         |
+| -------------------------------------- | ---------------------------------------- |
+| Running commands in parallel terminals | Execute sequentially, wait for output    |
+| Using terminal to create/edit files    | Use editor tooling                       |
+| Chaining 5+ commands with `&&`         | Break into separate steps                |
+| Ignoring command exit codes            | Check and handle failures                |
+| Using `sudo` without discussion        | Never assume elevated privileges         |
+| Running commands in wrong directory    | Verify `pwd` before consequential ops    |
+| Re-running failed commands verbatim    | Diagnose first, then fix                 |
+| Trying to fix a garbled terminal       | Kill the terminal, start fresh           |
+| Using heredocs or multi-line strings   | Write to file via editor, then reference |

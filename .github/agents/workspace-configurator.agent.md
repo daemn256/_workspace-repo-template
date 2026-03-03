@@ -140,4 +140,9 @@ Guided updates to workspace.config.yaml:
 <what to do next — test the generated prompts, update config, etc.>
 
 **Approval Required:** Yes
+
+## Suggested Actions
+
+- `/sync-templates` → @Workspace Configurator — Sync changes to template repos
+- `/commit` → @Implementer — Commit the configuration changes
 ```

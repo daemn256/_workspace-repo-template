@@ -77,4 +77,9 @@ Read `board-tracking.instructions.md` for field IDs and update procedures.
 <what comes next>
 
 **Approval Required:** Yes
+
+## Suggested Actions
+
+- `/commit` → @Implementer — Stage and create a Conventional Commit
+- `/test` → @Test — Run tests and produce a structured verdict
 ```

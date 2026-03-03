@@ -81,4 +81,9 @@ Use the Task tool to delegate to:
 <what comes next>
 
 **Approval Required:** Yes | No
+
+## Suggested Actions
+
+- `/skill:commit` → Implementer — Commit the passing changes
+- `/skill:review` → Reviewer — Review the test results and code
 ```

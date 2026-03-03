@@ -79,4 +79,9 @@ APPROVE | REQUEST_CHANGES | NEEDS_DISCUSSION
 <what comes next>
 
 **Approval Required:** Yes | No
+
+## Suggested Actions
+
+- `/address-feedback` → @Implementer — Implement the review feedback
+- `/pr` → @Orchestrator — Finalize and merge the PR
 ```

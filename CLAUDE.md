@@ -136,12 +136,12 @@ If information is missing, ask for it.
 - Do NOT create documentation files to summarize work unless specifically requested
 - Temporary files for CLI tool input (e.g., `--body-file`) in `.tmp/scratch/` are acceptable
 
-### MCP Server Restrictions
+### Tool Selection
 
-- Do NOT use MCP servers that are auto-loaded by extensions (GitKraken, GitLens)
-- Only use MCP servers explicitly configured for the workspace
-- When multiple tool surfaces are available (MCP, CLI, API), prefer the workspace's declared `forge.tooling.preferred` setting
-- If no preference is declared, default to MCP when available, fall back to CLI
+- Follow the tool selection hierarchy: MCP-first → CLI-fallback → terminal-last-resort
+- Only use MCP servers declared in `workspace.config.yaml` under `forge.tooling`
+- Do NOT use auto-loaded MCP servers (GitKraken, GitLens)
+- See `.claude/rules/tool-selection.md` for the full decision table
 
 ### Anti-Patterns
 

@@ -80,4 +80,9 @@ Use the Task tool to delegate to:
 <what comes next>
 
 **Approval Required:** Yes
+
+## Suggested Actions
+
+- `/skill:commit` → Implementer — Stage and create a Conventional Commit
+- `/skill:test` → Test — Run tests and produce a structured verdict
 ```

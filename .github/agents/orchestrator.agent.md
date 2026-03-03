@@ -123,4 +123,9 @@ Created → Triaged → In Progress → Review → Done
 <what comes next>
 
 **Approval Required:** Yes
+
+## Suggested Actions
+
+- `/issue` → @Orchestrator — Pick up and implement an issue
+- `/planning` → @Planner — Research and plan the approach
 ```

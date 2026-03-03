@@ -85,4 +85,9 @@ APPROVE | REQUEST_CHANGES | NEEDS_DISCUSSION
 <what comes next>
 
 **Approval Required:** Yes | No
+
+## Suggested Actions
+
+- `/skill:address-feedback` → Implementer — Implement the review feedback
+- `/skill:pr` → Orchestrator — Finalize and merge the PR
 ```

@@ -42,5 +42,11 @@
   // ─────────────────────────────────────────────────────────────────
   // Terminal
   // ─────────────────────────────────────────────────────────────────
-  "terminal.integrated.cwd": "${workspaceFolder}"
+  "terminal.integrated.cwd": "${workspaceFolder}",
+  "chat.tools.terminal.autoApprove": {
+    "/^bash tools/sync-to-templates\\.sh$/": {
+      "approve": true,
+      "matchCommandLine": true
+    }
+  }
 }

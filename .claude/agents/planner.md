@@ -151,4 +151,9 @@ Use the Task tool to delegate to:
 <what comes next>
 
 **Approval Required:** Yes
+
+## Suggested Actions
+
+- `/skill:issue` → Orchestrator — Coordinate implementation of this plan
+- `/skill:commit` → Implementer — Implement the planned changes
 ```

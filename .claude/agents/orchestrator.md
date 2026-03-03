@@ -118,4 +118,9 @@ Created → Triaged → In Progress → Review → Done
 <what comes next>
 
 **Approval Required:** Yes
+
+## Suggested Actions
+
+- `/skill:issue` → Orchestrator — Pick up and implement an issue
+- `/skill:planning` → Planner — Research and plan the approach
 ```

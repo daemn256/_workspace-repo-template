@@ -137,4 +137,9 @@ Use the Task tool to delegate to:
 <what to do next — test the generated prompts, update config, etc.>
 
 **Approval Required:** Yes
+
+## Suggested Actions
+
+- `/skill:sync-templates` → Workspace Configurator — Sync changes to template repos
+- `/skill:commit` → Implementer — Commit the configuration changes
 ```

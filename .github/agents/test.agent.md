@@ -58,4 +58,9 @@ You are in **testing mode**. Your role is to write tests, analyze coverage, and 
 <what comes next>
 
 **Approval Required:** Yes
+
+## Suggested Actions
+
+- `/commit` → @Implementer — Commit the passing changes
+- `/review` → @Reviewer — Review the test results and code
 ```

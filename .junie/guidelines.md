@@ -371,34 +371,35 @@ Use Conventional Commits:
 
 ### Terminal Discipline
 
-> Shell awareness, terminal hygiene, command safety, and scope management.
+> Terminal execution model, workspace navigation, command safety, and recovery.
 
-#### Shell Awareness
+#### Terminal Model
 
-- Execute commands sequentially, not in parallel
+- Execute commands sequentially — one terminal at a time
 - Wait for output before running the next command
 - Never assume a prior command succeeded without checking
-- Track the current working directory
-- Be aware of environment context (virtual envs, node versions, etc.)
-- Read and process command output before proceeding
+- Terminal sessions are stateful — cwd and environment persist within a session
+- The **workspace root** (directory containing `workspace.config.yaml`) is the anchor point for all navigation
 
-#### Terminal Hygiene
+#### Workspace Navigation
 
-- Use fully-qualified paths when the working directory is uncertain
-- Quote variables and paths that may contain spaces
-- Prefer explicit flags over positional arguments for clarity
-- Do not chain excessively long command sequences that obscure failures
-- If a command fails, diagnose the failure before retrying
+The workspace root is the directory containing `workspace.config.yaml`. All terminal sessions start here. In multi-repo workspaces, navigate explicitly to `repos/<name>/` before running repo-scoped commands and return to workspace root between operations.
 
-#### Command Safety
+- Verify `pwd` before consequential operations (commits, builds, destructive commands)
+- When uncertain of cwd, navigate to workspace root first
+- Prefer absolute paths when cwd is ambiguous
 
-Before running any command that modifies, deletes, or overwrites:
+#### Command Taxonomy
 
-1. Explain what the command will do
-2. Identify what could go wrong
-3. Await human approval
+**Read-Only (Always OK):** `ls`, `cat`, `head`, `tail`, `grep`, `find`, `wc`, `tree`, `git log`, `git status`, `git diff`, `git blame`, `which`, `pwd`
 
-Examples of destructive commands: `rm`, `git push --force`, `git reset --hard`, database migrations, package uninstalls.
+**Mutating (Explain First):** `git add`, `git commit`, `git push`, `git checkout`, `npm install`, `dotnet restore`, `mkdir`
+
+**Destructive (Approval Required):** `rm`, `rmdir`, `git push --force`, `git reset --hard`, `git rebase`, database migrations, system-level installs
+
+#### Command Checklist
+
+For non-trivial operations: (1) **Pre-condition** — verify cwd, branch, clean state; (2) **Execute** — run with clear purpose; (3) **Verify** — check exit code and output.
 
 #### File Operations
 
@@ -406,23 +407,58 @@ Do NOT use terminal commands to create or edit files. Use proper editor tooling 
 
 **Prohibited patterns:** `echo "content" > file.md`, `cat > file.md << 'EOF'`, `sed -i`, `tee`
 
+**Rationale:** IDE terminal tools do not reliably handle multi-line input. Heredocs and multi-line strings garble the session.
+
 **Exception:** Temporary files needed for CLI tool input (e.g., `--body-file`) in `.tmp/scratch/`.
 
-#### MCP Server Restrictions
+#### Terminal Recovery
 
-- Do NOT use MCP servers that are auto-loaded by extensions (GitKraken, GitLens)
-- Only use MCP servers explicitly configured for the workspace
+**Symptoms:** garbled prompt, unresponsive terminal, stuck in pager/editor, unclosed quotes echoing input.
+
+**Protocol:** (1) `Ctrl-C` to break; (2) try closing unclosed construct (`'`, `"`, `EOF`); (3) if still stuck: **kill the terminal** and start fresh; (4) verify `pwd` on fresh session.
+
+**Prevention:** Never use heredocs or multi-line quoted strings. Write to file via editor, then reference it. Avoid interactive commands (`vi`, `nano`, `less`).
 
 #### Anti-Patterns
 
-| Anti-Pattern                           | Correct Behavior                      |
-| -------------------------------------- | ------------------------------------- |
-| Running commands in parallel terminals | Execute sequentially, wait for output |
-| Using terminal to create/edit files    | Use editor tooling                    |
-| Chaining 5+ commands with `&&`         | Break into separate steps             |
-| Ignoring command exit codes            | Check and handle failures             |
-| Using `sudo` without discussion        | Never assume elevated privileges      |
-| Re-running failed commands verbatim    | Diagnose first, then fix              |
+| Anti-Pattern                           | Correct Behavior                         |
+| -------------------------------------- | ---------------------------------------- |
+| Running commands in parallel terminals | Execute sequentially, wait for output    |
+| Using terminal to create/edit files    | Use editor tooling                       |
+| Chaining 5+ commands with `&&`         | Break into separate steps                |
+| Ignoring command exit codes            | Check and handle failures                |
+| Using `sudo` without discussion        | Never assume elevated privileges         |
+| Re-running failed commands verbatim    | Diagnose first, then fix                 |
+| Trying to fix a garbled terminal       | Kill the terminal, start fresh           |
+| Using heredocs or multi-line strings   | Write to file via editor, then reference |
+
+---
+
+### Tool Selection
+
+> MCP-first → CLI-fallback → terminal-last-resort.
+
+#### Decision Hierarchy
+
+1. **MCP Tool** — Preferred. Structured, type-safe, integrated.
+2. **CLI Tool** — Fallback when MCP doesn't cover the operation.
+3. **Terminal Command** — Last resort for inherently terminal-native tasks.
+
+#### Decision Table
+
+| Task | First Choice | Fallback | Notes |
+| --- | --- | --- | --- |
+| Forge ops (issues, PRs, board) | MCP tool | CLI tool (`gh`, `az`) | Never raw API calls |
+| File read/write | Editor tooling | — | Never terminal for writes |
+| Code search | Search tools | Terminal `grep` | Prefer structured tools |
+| Build / test / lint | Terminal | — | Use `commands.*` from config |
+| Git operations | Terminal | — | `git` CLI is canonical |
+
+#### MCP Server Policy
+
+- Only use MCP servers declared in `workspace.config.yaml` under `forge.tooling.<provider>.mcp-server`
+- Do NOT use auto-loaded MCP servers (GitKraken, GitLens)
+- When uncertain, check `workspace.config.yaml`; if not listed, ask
 
 ---
 
@@ -508,12 +544,13 @@ If information is missing, ask for it.
 - Do NOT create documentation files to summarize work unless specifically requested
 - Temporary files for CLI tool input (e.g., `--body-file`) in `.tmp/scratch/` are acceptable
 
-#### MCP Server Restrictions
+#### Tool Selection
 
-- Do NOT use MCP servers that are auto-loaded by extensions (GitKraken, GitLens)
-- Only use MCP servers explicitly configured for the workspace
-- When multiple tool surfaces are available (MCP, CLI, API), prefer the workspace's declared `forge.tooling.preferred` setting
-- If no preference is declared, default to MCP when available, fall back to CLI
+Follow the Tool Selection hierarchy (see Tool Selection section above):
+
+- MCP-first → CLI-fallback → terminal-last-resort
+- Only use MCP servers declared in `workspace.config.yaml`
+- Do NOT use auto-loaded MCP servers (GitKraken, GitLens)
 
 #### Anti-Patterns
 
@@ -526,6 +563,27 @@ If information is missing, ask for it.
 - Do NOT use terminal commands to create or edit files (use proper tooling)
 - Do NOT leave board status stale when transitioning between issue lifecycle phases
 - Do NOT create issues without adding them to the project board and setting required fields
+
+---
+
+### Suggested Actions
+
+> Every substantive response suggests 1–3 contextually relevant follow-up actions.
+
+After the **Next Step** section, suggest specific workflows and agents:
+
+| After This Phase | Suggest These |
+| --- | --- |
+| Analysis / Research | Planning → Planner, Issue → Orchestrator |
+| Planning complete | Issue → Orchestrator, Commit → Implementer |
+| Implementation | Commit → Implementer, Test → Test |
+| Tests pass | Commit → Implementer, PR → Orchestrator |
+| Commit made | PR → Orchestrator, Review → Reviewer |
+| PR created | Review → Reviewer, Address Feedback → Implementer |
+| PR merged | Session End → Orchestrator, Issue Spawn → Orchestrator |
+| Bug investigation | Debug → Implementer, Test → Test |
+
+**Rules:** Suggest 1–3 actions. Choose based on current context. Prefer the most likely next step first. Skip for trivial single-exchange responses.
 
 ---
 

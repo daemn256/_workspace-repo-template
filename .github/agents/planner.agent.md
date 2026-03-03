@@ -158,4 +158,9 @@ Produce a clear recommendation:
 <what comes next>
 
 **Approval Required:** Yes
+
+## Suggested Actions
+
+- `/issue` → @Orchestrator — Coordinate implementation of this plan
+- `/commit` → @Implementer — Implement the planned changes
 ```

@@ -47,6 +47,10 @@
     "/^bash tools/sync-to-templates\\.sh$/": {
       "approve": true,
       "matchCommandLine": true
+    },
+    "/^bash tools/validate-templates\\.sh$/": {
+      "approve": true,
+      "matchCommandLine": true
     }
   }
 }

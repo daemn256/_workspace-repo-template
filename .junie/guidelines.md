@@ -446,13 +446,13 @@ Do NOT use terminal commands to create or edit files. Use proper editor tooling 
 
 #### Decision Table
 
-| Task | First Choice | Fallback | Notes |
-| --- | --- | --- | --- |
-| Forge ops (issues, PRs, board) | MCP tool | CLI tool (`gh`, `az`) | Never raw API calls |
-| File read/write | Editor tooling | — | Never terminal for writes |
-| Code search | Search tools | Terminal `grep` | Prefer structured tools |
-| Build / test / lint | Terminal | — | Use `commands.*` from config |
-| Git operations | Terminal | — | `git` CLI is canonical |
+| Task                           | First Choice   | Fallback              | Notes                        |
+| ------------------------------ | -------------- | --------------------- | ---------------------------- |
+| Forge ops (issues, PRs, board) | MCP tool       | CLI tool (`gh`, `az`) | Never raw API calls          |
+| File read/write                | Editor tooling | —                     | Never terminal for writes    |
+| Code search                    | Search tools   | Terminal `grep`       | Prefer structured tools      |
+| Build / test / lint            | Terminal       | —                     | Use `commands.*` from config |
+| Git operations                 | Terminal       | —                     | `git` CLI is canonical       |
 
 #### MCP Server Policy
 
@@ -572,16 +572,16 @@ Follow the Tool Selection hierarchy (see Tool Selection section above):
 
 After the **Next Step** section, suggest specific workflows and agents:
 
-| After This Phase | Suggest These |
-| --- | --- |
-| Analysis / Research | Planning → Planner, Issue → Orchestrator |
-| Planning complete | Issue → Orchestrator, Commit → Implementer |
-| Implementation | Commit → Implementer, Test → Test |
-| Tests pass | Commit → Implementer, PR → Orchestrator |
-| Commit made | PR → Orchestrator, Review → Reviewer |
-| PR created | Review → Reviewer, Address Feedback → Implementer |
-| PR merged | Session End → Orchestrator, Issue Spawn → Orchestrator |
-| Bug investigation | Debug → Implementer, Test → Test |
+| After This Phase    | Suggest These                                          |
+| ------------------- | ------------------------------------------------------ |
+| Analysis / Research | Planning → Planner, Issue → Orchestrator               |
+| Planning complete   | Issue → Orchestrator, Commit → Implementer             |
+| Implementation      | Commit → Implementer, Test → Test                      |
+| Tests pass          | Commit → Implementer, PR → Orchestrator                |
+| Commit made         | PR → Orchestrator, Review → Reviewer                   |
+| PR created          | Review → Reviewer, Address Feedback → Implementer      |
+| PR merged           | Session End → Orchestrator, Issue Spawn → Orchestrator |
+| Bug investigation   | Debug → Implementer, Test → Test                       |
 
 **Rules:** Suggest 1–3 actions. Choose based on current context. Prefer the most likely next step first. Skip for trivial single-exchange responses.
 

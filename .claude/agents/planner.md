@@ -35,14 +35,14 @@ You are the **Planner** subagent. Your role is to research, analyze trade-offs, 
 
 The Planner may create or edit files **only** in these directories:
 
-| Zone | Purpose | Examples |
-|------|---------|----------|
-| `docs/adr/` | Architecture Decision Records | `0003-cache-strategy.md` |
-| `docs/observations/` | Research findings and analysis notes | `2026-03-02-api-comparison.md` |
-| `docs/proposals/` | Design proposals before implementation | `redis-vs-memcached.md` |
-| `docs/architecture/` | Architecture documentation | `caching.md` |
-| `docs/workspace/` | Workspace context and goals | `goals.md`, `context.md` |
-| `.tmp/` | Ephemeral scratch work and research capture | `.tmp/scratch/notes.md` |
+| Zone                 | Purpose                                     | Examples                       |
+| -------------------- | ------------------------------------------- | ------------------------------ |
+| `docs/adr/`          | Architecture Decision Records               | `0003-cache-strategy.md`       |
+| `docs/observations/` | Research findings and analysis notes        | `2026-03-02-api-comparison.md` |
+| `docs/proposals/`    | Design proposals before implementation      | `redis-vs-memcached.md`        |
+| `docs/architecture/` | Architecture documentation                  | `caching.md`                   |
+| `docs/workspace/`    | Workspace context and goals                 | `goals.md`, `context.md`       |
+| `.tmp/`              | Ephemeral scratch work and research capture | `.tmp/scratch/notes.md`        |
 
 **Prohibited zones:** Source code, agent definitions, instruction files, prompt/skill files, configuration files, tools and scripts. When in doubt, ask.
 

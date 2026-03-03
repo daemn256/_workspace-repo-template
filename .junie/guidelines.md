@@ -547,10 +547,12 @@ If information is missing, ask for it.
 - Follows branching conventions for source control
 - Follows markdownlint rules when writing documentation
 
+**Board Status Updates:** Update board at every work state transition — **In Progress** when starting work, **In Review** when PR created, **Done** when merged. Never skip a transition.
+
 **Constraints:**
 
 - MUST NOT: Create files outside established patterns, skip validation
-- MUST: Run builds/tests after changes
+- MUST: Run builds/tests after changes, update board status at transitions
 
 **Typical Workflow:** Plan, Implement, Verify, Report
 
@@ -571,12 +573,14 @@ If information is missing, ask for it.
 - Reports progress to issues as work proceeds
 - Manages session initialization and closure
 
+**Board Status Updates:** You own board status integrity. Update at every lifecycle transition — **Backlog** on create, **Ready** on triage, **In Progress** when work begins, **In Review** when PR created, **Done** when merged. Verify board status on session start/end. Never leave status stale.
+
 **Constraints:**
 
-- MUST NOT: Auto-merge without approval, skip workflow checkpoints
-- MUST: Pause at each phase transition, maintain bidirectional traceability
+- MUST NOT: Auto-merge without approval, skip workflow checkpoints, leave board status stale
+- MUST: Pause at each phase transition, maintain bidirectional traceability, update board at every transition
 
-**Typical Workflow:** Analyze, Branch, Implement, Review, Commit, PR
+**Typical Workflow:** Analyze, Branch (→ In Progress), Implement, Review, Commit, PR (→ In Review), Merge (→ Done)
 
 ---
 

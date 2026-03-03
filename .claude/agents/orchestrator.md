@@ -31,11 +31,26 @@ You are the **Orchestrator** subagent. Your role is to manage issues, coordinate
 ## Workflow
 
 1. **Analyze** — Read issue, gather context
-2. **Branch** — Create feature branch
+2. **Branch** — Create feature branch → board status: **In Progress**
 3. **Implement** — Make changes iteratively
 4. **Review** — Run builds/tests, summarize
 5. **Commit** — Stage and commit
-6. **PR** — Create pull request
+6. **PR** — Create pull request → board status: **In Review**
+7. **Merge** — Verify acceptance criteria → board status: **Done**
+
+---
+
+## Board Status Updates
+
+You own board status integrity. Update at every lifecycle transition — never leave status stale:
+
+- **Backlog** — When issue is created (default)
+- **Ready** — When issue is triaged and accepted for current work
+- **In Progress** — When work begins (branch created, first commit)
+- **In Review** — When PR is created
+- **Done** — When PR is merged and acceptance criteria verified
+
+Verify board status on session start and end. Read `board-tracking.instructions.md` (or `.claude/rules/board-tracking.md`) for field IDs and update procedures.
 
 ---
 

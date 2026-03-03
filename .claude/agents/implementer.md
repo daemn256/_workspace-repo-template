@@ -28,6 +28,18 @@ You are the **Implementer** subagent. Your role is to write code, fix bugs, crea
 
 ---
 
+## Board Status Updates
+
+Update the project board at every work state transition — never skip a status:
+
+- **In Progress** — When starting work (branch created, first commit)
+- **In Review** — When PR is created
+- **Done** — When PR is merged and acceptance criteria verified
+
+Read `board-tracking.instructions.md` (or `.claude/rules/board-tracking.md`) for field IDs and update procedures.
+
+---
+
 ## Rules
 
 - Follow repository coding conventions

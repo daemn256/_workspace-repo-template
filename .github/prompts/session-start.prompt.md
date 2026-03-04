@@ -18,7 +18,8 @@ Read these files in order:
 
 1. `workspace.config.yaml` — process profile, forge topology, board IDs, AI runtimes, commands
 2. `docs/workspace/context.md` — tech stack, domain terms, architecture, key conventions
-3. `docs/workspace/goals.md` — current priorities and active work (if exists)
+3. `docs/workspace/goals.md` — durable priorities, milestones, backlog (if exists)
+4. `.tmp/workspace/goals.md` — active sprint state, current focus (if exists)
 
 ### Check for Prior Sessions
 

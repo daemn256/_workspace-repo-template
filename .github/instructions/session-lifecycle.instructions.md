@@ -13,6 +13,7 @@ applyTo: "**"
 Load context and establish the session goal.
 
 - Read workspace context (`workspace.config.yaml`, `docs/workspace/context.md`, `docs/workspace/goals.md`)
+- Read active sprint state (`.tmp/workspace/goals.md`) if available
 - Load prior session handoff artifact if available (`.tmp/sessions/`)
 - Restate the goal and active constraints
 - Acknowledge approval gates and conventions
@@ -44,7 +45,8 @@ Session ended before completing planned work.
 Produce a handoff artifact for the next session to resume with full context.
 
 - Enumerate files touched, decisions made, open questions
-- Store in `.tmp/sessions/` (ephemeral) and/or update `docs/workspace/goals.md` (durable)
+- Update `.tmp/workspace/goals.md` with current sprint state
+- Store session handoff in `.tmp/sessions/` (ephemeral)
 - Document concrete next steps
 
 → Transitions to: **Closure**
@@ -69,7 +71,8 @@ Session complete. Handoff artifact produced. Terminal state.
 | --------------------------- | -------------------------------- | ---------- |
 | `workspace.config.yaml`     | Process profile, forge topology  | Durable    |
 | `docs/workspace/context.md` | Project context, terminology     | Durable    |
-| `docs/workspace/goals.md`   | Active objectives, issue roster  | Durable    |
+| `docs/workspace/goals.md`   | Milestones, tech debt, backlog   | Durable    |
+| `.tmp/workspace/goals.md`   | Active sprint, current focus     | Ephemeral  |
 | `.tmp/sessions/<id>.md`     | Prior session's handoff artifact | Ephemeral  |
 
 **What the agent produces (Handoff):**

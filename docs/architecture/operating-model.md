@@ -25,11 +25,11 @@ The manifest declares what propagates and how. Located at the workspace root.
 
 Three propagation actions:
 
-| Action     | Meaning                                                     | Example                                  |
-| ---------- | ----------------------------------------------------------- | ---------------------------------------- |
-| **copy**   | Verbatim copy — file is workspace-agnostic                  | `.github/agents/**`, `.claude/**`        |
-| **scaffold** | Example structure from `scaffolds/` — consumer fills values | `workspace.config.yaml`, `README.md`     |
-| **ignore** | Never propagated — consumer-only or workspace-specific      | `docs/adr/*.md`, `.tmp/`, `repos/*`      |
+| Action       | Meaning                                                     | Example                              |
+| ------------ | ----------------------------------------------------------- | ------------------------------------ |
+| **copy**     | Verbatim copy — file is workspace-agnostic                  | `.github/agents/**`, `.claude/**`    |
+| **scaffold** | Example structure from `scaffolds/` — consumer fills values | `workspace.config.yaml`, `README.md` |
+| **ignore**   | Never propagated — consumer-only or workspace-specific      | `docs/adr/*.md`, `.tmp/`, `repos/*`  |
 
 Rules are evaluated **first-match-wins**. Everything not matched is ignored by default.
 
@@ -37,20 +37,20 @@ Rules are evaluated **first-match-wins**. Everything not matched is ignored by d
 
 The manifest defines two sync targets:
 
-| Target | Template Repo                  | Purpose                          |
-| ------ | ------------------------------ | -------------------------------- |
-| root   | `_workspace-root-template`     | Multi-repo coordination workspace |
-| repo   | `_workspace-repo-template`     | Single-repo workspace            |
+| Target | Template Repo              | Purpose                           |
+| ------ | -------------------------- | --------------------------------- |
+| root   | `_workspace-root-template` | Multi-repo coordination workspace |
+| repo   | `_workspace-repo-template` | Single-repo workspace             |
 
 Some rules apply only to specific targets (e.g., `repos/README.md` → root only).
 
 ### Tooling
 
-| Tool                        | Purpose                                           |
-| --------------------------- | ------------------------------------------------- |
-| `tools/sync-to-templates.sh`    | Sync workspace → template repos per manifest      |
-| `tools/validate-templates.sh`   | Validate templates for completeness, drift, leakage |
-| `tools/render-instructions.sh`  | **Deprecated** — replaced by config-reference     |
+| Tool                           | Purpose                                             |
+| ------------------------------ | --------------------------------------------------- |
+| `tools/sync-to-templates.sh`   | Sync workspace → template repos per manifest        |
+| `tools/validate-templates.sh`  | Validate templates for completeness, drift, leakage |
+| `tools/render-instructions.sh` | **Deprecated** — replaced by config-reference       |
 
 ---
 
@@ -65,11 +65,13 @@ On session start, read these consumer-owned files for project-specific context:
 
 - `docs/workspace/project-overlay.md` — Project identity
 - `docs/workspace/context.md` — Domain terminology, architecture
-- `docs/workspace/goals.md` — Current priorities
+- `docs/workspace/goals.md` — Durable priorities
+- `.tmp/workspace/goals.md` — Active sprint state
 - `workspace.config.yaml` — Board IDs, forge topology, commands
 ```
 
 This means:
+
 - **Copy-action files work in any workspace** without modification
 - **One source of truth** — edit the workspace, sync to templates
 - **No rendering step** — agents read config directly
@@ -93,11 +95,11 @@ Example: `workspace.config.yaml` uses `scaffolds/common/workspace.config.yaml` f
 
 The manifest defines three ownership tiers:
 
-| Tier          | Manifest Action | Sync Behavior        | Who Edits                |
-| ------------- | --------------- | -------------------- | ------------------------ |
-| **Copy**      | `copy`          | Replaced on sync     | Workspace authors only   |
-| **Scaffold**  | `scaffold`      | Initial structure    | Consumer fills in values |
-| **Ignore**    | (default)       | Never synced         | Consumer owns entirely   |
+| Tier         | Manifest Action | Sync Behavior     | Who Edits                |
+| ------------ | --------------- | ----------------- | ------------------------ |
+| **Copy**     | `copy`          | Replaced on sync  | Workspace authors only   |
+| **Scaffold** | `scaffold`      | Initial structure | Consumer fills in values |
+| **Ignore**   | (default)       | Never synced      | Consumer owns entirely   |
 
 ---
 
@@ -126,13 +128,13 @@ The manifest defines three ownership tiers:
 
 Some files are inherently workspace-specific and must not propagate:
 
-| File                              | Why It's Consumer-Only                    |
-| --------------------------------- | ----------------------------------------- |
-| `forge-ops.prompt.md`             | Generated by `/configure-forge` with real board IDs |
-| `workspace.config.yaml` (values)  | Consumer fills in real project values     |
-| `docs/workspace/context.md`       | Consumer's domain knowledge               |
-| `docs/workspace/goals.md`         | Consumer's current priorities             |
-| `docs/adr/*.md`                   | Consumer's architecture decisions         |
+| File                             | Why It's Consumer-Only                              |
+| -------------------------------- | --------------------------------------------------- |
+| `forge-ops.prompt.md`            | Generated by `/configure-forge` with real board IDs |
+| `workspace.config.yaml` (values) | Consumer fills in real project values               |
+| `docs/workspace/context.md`      | Consumer's domain knowledge                         |
+| `docs/workspace/goals.md`        | Consumer's durable priorities                       |
+| `docs/adr/*.md`                  | Consumer's architecture decisions                   |
 
 The manifest explicitly ignores `forge-ops.prompt.md` even though it's in `.github/prompts/`.
 

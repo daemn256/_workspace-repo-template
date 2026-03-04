@@ -77,7 +77,7 @@ AI proposes, human approves — never act without explicit approval. Work in sma
 ## Quick Start
 
 Read `workspace.config.yaml` for build/test/run/lint commands.
-Read `docs/workspace/goals.md` for current priorities.
+Read `docs/workspace/goals.md` for durable priorities and `.tmp/workspace/goals.md` for active sprint state.
 
 ---
 

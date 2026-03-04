@@ -163,5 +163,6 @@ On session start, read these consumer-owned files for project-specific context:
 
 - `docs/workspace/project-overlay.md` — Project identity, key conventions, and operational workflow
 - `docs/workspace/context.md` — Domain terminology, architecture overview, repository inventory
-- `docs/workspace/goals.md` — Current priorities and active work
+- `docs/workspace/goals.md` — Durable priorities, milestones, backlog
+- `.tmp/workspace/goals.md` — Active sprint state and current focus
 - `workspace.config.yaml` — Board IDs, forge topology, process profile, commands

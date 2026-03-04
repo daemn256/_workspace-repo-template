@@ -19,9 +19,10 @@ Read workspace files and check for prior sessions.
 
 1. Read `workspace.config.yaml` — process profile, forge topology, board IDs, AI runtimes, commands
 2. Read `docs/workspace/context.md` — tech stack, domain terms, architecture, key conventions
-3. Read `docs/workspace/goals.md` — current priorities and active work (if exists)
-4. List files in `.tmp/sessions/` — read the most recent handoff artifact if any exist
-5. Note any incomplete work or open questions from prior sessions
+3. Read `docs/workspace/goals.md` — durable priorities, milestones, backlog (if exists)
+4. Read `.tmp/workspace/goals.md` — active sprint state, current focus (if exists)
+5. List files in `.tmp/sessions/` — read the most recent handoff artifact if any exist
+6. Note any incomplete work or open questions from prior sessions
 
 ---
 

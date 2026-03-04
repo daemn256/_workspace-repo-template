@@ -1,20 +1,21 @@
-# Current Goals
+# Goals
 
-> Keep this updated as your focus changes. AI agents read this to understand priorities.
-
-## Sprint Focus
-
-- [ ] First priority item
-- [ ] Second priority item
-- [ ] Third priority item
-
-## Technical Debt
-
-- [ ] Technical debt item 1
-- [ ] Technical debt item 2
+> Durable strategic priorities. AI agents read this during session orientation.
+>
+> For active sprint state and current focus, see `.tmp/workspace/goals.md`.
 
 ## Milestones
 
 | Milestone | Target Date | Status      |
 | --------- | ----------- | ----------- |
 | M1        | YYYY-MM-DD  | Not started |
+
+## Technical Debt
+
+- [ ] Technical debt item 1
+- [ ] Technical debt item 2
+
+## Backlog
+
+- [ ] Future work item 1
+- [ ] Future work item 2

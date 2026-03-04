@@ -20,7 +20,7 @@ Uses **Implementer** (primary). Create, update, and review documentation followi
    - **Architecture** — System design documentation (`docs/architecture/`)
    - **README** — Project or directory overview
    - **Inline** — Code comments and JSDoc/XML doc
-   - **Observation** — Experimental findings (`docs/observations/`)
+   - **Note** — Research findings and analysis (`docs/notes/`)
 2. Check for existing documentation to update vs. create new
 3. Identify the target audience
 

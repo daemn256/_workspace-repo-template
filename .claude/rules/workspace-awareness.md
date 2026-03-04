@@ -13,8 +13,9 @@ On session start, read these files to understand the workspace:
 
 1. `workspace.config.yaml` — process profile, forge topology, board IDs, active AI runtimes
 2. `docs/workspace/context.md` — tech stack, domain terms, architecture, key conventions
-3. `docs/workspace/goals.md` — current priorities (if exists)
-4. `.tmp/sessions/*.md` — prior session handoff artifacts (if any exist)
+3. `docs/workspace/goals.md` — durable priorities, milestones, backlog (if exists)
+4. `.tmp/workspace/goals.md` — active sprint state, current focus (if exists)
+5. `.tmp/sessions/*.md` — prior session handoff artifacts (if any exist)
 
 ## Expected Workspace Structure
 
@@ -24,10 +25,11 @@ Consumer workspaces MUST provide the following filesystem structure. Templates i
 | ---------------------------------------- | ----------------------------------------------------------------- | -------------------------------------------------- |
 | `workspace.config.yaml`                  | Process profile, forge topology, board IDs, AI runtimes, commands | **Consumer** — filled with project-specific values |
 | `docs/workspace/context.md`              | Tech stack, domain terms, architecture, key conventions           | **Consumer** — maintained by project team          |
-| `docs/workspace/goals.md`                | Current priorities and active work                                | **Consumer** — updated each milestone              |
+| `docs/workspace/goals.md`                | Durable priorities: milestones, tech debt, backlog                | **Consumer** — updated per milestone               |
 | `docs/workspace/project-overlay.md`      | Project-specific content injected into global instructions        | **Consumer** — defines project identity            |
 | `docs/workspace/templates/`              | Issue/PR templates (bug, feature, task, spike, pull-request)      | **Template** — copied from upstream                |
 | `.tmp/`                                  | Ephemeral working directory (gitignored contents)                 | **Template** — structure from upstream             |
+| `.tmp/workspace/`                        | Operational state: active sprint, current focus                   | **Consumer** — agents update each session          |
 | `.tmp/sessions/`                         | Session handoff artifacts (`*.md`)                                | **Consumer** — agents create files here            |
 | `.tmp/scratch/`                          | CLI body files, working drafts, intermediate artifacts            | **Consumer** — agents create files here            |
 | `.github/copilot-instructions.md`        | Rendered global instructions                                      | **Rendered** — template + consumer values          |
@@ -51,14 +53,30 @@ All `.tmp/` contents are gitignored. Use `.tmp/` for artifacts that don't need t
 
 | Subdirectory | Purpose                                                 | Created By                                | Cleanup                                   |
 | ------------ | ------------------------------------------------------- | ----------------------------------------- | ----------------------------------------- |
+| `workspace/` | Operational state: active sprint, current focus         | Session-start/end                         | Overwritten each session                  |
 | `sessions/`  | Cross-session handoff artifacts                         | All agents (via session-start/end skills) | Archive after work is merged              |
 | `scratch/`   | CLI body files, working drafts, intermediate processing | All agents (during forge operations)      | Aggressive — files can be deleted anytime |
 
 **Rules:**
 
+- Use `workspace/` for active sprint state and operational context (mirrors `docs/workspace/`)
 - Use `sessions/` for artifacts that must survive across sessions (handoff state, decisions)
 - Use `scratch/` for everything else — body files, planning drafts, temp scripts
 - For permanent artifacts, use `docs/` (documentation) or `tools/` (scripts)
+
+## File Placement Decision Rule
+
+When deciding where to put a new file, apply this test:
+
+> **Will someone other than an AI agent benefit from reading this in 3 months?**
+
+| Answer                      | Destination                   | Examples                                          |
+| --------------------------- | ----------------------------- | ------------------------------------------------- |
+| **Yes — durable knowledge** | `docs/` (tracked)             | Architecture, guides, ADRs, research notes        |
+| **Yes — project identity**  | `docs/workspace/` (tracked)   | Context, overlay, milestones, backlog             |
+| **No — operational state**  | `.tmp/workspace/` (ephemeral) | Active sprint, current focus, session completions |
+| **No — session continuity** | `.tmp/sessions/` (ephemeral)  | Handoff artifacts for the next session            |
+| **No — throwaway**          | `.tmp/scratch/` (ephemeral)   | CLI body files, drafts, temp scripts              |
 
 ## Workspace Configuration
 

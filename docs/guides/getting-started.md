@@ -107,13 +107,14 @@ Three files give AI agents context about your workspace:
 Description of what this project does and its key conventions.
 ```
 
-**`docs/workspace/goals.md`** — Current priorities:
+**`docs/workspace/goals.md`** — Durable priorities:
 
 ```markdown
-## Sprint Focus
+## Milestones
 
-- [ ] Current objective 1
-- [ ] Current objective 2
+| Milestone | Target | Status |
+| --------- | ------ | ------ |
+| v1.0      | Q3     | Active |
 ```
 
 ---

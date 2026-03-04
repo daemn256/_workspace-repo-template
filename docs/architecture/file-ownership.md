@@ -53,8 +53,7 @@ Files that are never propagated. Created and maintained entirely by the consumer
 **Examples:**
 
 - `docs/adr/*.md` — Architecture decisions (except README)
-- `docs/observations/*.md` — Working notes (except README)
-- `docs/proposals/*.md` — Design proposals (except README)
+- `docs/notes/*.md` — Research notes (except README)
 - `.github/prompts/forge-ops.prompt.md` — Consumer-specific forge bindings
 - `repos/*` — Project repositories (multi-repo workspaces)
 - `.tmp/*` — Ephemeral working directory
@@ -87,8 +86,7 @@ Files that are never propagated. Created and maintained entirely by the consumer
 | `docs/workspace/goals.md`     | Scaffold | Keep yours        |
 | `docs/workspace/overlay.md`   | Scaffold | Keep yours        |
 | `docs/adr/*.md`               | Ignore   | Consumer-only     |
-| `docs/observations/*.md`      | Ignore   | Consumer-only     |
-| `docs/proposals/*.md`         | Ignore   | Consumer-only     |
+| `docs/notes/*.md`             | Ignore   | Consumer-only     |
 | `repos/*`                     | Ignore   | Consumer-only     |
 | `.tmp/*`                      | Ignore   | Consumer-only     |
 

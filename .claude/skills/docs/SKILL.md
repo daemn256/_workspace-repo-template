@@ -23,7 +23,7 @@ Identify the scope and type of documentation.
    - **Architecture** — System design documentation (`docs/architecture/`)
    - **README** — Project or directory overview
    - **Inline** — Code comments and doc comments
-   - **Observation** — Experimental findings (`docs/observations/`)
+   - **Note** — Research findings and analysis (`docs/notes/`)
 2. Check for existing documentation to update vs. create new
 3. Identify the target audience
 

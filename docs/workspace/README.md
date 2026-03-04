@@ -18,14 +18,15 @@ Project-specific information that helps agents work effectively:
 
 ### goals.md
 
-Current objectives and priorities:
+Durable strategic priorities:
 
-- What you're working on right now
-- Sprint goals or milestones
-- Technical debt priorities
-- Known issues to address
+- Milestones and their target dates
+- Technical debt items
+- Backlog of future work
 
-**Keep this updated as your focus changes.**
+For active sprint state and current focus, see `.tmp/workspace/goals.md`.
+
+**Update this as milestones shift.**
 
 ### project-overlay.md
 

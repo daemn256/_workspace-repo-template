@@ -216,7 +216,7 @@ AI proposes, human approves — never act without explicit approval. Work in sma
 
 ### Quick Start
 
-Read `workspace.config.yaml` for build/test/lint commands. Read `docs/workspace/goals.md` for current priorities.
+Read `workspace.config.yaml` for build/test/lint commands. Read `docs/workspace/goals.md` for durable priorities and `.tmp/workspace/goals.md` for active sprint state.
 
 ---
 
@@ -226,5 +226,6 @@ On session start, read these consumer-owned files for project-specific context:
 
 - `docs/workspace/project-overlay.md` — Project identity, key conventions, and operational workflow
 - `docs/workspace/context.md` — Domain terminology, architecture overview, repository inventory
-- `docs/workspace/goals.md` — Current priorities and active work
+- `docs/workspace/goals.md` — Durable priorities, milestones, backlog
+- `.tmp/workspace/goals.md` — Active sprint state and current focus
 - `workspace.config.yaml` — Board IDs, forge topology, process profile, commands

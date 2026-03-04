@@ -680,8 +680,7 @@ After the **Next Step** section, suggest specific workflows and agents:
 **Write Zones (approved file creation/editing):**
 
 - `docs/adr/` — Architecture Decision Records
-- `docs/observations/` — Research findings and analysis notes
-- `docs/proposals/` — Design proposals
+- `docs/notes/` — Research findings and analysis notes
 - `docs/architecture/` — Architecture documentation
 - `docs/workspace/` — Workspace context and goals
 - `.tmp/` — Ephemeral scratch work and research capture

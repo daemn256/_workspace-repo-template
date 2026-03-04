@@ -59,7 +59,8 @@ Beyond the machine-readable config, agents read several human-authored context f
 | `workspace.config.yaml`             | Machine-readable configuration                                     | Consumer  |
 | `docs/workspace/context.md`         | Domain knowledge, architecture overview, terminology               | Consumer  |
 | `docs/workspace/project-overlay.md` | Project-specific agent context (injected into global instructions) | Consumer  |
-| `docs/workspace/goals.md`           | Current priorities and active work                                 | Consumer  |
+| `docs/workspace/goals.md`           | Durable priorities, milestones, backlog                            | Consumer  |
+| `.tmp/workspace/goals.md`           | Active sprint state, current focus                                 | Ephemeral |
 
 These files form the **session orientation** set — agents read all of them at the start of a session to understand where they are and what matters.
 

@@ -11,6 +11,63 @@ The Orchestrator drives this workflow with the Implementer handling code changes
 
 ---
 
+## Phase 0: Validate
+
+Challenge the issue's reasoning before analyzing implementation details. This prevents wasted effort on flawed premises, incomplete criteria, or overlooked alternatives.
+
+### Steps
+
+1. **Verify the problem statement** — Does the stated problem accurately describe reality? Check the codebase to confirm the gap or defect exists as described.
+2. **Validate acceptance criteria** — Are the criteria correct, complete, and testable? Flag any that are vague, missing, or contradictory.
+3. **Evaluate the proposed approach** (if any) — Is the approach sound, or should alternatives be explored? Are there simpler paths?
+4. **Assess scope and framing** — Should this issue be split, deferred, or reframed? Is it the right size and shape?
+5. **Gauge confidence** — If uncertainty exists on any of the above, delegate to the Planner for research/brainstorming before proceeding.
+
+### Lightweight vs. Deep Validation
+
+| Signal                                                                  | Validation Depth                                                                        |
+| ----------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| Clear problem, specific AC, obvious approach                            | **Lightweight** — Confirm the 5 checks briefly, note any minor gaps, proceed            |
+| Vague problem, missing AC, multiple approaches, or architectural impact | **Deep** — Investigate thoroughly; consider delegating to Planner via `/skill:planning` |
+
+### Output
+
+```markdown
+## Context Anchors
+
+- **Issue:** #<number> - <title>
+- **Phase:** Validate
+
+## Validation
+
+- **Problem statement:** <Confirmed accurate | Needs adjustment: ...>
+- **Acceptance criteria:** <Complete and testable | Gaps: ...>
+- **Approach:** <Sound | Alternatives worth exploring: ...>
+- **Scope:** <Appropriate | Recommend: split / defer / reframe>
+- **Confidence:** <High — proceed | Low — recommend planning session>
+
+## Recommendation
+
+<Proceed to Analyze | Delegate to Planner | Suggest adjustments to issue>
+
+## Next Step
+
+Approve validation assessment before proceeding.
+
+**Approval Required:** Yes
+```
+
+### ⛔ CHECKPOINT
+
+**STOP.** Do not proceed until human explicitly approves:
+
+- Validation assessment
+- Recommendation (proceed, delegate, or adjust)
+
+If confidence is low or significant issues are found, recommend delegating to the Planner via `/skill:planning` before continuing.
+
+---
+
 ## Phase 1: Analyze
 
 Gather context and classify the work.

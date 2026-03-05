@@ -19,7 +19,7 @@ GitHub Copilot is the primary AI runtime in this workspace. It operates across m
 | Global Instructions | `.github/copilot-instructions.md`        | Plain Markdown                                     | All interactions             |
 | Instruction Files   | `.github/instructions/*.instructions.md` | YAML frontmatter (`applyTo:` glob) + Markdown body | Conditional on file pattern  |
 | Custom Agents       | `.github/agents/*.agent.md`              | YAML frontmatter + Markdown body                   | Per-workspace                |
-| Prompt Files        | `.github/prompts/*.prompt.md`            | YAML frontmatter + Markdown body                   | Per-workspace (VS Code only) |
+| Skills              | `.github/skills/*/SKILL.md`              | YAML frontmatter + Markdown body                   | Per-workspace (VS Code only) |
 | AGENTS.md           | Root or any directory                    | Plain Markdown                                     | Governance / onboarding      |
 | Setup Steps         | `.github/copilot-setup-steps.yml`        | GitHub Actions YAML                                | Coding Agent environment     |
 | MCP Configuration   | `.vscode/mcp.json`                       | JSON                                               | VS Code MCP servers          |
@@ -35,7 +35,7 @@ This workspace's current Copilot instruction files:
 | Global instructions | `.github/copilot-instructions.md`        | 1     |
 | Path-specific rules | `.github/instructions/*.instructions.md` | 17    |
 | Agents              | `.github/agents/*.agent.md`              | 6     |
-| Prompts             | `.github/prompts/*.prompt.md`            | 21    |
+| Skills              | `.github/skills/*/SKILL.md`              | 20    |
 
 ---
 

@@ -2,10 +2,7 @@
 name: Workspace Configurator
 description: Create and maintain workspace-level prompts, agents, and forge configurations.
 tools:
-  - read
-  - edit
-  - search
-  - todo
+  [execute/runInTerminal, execute/getTerminalOutput, read/readFile, edit/createFile, edit/editFiles, search/codebase, search/fileSearch, search/textSearch, search/listDirectory, todo, github/get_file_contents, github/create_or_update_file, github/search_code, github/search_repositories]
 handoffs:
   - label: "Project coordination"
     agent: "Orchestrator"
@@ -67,16 +64,16 @@ Generate workspace-level prompts/agents for the declared forge topology:
 4. Fall back to CLI if MCP is preferred but not available
 ```
 
-### Prompt/Agent Scaffolding
+### Skill/Agent Scaffolding
 
-Create new workspace-level agents or prompts following kernel patterns:
+Create new workspace-level agents or skills following kernel patterns:
 
-| Artifact       | Location                           | Pattern                            |
-| -------------- | ---------------------------------- | ---------------------------------- |
-| Copilot agent  | `.github/agents/<name>.agent.md`   | Persona-to-agent transform rules   |
-| Copilot prompt | `.github/prompts/<name>.prompt.md` | Workflow-to-prompt transform rules |
-| Claude agent   | `.claude/agents/<name>.md`         | Claude persona-to-agent rules      |
-| Claude skill   | `.claude/skills/<name>/SKILL.md`   | Claude workflow-to-skill rules     |
+| Artifact      | Location                         | Pattern                           |
+| ------------- | -------------------------------- | --------------------------------- |
+| Copilot agent | `.github/agents/<name>.agent.md` | Persona-to-agent transform rules  |
+| Copilot skill | `.github/skills/<name>/SKILL.md` | Workflow-to-skill transform rules |
+| Claude agent  | `.claude/agents/<name>.md`       | Claude persona-to-agent rules     |
+| Claude skill  | `.claude/skills/<name>/SKILL.md` | Claude workflow-to-skill rules    |
 
 ### Template Manifest Management
 

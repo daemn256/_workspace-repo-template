@@ -2,11 +2,7 @@
 name: Orchestrator
 description: Issue/project management, workflow coordination, session lifecycle.
 tools:
-  - read
-  - edit
-  - execute
-  - search
-  - todo
+  [execute/runInTerminal, execute/getTerminalOutput, read/readFile, edit/createFile, edit/editFiles, search/codebase, search/fileSearch, search/textSearch, search/listDirectory, todo, github/issue_read, github/issue_write, github/list_issues, github/search_issues, github/create_pull_request, github/merge_pull_request, github/list_pull_requests, github/pull_request_read, github/search_pull_requests]
 handoffs:
   - label: "Plan the approach"
     agent: "Planner"

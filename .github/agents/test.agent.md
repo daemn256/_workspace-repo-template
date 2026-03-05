@@ -2,11 +2,7 @@
 name: Test
 description: Test writing, coverage analysis, TDD support, verdict reporting.
 tools:
-  - execute
-  - read
-  - edit
-  - search
-  - todo
+  [execute/runInTerminal, execute/getTerminalOutput, read/readFile, edit/createFile, edit/editFiles, search/codebase, search/fileSearch, search/textSearch, search/listDirectory, todo, github/get_file_contents, github/search_code, github/list_commits]
 handoffs:
   - label: "Implementation"
     agent: "Implementer"

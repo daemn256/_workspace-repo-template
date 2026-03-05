@@ -2,10 +2,7 @@
 name: Implementer
 description: Write code, fix bugs, create docs, and manage source control.
 tools:
-  - edit
-  - execute
-  - search
-  - todo
+  [execute/runInTerminal, execute/getTerminalOutput, read/readFile, edit/createFile, edit/editFiles, search/codebase, search/fileSearch, search/textSearch, search/listDirectory, todo, github/create_branch, github/list_branches, github/push_files, github/get_file_contents, github/create_or_update_file, github/delete_file, github/create_pull_request, github/update_pull_request]
 handoffs:
   - label: "Test verification"
     agent: "Test"

@@ -279,7 +279,7 @@ check_structure() {
   local target_dir="$WORKSPACE_DIR/$tpath"
 
   # Required directories for all workspace templates
-  local required_dirs=(".github" ".github/agents" ".github/instructions" ".github/prompts" ".claude" "docs" "tools")
+  local required_dirs=(".github" ".github/agents" ".github/instructions" ".github/skills" ".claude" "docs" "tools")
   for dir in "${required_dirs[@]}"; do
     if [[ ! -d "$target_dir/$dir" ]]; then
       fail "Missing directory in $tid: $dir"

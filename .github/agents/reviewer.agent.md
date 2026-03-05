@@ -2,9 +2,7 @@
 name: Reviewer
 description: Code review, PR verification, security assessment, standards enforcement.
 tools:
-  - read
-  - search
-  - execute
+  [execute/runInTerminal, execute/getTerminalOutput, read/readFile, search/codebase, search/fileSearch, search/textSearch, search/listDirectory, github/pull_request_read, github/pull_request_review_write, github/add_comment_to_pending_review, github/add_reply_to_pull_request_comment, github/list_commits, github/get_commit]
 handoffs:
   - label: "Test verification"
     agent: "Test"

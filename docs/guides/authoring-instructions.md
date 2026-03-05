@@ -13,7 +13,7 @@ See [Instruction Model](../architecture/instruction-model.md) for the conceptual
 | Global behavior (axioms, output format, process) | `CLAUDE.md`, `.github/copilot-instructions.md`, `.junie/guidelines.md`    | All three         |
 | Technology rules (TypeScript, .NET, etc.)        | `.github/instructions/<name>.instructions.md` + `.claude/rules/<name>.md` | Copilot + Claude  |
 | Agent definitions                                | `.github/agents/<name>.agent.md` + `.claude/agents/<name>.md`             | Copilot + Claude  |
-| Skills / Prompts                                 | `.github/prompts/<name>.prompt.md` + `.claude/skills/<name>/SKILL.md`     | Copilot + Claude  |
+| Skills                                           | `.github/skills/<name>/SKILL.md` + `.claude/skills/<name>/SKILL.md`       | Copilot + Claude  |
 
 Junie only uses the global instructions file (`.junie/guidelines.md`). It has no support for agents, rules, or skills.
 
@@ -89,19 +89,24 @@ Role description paragraph.
 
 ---
 
-## Creating a New Skill / Prompt
+## Creating a New Skill
 
-### 1. Copilot prompt: `.github/prompts/<name>.prompt.md`
+### 1. Copilot skill: `.github/skills/<name>/SKILL.md`
+
+Note the directory structure — each skill lives in its own folder.
 
 ```yaml
 ---
+name: skill-name
 description: One-line description of what this workflow does
 ---
 ```
 
+**Note:** The `name` must match the folder name exactly (lowercase, kebab-case).
+
 ### 2. Claude skill: `.claude/skills/<name>/SKILL.md`
 
-Note the directory structure — each skill lives in its own folder.
+Same directory structure as Copilot skills.
 
 ```yaml
 ---

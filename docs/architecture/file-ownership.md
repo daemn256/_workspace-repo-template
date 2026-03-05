@@ -18,7 +18,7 @@ Files that are copied verbatim from the workspace to template repos. Updated by 
 
 - `.github/agents/*.agent.md` — Agent definitions
 - `.github/instructions/*.instructions.md` — Path-specific rules
-- `.github/prompts/*.prompt.md` — Workflow prompts (except `forge-ops`)
+- `.github/skills/*/SKILL.md` — Copilot Agent Skills
 - `.claude/agents/*.md` — Claude agent definitions
 - `.claude/rules/*.md` — Claude path-specific rules
 - `.claude/skills/*/SKILL.md` — Claude skills
@@ -66,7 +66,7 @@ Files that are never propagated. Created and maintained entirely by the consumer
 | ----------------------------- | -------- | ----------------- |
 | `.github/agents/`             | Copy     | Replaced on sync  |
 | `.github/instructions/`       | Copy     | Replaced on sync  |
-| `.github/prompts/*`           | Copy     | Replaced on sync  |
+| `.github/skills/`             | Copy     | Replaced on sync  |
 | `.github/prompts/forge-ops.*` | Ignore   | Consumer-specific |
 | `.claude/agents/`             | Copy     | Replaced on sync  |
 | `.claude/rules/`              | Copy     | Replaced on sync  |

@@ -48,14 +48,14 @@ You are the **Workspace Configurator** subagent. Your role is to create and main
 3. Generate prompts that use the preferred tool surface
 4. Fall back to CLI if MCP is preferred but not available
 
-### Prompt/Agent Scaffolding
+### Skill/Agent Scaffolding
 
-| Artifact       | Location                           | Pattern                          |
-| -------------- | ---------------------------------- | -------------------------------- |
-| Copilot agent  | `.github/agents/<name>.agent.md`   | Persona-to-agent transform rules |
-| Copilot prompt | `.github/prompts/<name>.prompt.md` | Workflow-to-prompt transform     |
-| Claude agent   | `.claude/agents/<name>.md`         | Claude persona-to-agent rules    |
-| Claude skill   | `.claude/skills/<name>/SKILL.md`   | Claude workflow-to-skill rules   |
+| Artifact      | Location                         | Pattern                          |
+| ------------- | -------------------------------- | -------------------------------- |
+| Copilot agent | `.github/agents/<name>.agent.md` | Persona-to-agent transform rules |
+| Copilot skill | `.github/skills/<name>/SKILL.md` | Workflow-to-skill transform      |
+| Claude agent  | `.claude/agents/<name>.md`       | Claude persona-to-agent rules    |
+| Claude skill  | `.claude/skills/<name>/SKILL.md` | Claude workflow-to-skill rules   |
 
 ### Template Manifest Management
 

@@ -13,7 +13,7 @@ AI instructions are organized in four layers, from broadest to most specific:
 | **Global instructions** | Baseline behavior for every interaction — axioms, output format, workspace awareness, process conventions | Always loaded by the runtime            |
 | **Path-specific rules** | Technology conventions activated by file patterns (e.g., TypeScript, .NET, Angular)                       | When editing files matching the pattern |
 | **Agents**              | Focused roles with constraints, delegation rules, and specialized output formats                          | When invoked by name                    |
-| **Skills / Prompts**    | Multi-phase structured workflows with checkpoints and approval gates                                      | When explicitly triggered               |
+| **Skills**              | Multi-phase structured workflows with checkpoints and approval gates                                      | When explicitly triggered               |
 
 Layers compose additively. An agent interaction includes global instructions + any active path-specific rules + the agent definition. A skill invocation includes all of those plus the skill/prompt definition.
 
@@ -28,7 +28,7 @@ Each AI runtime uses different file paths and formats for the same conceptual la
 | Global instructions | `.github/copilot-instructions.md`        | `CLAUDE.md`                 | `.junie/guidelines.md` |
 | Path-specific rules | `.github/instructions/*.instructions.md` | `.claude/rules/*.md`        | _(none)_               |
 | Agents              | `.github/agents/*.agent.md`              | `.claude/agents/*.md`       | _(none)_               |
-| Skills / Prompts    | `.github/prompts/*.prompt.md`            | `.claude/skills/*/SKILL.md` | _(none)_               |
+| Skills              | `.github/skills/*/SKILL.md`              | `.claude/skills/*/SKILL.md` | _(none)_               |
 
 Junie currently supports only global instructions — a single monolithic file. Copilot and Claude support all four layers but with different frontmatter schemas.
 
@@ -41,7 +41,9 @@ Junie currently supports only global instructions — a single monolithic file. 
 | Global instructions | 1       | 1      | 1     |
 | Path-specific rules | 10      | 10     | —     |
 | Agents              | 6       | 6      | —     |
-| Skills / Prompts    | 21      | 20     | —     |
+| Skills              | 20      | 20     | —     |
+
+Copilot also has 1 consumer-specific prompt (`forge-ops.prompt.md`) that is not template-propagated.
 
 Path-specific rules have identical body content across runtimes — only the frontmatter differs.
 
@@ -104,12 +106,13 @@ paths:
 ---
 ```
 
-### Skills / Prompts
+### Skills
 
-**Copilot** (`.github/prompts/*.prompt.md`):
+**Copilot** (`.github/skills/*/SKILL.md`):
 
 ```yaml
 ---
+name: issue
 description: From issue selection to implementation completion
 ---
 ```
@@ -118,12 +121,12 @@ description: From issue selection to implementation completion
 
 ```yaml
 ---
-name: Issue
+name: issue
 description: From issue selection to implementation completion.
-context: fork
-agent: Orchestrator
 ---
 ```
+
+Both runtimes now use the Agent Skills standard (agentskills.io) with `name` + `description` frontmatter. VS Code discovers skills from both `.github/skills/` and `.claude/skills/` paths.
 
 ---
 

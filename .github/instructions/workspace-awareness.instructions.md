@@ -34,7 +34,7 @@ Consumer workspaces MUST provide the following filesystem structure. Templates i
 | `.github/copilot-instructions.md`        | Rendered global instructions                                      | **Rendered** — template + consumer values          |
 | `.github/instructions/*.instructions.md` | Rendered path-specific instructions                               | **Rendered** — from kernel skillsets               |
 | `.github/agents/*.agent.md`              | Rendered agent profiles                                           | **Rendered** — from kernel personas                |
-| `.github/prompts/*.prompt.md`            | Rendered reusable prompts                                         | **Rendered** — from kernel workflows               |
+| `.github/skills/*/SKILL.md`              | Rendered Copilot skills                                           | **Rendered** — from kernel workflows               |
 | `CLAUDE.md`                              | Rendered Claude Code instructions                                 | **Rendered** — template + consumer values          |
 | `.claude/rules/*.md`                     | Rendered Claude path-specific rules                               | **Rendered** — from kernel skillsets               |
 | `.claude/agents/*.md`                    | Rendered Claude agent profiles                                    | **Rendered** — from kernel personas                |

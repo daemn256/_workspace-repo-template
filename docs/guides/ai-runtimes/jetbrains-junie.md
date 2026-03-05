@@ -77,7 +77,7 @@ Since Junie has no separate file types, all content from other runtimes maps int
 | ------------------ | --------------------------------- | ---------------------------- | -------------------------- |
 | Global principles  | `.github/copilot-instructions.md` | `CLAUDE.md`                  | Opening section            |
 | Agent personas     | `.github/agents/*.agent.md`       | `.claude/agents/*.md`        | Section in `guidelines.md` |
-| Workflow prompts   | `.github/prompts/*.prompt.md`     | `.claude/skills/*/SKILL.md`  | Section in `guidelines.md` |
+| Workflow skills    | `.github/skills/*/SKILL.md`       | `.claude/skills/*/SKILL.md`  | Section in `guidelines.md` |
 | Domain conventions | `.github/instructions/*.md`       | `.claude/rules/*.md`         | Section in `guidelines.md` |
 | Path-scoped rules  | `applyTo:` glob in frontmatter    | `paths:` glob in frontmatter | Not supported              |
 

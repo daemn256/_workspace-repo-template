@@ -37,7 +37,7 @@ This workspace includes AI agent configuration:
 - `.github/copilot-instructions.md` — Behavioral rules
 - `.github/agents/` — Specialized AI personas
 - `.github/instructions/` — Language-specific conventions
-- `.github/prompts/` — Workflow templates
+- `.github/skills/` — Workflow skills
 - `CLAUDE.md` — Claude Code instructions
 
 ## Documentation

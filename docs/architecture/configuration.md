@@ -30,7 +30,7 @@ Agents read this file during session orientation to understand:
 | `process.profile`      | Lightweight / standard / regulated                     | Agents (review requirements, approval gates) |
 | `board`                | Project ID, field IDs, status/priority/size option IDs | Agents (board operations)                    |
 | `commands`             | Build, test, run, lint commands                        | Agents (verification steps)                  |
-| `project`              | Base branch, branch pattern, overlay file path         | Agents (git operations, project context)     |
+| `project`              | Base branch, branch pattern, merge method, overlay file path | Agents (git operations, project context)     |
 
 ---
 

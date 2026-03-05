@@ -33,7 +33,7 @@ Uses **Implementer**. Create a pull request with appropriate title, template, la
 | Part of epic/phase | Epic/phase branch |
 | Hotfix             | `main`            |
 
-5. Determine merge method (merge commit or squash)
+5. Determine merge method (default: merge commit; read `project.merge-method` from `workspace.config.yaml`)
 
 ### Output
 
@@ -220,11 +220,13 @@ Check `process.profile` in `workspace.config.yaml` to determine which rules appl
 
 ## Merge Strategy
 
-| Strategy     | When to Use                                         |
-| ------------ | --------------------------------------------------- |
-| Merge commit | Feature branches with meaningful commit history     |
-| Squash       | Small fixes, single-logical-change PRs              |
-| Rebase       | Linear history preferred, clean single-topic branch |
+Default: **merge commit** (read `project.merge-method` from `workspace.config.yaml`).
+
+| Strategy     | When to Use                                                  |
+| ------------ | ------------------------------------------------------------ |
+| Merge commit | **Default.** Preserves full branch history on main           |
+| Squash       | Explicit override — single-logical-change PRs only           |
+| Rebase       | Explicit override — linear history, clean single-topic branch |
 
 ---
 

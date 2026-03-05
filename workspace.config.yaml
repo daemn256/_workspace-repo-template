@@ -80,4 +80,5 @@ project:
   root: "" # Project root (relative to workspace), empty for multi-repo
   base-branch: "main"
   branch-pattern: "<type>/<issue-number>-<kebab-description>"
+  merge-method: merge # merge | squash | rebase — default PR merge strategy
   overlay-file: "docs/workspace/project-overlay.md"

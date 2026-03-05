@@ -76,7 +76,7 @@ Fixes #123
    - Description of what and why
    - Link to related issue(s)
 5. **Address review feedback** promptly
-6. **Merge** after approval (squash or merge commit per project preference)
+6. **Merge** after approval (merge commit by default; squash for single-change PRs)
 
 ### PR Checklist
 

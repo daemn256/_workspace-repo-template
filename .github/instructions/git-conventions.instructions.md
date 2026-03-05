@@ -10,7 +10,7 @@ applyTo: "**"
 
 ## Branch Strategy
 
-**Flow:** GitHub Flow (trunk-based with feature branches) is the default. All work happens on feature branches. PRs merge into `main` via squash (default) or merge commit.
+**Flow:** GitHub Flow (trunk-based with feature branches) is the default. All work happens on feature branches. PRs merge into `main` via merge commit (default). Squash is an explicit override for single-logical-change PRs.
 
 Default branch naming:
 

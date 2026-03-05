@@ -21,7 +21,7 @@ Determine PR title, template, labels, target branch, and merge method.
 2. Select template based on work type
 3. Determine labels (type, topic, area)
 4. Determine target branch
-5. Determine merge method
+5. Determine merge method (default: merge commit; read `project.merge-method` from `workspace.config.yaml`)
 
 ### Template Selection
 
@@ -169,11 +169,13 @@ Check `process.profile` in `workspace.config.yaml` to determine which rules appl
 
 ## Merge Strategy
 
-| Strategy     | When to Use                                         |
-| ------------ | --------------------------------------------------- |
-| Merge commit | Feature branches with meaningful commit history     |
-| Squash       | Small fixes, single-logical-change PRs              |
-| Rebase       | Linear history preferred, clean single-topic branch |
+Default: **merge commit** (read `project.merge-method` from `workspace.config.yaml`).
+
+| Strategy     | When to Use                                                  |
+| ------------ | ------------------------------------------------------------ |
+| Merge commit | **Default.** Preserves full branch history on main           |
+| Squash       | Explicit override — single-logical-change PRs only           |
+| Rebase       | Explicit override — linear history, clean single-topic branch |
 
 ---
 

@@ -1,6 +1,6 @@
 ---
 name: docs
-description: Documentation creation, maintenance, and review
+description: Write, update, and review project documentation
 ---
 
 # Docs
@@ -171,3 +171,17 @@ Review the documentation for accuracy and completeness.
 
 **Approval Required:** No
 ```
+
+### ⛔ CHECKPOINT
+
+**STOP.** Verify documentation is complete and accurate before committing.
+
+---
+
+## Error Handling
+
+| Error                     | Recovery                                |
+| ------------------------- | --------------------------------------- |
+| Conflicting documentation | Flag conflict, propose resolution       |
+| Missing source material   | Ask for clarification before drafting   |
+| Outdated referenced docs  | Update references as part of the change |

@@ -1,6 +1,6 @@
 ---
 name: test
-description: Parse test output and produce a structured verdict.
+description: Run tests, analyze results, and produce a structured verdict.
 ---
 
 # Test
@@ -87,6 +87,10 @@ For each failure:
 
 **Approval Required:** No
 ```
+
+### ⛔ CHECKPOINT
+
+**STOP.** Verify the verdict matches actual test output before reporting.
 
 **Critical:** Never trust exit code alone. Parse and report actual counts.
 

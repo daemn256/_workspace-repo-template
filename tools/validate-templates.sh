@@ -13,6 +13,7 @@ set -euo pipefail
 #   3. Scaffold — scaffold-action files in targets match scaffold source
 #   4. Leakage — no workspace-specific content in template repos
 #   5. Structure — required directories and files exist
+#   6. Orphans — no stale copy-action files in targets that no longer exist at workspace root
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 WORKSPACE_DIR="$(dirname "$SCRIPT_DIR")"
@@ -304,6 +305,28 @@ check_structure() {
   pass "Structure check complete for $tid"
 }
 
+# ─── Check 6: Orphans ──────────────────────────────────────
+check_orphans() {
+  local tid="$1"
+  local tpath="$2"
+  local target_dir="$WORKSPACE_DIR/$tpath"
+  local orphaned=0
+
+  while IFS= read -r filepath; do
+    find_rule "$filepath" "$tid"
+    if [[ "$MATCH_ACTION" == "copy" ]]; then
+      if [[ ! -f "$WORKSPACE_DIR/$filepath" ]]; then
+        fail "ORPHAN in $tid: $filepath (copy-action file no longer exists at workspace root)"
+        orphaned=$((orphaned + 1))
+      fi
+    fi
+  done < <(find "$target_dir" -path "$target_dir/.git" -prune -o -type f -print | sed "s|$target_dir/||" | sort -u)
+
+  if [[ $orphaned -eq 0 ]]; then
+    pass "No orphaned copy-action files in $tid"
+  fi
+}
+
 # ─── Main ────────────────────────────────────────────────
 cd "$WORKSPACE_DIR"
 
@@ -331,6 +354,7 @@ for t in "${!TARGET_IDS[@]}"; do
   check_scaffolds "$tid" "$tpath"
   check_leakage "$tid" "$tpath"
   check_structure "$tid" "$tpath"
+  check_orphans "$tid" "$tpath"
 done
 
 echo ""

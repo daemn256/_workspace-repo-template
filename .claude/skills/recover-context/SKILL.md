@@ -77,6 +77,10 @@ For low-risk situations, state assumptions explicitly:
 Which approach?
 ```
 
+### ⛔ CHECKPOINT
+
+**STOP.** Do not proceed until human provides context recovery guidance.
+
 ---
 
 ## Error Handling

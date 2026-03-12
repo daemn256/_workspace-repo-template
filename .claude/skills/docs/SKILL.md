@@ -1,6 +1,6 @@
 ---
 name: docs
-description: Documentation creation, maintenance, and review.
+description: Write, update, and review project documentation.
 ---
 
 # Docs
@@ -101,6 +101,30 @@ Review for accuracy and completeness.
 - [ ] Code examples are tested/verified
 - [ ] Follows markdownlint conventions
 - [ ] Appropriate for target audience
+
+### Output
+
+```markdown
+## Context Anchors
+
+- **Issue:** #<number> - <title>
+
+## Documentation Summary
+
+| File   | Action  | Description         |
+| ------ | ------- | ------------------- |
+| <path> | Created | <what it documents> |
+
+## Next Step
+
+<commit / further edits>
+
+**Approval Required:** No
+```
+
+### ⛔ CHECKPOINT
+
+**STOP.** Verify documentation is complete and accurate before committing.
 
 ---
 

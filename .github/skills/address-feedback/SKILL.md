@@ -1,6 +1,6 @@
 ---
 name: address-feedback
-description: Implement review feedback on a PR
+description: Address and implement review feedback on a pull request
 ---
 
 # Address Feedback

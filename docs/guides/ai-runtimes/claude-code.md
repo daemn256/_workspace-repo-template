@@ -2,13 +2,13 @@
 
 > Comprehensive reference for the Claude Code AI runtime. Covers memory hierarchy, subagent model, skill system, and optimization guidance.
 >
-> **Last verified:** March 2026
+> **Last verified:** March 9, 2026
 
 ---
 
 ## Overview
 
-Claude Code is the second active AI runtime in this workspace. It runs as a terminal-native agent with full IDE integration (VS Code, JetBrains, desktop app). Claude Code uses a hierarchical memory model, subagent delegation via the Task tool, and a permission system that distinguishes it from other runtimes.
+Claude Code is the second active AI runtime in this workspace. It runs as a terminal-native agent with full IDE integration (VS Code, JetBrains, desktop app). Claude Code uses a hierarchical memory model, subagent delegation via the Agent tool, and a permission system that distinguishes it from other runtimes.
 
 ---
 
@@ -146,6 +146,77 @@ Permission rules support tool-level granularity: `"Tool"` or `"Tool(specifier)"`
 
 ---
 
+## Subagent Execution Model
+
+### Built-in Subagents
+
+Claude Code includes built-in subagents that Claude delegates to automatically:
+
+| Subagent            | Model        | Tools                          | Purpose                                           |
+| ------------------- | ------------ | ------------------------------ | ------------------------------------------------- |
+| **Explore**         | Haiku (fast) | Read-only (denied Write, Edit) | File discovery, code search, codebase exploration |
+| **Plan**            | (inherit)    | Read-only                      | Analysis, planning, research                      |
+| **general-purpose** | (inherit)    | All inherited                  | General task delegation                           |
+
+### Execution Semantics
+
+- **Isolated context:** Subagents receive only their system prompt (plus basic environment info like working directory), NOT the full Claude Code system prompt or parent conversation history.
+- **Foreground (blocking):** By default, the parent blocks until the subagent completes. Permission prompts and clarifying questions pass through to the user.
+- **Background (concurrent):** With `background: true` or user request, subagents run concurrently. Background subagents get upfront permission approval and auto-deny anything not pre-approved.
+- **Nesting prohibition:** Subagents cannot spawn other subagents. If your workflow requires nested delegation, chain subagents from the main conversation or use skills instead.
+- **Resume:** Subagents can be resumed with their full conversation history intact. Transcripts persist at `~/.claude/projects/{project}/{sessionId}/subagents/`.
+
+### Skill Preloading
+
+The `skills:` field in subagent frontmatter injects full skill content into the subagent's context at startup:
+
+```yaml
+skills:
+  - api-conventions
+  - error-handling-patterns
+```
+
+Key behavior:
+
+- The **full content** of each skill is injected, not just made available for invocation
+- Subagents do **not** inherit skills from the parent conversation — list them explicitly
+- Compare with `context: fork`, where the skill body becomes the subagent's prompt — `skills:` injects content into an existing subagent definition, while `context: fork` creates one on the fly
+
+### Restricting Subagent Spawning
+
+Use `Agent(agent_type)` syntax in the `tools` field to control which subagents can be spawned:
+
+```yaml
+tools: Agent(worker, researcher), Read, Bash
+```
+
+- `Agent(name1, name2)` — allowlist: only named subagents can be spawned
+- `Agent` (without parentheses) — any subagent can be spawned
+- Omit `Agent` entirely — the agent cannot spawn subagents
+- `Agent(agent_type)` has **no effect in subagent definitions** (because subagents can't nest)
+
+### Disabling Subagents
+
+Add subagents to the `deny` array in settings: `"Agent(Explore)"`, `"Agent(my-custom-agent)"`.
+
+---
+
+## Bundled Skills
+
+Claude Code ships with built-in skills available in every session:
+
+| Skill                        | Purpose                                                                                        |
+| ---------------------------- | ---------------------------------------------------------------------------------------------- |
+| `/simplify`                  | Reviews recently changed files for code reuse, quality, and efficiency. Spawns 3 parallel review agents. |
+| `/batch <instruction>`       | Orchestrates large-scale parallel changes across a codebase. Each unit runs in an isolated git worktree. |
+| `/debug [description]`       | Troubleshoots the current session by reading the debug log.                                    |
+| `/loop [interval] <prompt>`  | Runs a prompt on a recurring schedule (e.g., `/loop 5m check if the deploy finished`).        |
+| `/claude-api`                | Loads Claude API + Agent SDK reference. Auto-activates when importing `anthropic` or `claude_agent_sdk`. |
+
+> Bundled skill descriptions reflect Claude Code v2.1.63. Behavioral details (e.g., parallel agent count, worktree isolation) may change between versions.
+
+---
+
 ## Tool Model
 
 Claude Code has built-in tools (not alias-based like Copilot):
@@ -158,7 +229,7 @@ Claude Code has built-in tools (not alias-based like Copilot):
 | `Edit`         | Modify existing files               |
 | `Glob`         | Find files by pattern               |
 | `Grep`         | Search file contents                |
-| `Task`         | Launch subagent tasks               |
+| `Agent`        | Launch subagent tasks               |
 | `WebFetch`     | Fetch web page contents             |
 | `WebSearch`    | Search the web                      |
 | `LSP`          | Language Server Protocol operations |
@@ -166,6 +237,8 @@ Claude Code has built-in tools (not alias-based like Copilot):
 | `Skill`        | Invoke a skill                      |
 
 Additional tools: `TaskCreate`, `TaskGet`, `TaskList`, `TaskUpdate`, `AskUserQuestion`, `MCPSearch`, `KillShell`, `ExitPlanMode`, `TaskOutput`.
+
+**Rename note:** The Task tool was renamed to Agent in v2.1.63. Existing `Task(...)` references in settings and agent definitions still work as aliases.
 
 ---
 
@@ -241,9 +314,10 @@ VS Code (with GitHub Copilot) natively detects `.claude/agents/*.md` files and r
 
 ### Skills
 
-- **Use `context: fork`** for skills that should run as subagent tasks — this gives them a fresh context without polluting the main conversation.
+- **Use `context: fork`** to run a skill in an isolated subagent context. The skill's SKILL.md content becomes the subagent's prompt. Use `agent:` to specify which subagent type executes it (defaults to `general-purpose`). Available built-in agents: `Explore`, `Plan`, `general-purpose`, or any custom subagent from `.claude/agents/`.
 - **Set `agent:`** to run a skill in the context of a specific subagent (inherits its tools, permissions, and system prompt).
 - **Include supporting files** alongside SKILL.md — they're automatically included in the skill's context.
+- **Mind the description budget.** Skill descriptions are loaded into context so the model knows what's available. The budget scales at **2% of the context window** (fallback: ~16,000 characters). Run `/context` to check for warnings about excluded skills. Override with `SLASH_COMMAND_TOOL_CHAR_BUDGET` environment variable.
 
 ### Rules
 
@@ -269,6 +343,7 @@ VS Code (with GitHub Copilot) natively detects `.claude/agents/*.md` files and r
 | `@import` paths are relative           | Paths in `CLAUDE.md` are relative to the file location, not the project root                                    |
 | Auto memory can drift                  | `~/.claude/projects/*/memory/` may accumulate stale preferences that override project rules                     |
 | `context: fork` creates a subagent     | The skill runs in a separate context — it can't see or modify the parent conversation                           |
+| Subagents cannot nest                  | Subagents cannot spawn other subagents — `Agent(type)` in subagent `tools` has no effect                       |
 
 ---
 

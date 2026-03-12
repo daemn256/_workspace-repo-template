@@ -1,6 +1,6 @@
 ---
 name: setup-workspace
-description: Configure workspace context for the agentic kernel.
+description: Configure workspace context and project settings.
 ---
 
 # Setup Workspace
@@ -104,6 +104,24 @@ Generate workspace context and get approval.
 1. Generate workspace context from gathered information
 2. Present preview
 3. Apply after approval
+
+### Output
+
+```markdown
+## Context Anchors
+
+- **Phase:** Preview and Confirm
+
+## Generated Context
+
+<preview summary>
+
+## Next Step
+
+Approve to write workspace context.
+
+**Approval Required:** Yes
+```
 
 ### ⛔ CHECKPOINT
 

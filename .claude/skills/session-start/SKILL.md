@@ -1,11 +1,11 @@
 ---
 name: session-start
-description: Initialize a session with workspace context and prior state.
+description: Start a session by loading workspace context and prior state.
 ---
 
 # Session Start
 
-The Orchestrator drives this workflow. Load workspace context, prior session state, and establish the session goal.
+The Orchestrator drives this workflow, loading context directly — session operations run inline because they need conversation context and judgment. Orchestrator reads workspace files and prior session state, then establishes the session goal.
 
 **Prerequisites:** Access to workspace configuration files.
 
@@ -23,6 +23,15 @@ Read workspace files and check for prior sessions.
 4. Read `.tmp/workspace/goals.md` — active sprint state, current focus (if exists)
 5. List files in `.tmp/sessions/` — read the most recent handoff artifact if any exist
 6. Note any incomplete work or open questions from prior sessions
+
+### Verify Board Status
+
+For any tracked issues carried over from prior sessions or identified in sprint state:
+
+1. Read `workspace.config.yaml` for board field IDs
+2. Check current board status for each active issue
+3. Flag any stale statuses (e.g., issue still "In Progress" but branch was merged)
+4. Correct stale statuses before proceeding
 
 ---
 

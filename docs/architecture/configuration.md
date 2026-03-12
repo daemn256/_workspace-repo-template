@@ -21,15 +21,15 @@ Agents read this file during session orientation to understand:
 
 ## Key Sections
 
-| Section                | What it controls                                       | Who reads it                                 |
-| ---------------------- | ------------------------------------------------------ | -------------------------------------------- |
-| `workspace`            | Name and description                                   | Agents (identity), render tooling            |
-| `forge.topology`       | Which provider handles repos, boards, CI, releases     | Agents (tool selection)                      |
-| `forge.tooling`        | Preferred tool surface (MCP, CLI, API)                 | Agents (how to interact with forge)          |
-| `adapters.ai-runtimes` | Which runtimes are active                              | Build tooling, documentation                 |
-| `process.profile`      | Lightweight / standard / regulated                     | Agents (review requirements, approval gates) |
-| `board`                | Project ID, field IDs, status/priority/size option IDs | Agents (board operations)                    |
-| `commands`             | Build, test, run, lint commands                        | Agents (verification steps)                  |
+| Section                | What it controls                                             | Who reads it                                 |
+| ---------------------- | ------------------------------------------------------------ | -------------------------------------------- |
+| `workspace`            | Name and description                                         | Agents (identity), render tooling            |
+| `forge.topology`       | Which provider handles repos, boards, CI, releases           | Agents (tool selection)                      |
+| `forge.tooling`        | Preferred tool surface (MCP, CLI, API)                       | Agents (how to interact with forge)          |
+| `adapters.ai-runtimes` | Which runtimes are active                                    | Build tooling, documentation                 |
+| `process.profile`      | Lightweight / standard / regulated                           | Agents (review requirements, approval gates) |
+| `board`                | Project ID, field IDs, status/priority/size option IDs       | Agents (board operations)                    |
+| `commands`             | Build, test, run, lint commands                              | Agents (verification steps)                  |
 | `project`              | Base branch, branch pattern, merge method, overlay file path | Agents (git operations, project context)     |
 
 ---

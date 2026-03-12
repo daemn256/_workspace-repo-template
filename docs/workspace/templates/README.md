@@ -4,15 +4,24 @@
 
 These templates define the standard structure for work items created by AI agents. They follow the process conventions documented in the global instructions (`CLAUDE.md`, `.github/copilot-instructions.md`).
 
-## Available Templates
+## Ticket Templates
 
-| Template                             | Purpose                         |
-| ------------------------------------ | ------------------------------- |
-| [issue-bug.md](issue-bug.md)         | Report a defect                 |
-| [issue-feature.md](issue-feature.md) | Request new capability          |
-| [issue-task.md](issue-task.md)       | Operational or maintenance work |
-| [issue-spike.md](issue-spike.md)     | Time-boxed research             |
-| [pull-request.md](pull-request.md)   | Propose a code change           |
+| Template                               | Purpose                          |
+| -------------------------------------- | -------------------------------- |
+| [ticket-bug.md](ticket-bug.md)         | Report a defect                  |
+| [ticket-feature.md](ticket-feature.md) | Propose new capability           |
+| [ticket-task.md](ticket-task.md)       | Concrete implementation work     |
+| [ticket-spike.md](ticket-spike.md)     | Time-boxed research              |
+| [ticket-epic.md](ticket-epic.md)       | Parent grouping of issues        |
+| [ticket-chore.md](ticket-chore.md)     | Maintenance and operational work |
+
+## PR Templates
+
+| Template                       | Purpose                 |
+| ------------------------------ | ----------------------- |
+| [pr.md](pr.md)                 | Standard pull request   |
+| [pr-hotfix.md](pr-hotfix.md)   | Urgent production patch |
+| [pr-release.md](pr-release.md) | Version release         |
 
 ## Usage
 

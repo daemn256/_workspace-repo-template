@@ -47,19 +47,17 @@ Automation scripts for workspace-level operations — setup, git configuration, 
 
 ## Rendering
 
-### render-instructions.sh
+### render-instructions.sh (Deprecated)
 
-**Renders instruction files from templates, replacing `{{{tokens}}}` with values from `workspace.config.yaml`.**
+**Deprecated.** The token-based rendering system has been replaced by the config-reference pattern. Agents now read `workspace.config.yaml` directly at runtime.
 
 ```bash
-./tools/render-instructions.sh
+./tools/render-instructions.sh  # Prints deprecation notice and exits
 ```
 
-- Renders `.github/copilot-instructions.md`, `CLAUDE.md`, and other instruction files
-- Reads token values from `workspace.config.yaml`
-- Run after changing workspace configuration
-
-> **Note:** This script is transitional. A future config-reference model will replace token substitution — agents will read `workspace.config.yaml` directly.
+- This stub exists for backward compatibility only
+- Use `tools/sync-to-templates.sh` to propagate changes to template repos
+- See `docs/architecture/configuration.md` for the config-reference model
 
 ---
 

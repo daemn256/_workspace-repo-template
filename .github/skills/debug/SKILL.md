@@ -1,6 +1,6 @@
 ---
 name: debug
-description: Hypothesis-driven debugging and root cause analysis
+description: Debug errors, find root causes, and fix failing code
 ---
 
 # Debug
@@ -150,8 +150,16 @@ Propose and implement fix.
 
 <commit the fix / create PR / further investigation>
 
-**Approval Required:** No
+**Approval Required:** Yes
 ```
+
+### ⛔ CHECKPOINT
+
+**STOP.** Do not proceed until human approves:
+
+- Fix is correct and minimal
+- Verification confirms the issue is resolved
+- No regressions introduced
 
 ---
 

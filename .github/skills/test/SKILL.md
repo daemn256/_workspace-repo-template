@@ -1,6 +1,6 @@
 ---
 name: test
-description: Parse test output and produce a structured verdict
+description: Run tests, analyze results, and produce a structured verdict
 ---
 
 # Test
@@ -122,7 +122,34 @@ For each failure:
 **Approval Required:** No
 ```
 
+### ⛔ CHECKPOINT
+
+**STOP.** Verify the verdict matches actual test output before reporting.
+
 **Critical:** Never trust exit code alone. Parse and report actual counts.
+
+---
+
+## Phase 3: TDD Workflow
+
+### Write Tests First
+
+1. Read the ticket and implementation plan to understand what is being built
+2. Write failing tests that define the expected behavior
+3. Confirm tests fail for the right reason (not setup errors)
+4. Hand off to Implementer — tests define the contract
+5. Resume after implementation to verify tests pass
+
+---
+
+## Phase 4: Coverage Analysis
+
+### Assess Test Coverage
+
+1. Run the coverage tool specified in `workspace.config.yaml`
+2. Identify untested paths — not just line coverage, but branch and error coverage
+3. Flag high-risk untested areas (auth, validation, data transforms)
+4. Report coverage delta if a baseline exists
 
 ---
 

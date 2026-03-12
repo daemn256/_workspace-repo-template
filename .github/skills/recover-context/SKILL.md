@@ -88,6 +88,10 @@ Awaiting guidance on which recovery option to use.
 **Approval Required:** Yes
 ```
 
+### ⛔ CHECKPOINT
+
+**STOP.** Do not proceed until human provides context recovery guidance.
+
 ---
 
 ## Error Handling

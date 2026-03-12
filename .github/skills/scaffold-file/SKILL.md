@@ -129,3 +129,18 @@ Scaffold is ready. Run `/sync-templates` to propagate.
 
 **Approval Required:** No
 ```
+
+### ⛔ CHECKPOINT
+
+**STOP.** Verify scaffold content and placement before propagating.
+
+---
+
+## Error Handling
+
+| Error                    | Recovery                                    |
+| ------------------------ | ------------------------------------------- |
+| Manifest rule conflict   | Check existing rules, resolve overlap       |
+| Dry-run shows missing    | Verify scaffold path matches manifest       |
+| Validation finds leakage | Check for consumer data in scaffold content |
+| Template repo not cloned | Clone template repos before syncing         |

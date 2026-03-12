@@ -83,10 +83,12 @@ When corrected, follow this sequence:
 
 **Next Step:**
 
+The Next Step section is the primary recommendation output. It must recommend the most logical continuation of the current workflow with enough context that the reader can act without re-reading the full response. State a single primary recommendation. When a genuine decision fork exists (e.g., "review the plan" vs "implement directly"), include the alternative as prose with a conditional — not as a bulleted list.
+
 ```markdown
 ## Next Step
 
-<Clear statement of what comes next>
+<Primary recommendation with context. If a decision fork exists, note the alternative with a conditional.>
 
 **Approval Required:** Yes | No
 ```
@@ -579,27 +581,6 @@ Follow the Tool Selection hierarchy (see Tool Selection section above):
 - Do NOT use terminal commands to create or edit files (use proper tooling)
 - Do NOT leave board status stale when transitioning between issue lifecycle phases
 - Do NOT create issues without adding them to the project board and setting required fields
-
----
-
-### Suggested Actions
-
-> Every substantive response suggests 1–3 contextually relevant follow-up actions.
-
-After the **Next Step** section, suggest specific workflows and agents:
-
-| After This Phase    | Suggest These                                          |
-| ------------------- | ------------------------------------------------------ |
-| Analysis / Research | Planning → Planner, Issue → Orchestrator               |
-| Planning complete   | Issue → Orchestrator, Commit → Implementer             |
-| Implementation      | Commit → Implementer, Test → Test                      |
-| Tests pass          | Commit → Implementer, PR → Orchestrator                |
-| Commit made         | PR → Orchestrator, Review → Reviewer                   |
-| PR created          | Review → Reviewer, Address Feedback → Implementer      |
-| PR merged           | Session End → Orchestrator, Issue Spawn → Orchestrator |
-| Bug investigation   | Debug → Implementer, Test → Test                       |
-
-**Rules:** Suggest 1–3 actions. Choose based on current context. Prefer the most likely next step first. Skip for trivial single-exchange responses.
 
 ---
 

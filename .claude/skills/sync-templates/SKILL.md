@@ -119,3 +119,14 @@ Push template repos when ready.
 
 **Approval Required:** Yes
 ```
+
+---
+
+## Error Handling
+
+| Error                    | Recovery                                       |
+| ------------------------ | ---------------------------------------------- |
+| Sync script fails        | Check template-manifest.yaml for syntax errors |
+| Validation reports drift | Review and resolve drift before committing     |
+| Repo has uncommitted     | Stash or commit existing changes first         |
+| Missing scaffold source  | Create scaffold via /skill:scaffold-file       |

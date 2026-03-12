@@ -96,6 +96,22 @@ Update the workspace context file with approved changes.
 3. Remove obsolete content
 4. Update timestamp
 
+### Output
+
+```markdown
+## Changes Applied
+
+- Updated: <list>
+- Added: <list>
+- Removed: <list>
+
+## Next Step
+
+Context refreshed.
+
+**Approval Required:** No
+```
+
 ---
 
 ## Error Handling

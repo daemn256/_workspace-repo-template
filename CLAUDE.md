@@ -81,10 +81,12 @@ When corrected, follow this sequence:
 
 **Next Step:**
 
+The Next Step section is the primary recommendation output. It must recommend the most logical continuation of the current workflow with enough context that the reader can act without re-reading the full response. State a single primary recommendation. When a genuine decision fork exists (e.g., "review the plan" vs "implement directly"), include the alternative as prose with a conditional — not as a bulleted list.
+
 ```markdown
 ## Next Step
 
-<Clear statement of what comes next>
+<Primary recommendation with context. If a decision fork exists, note the alternative with a conditional.>
 
 **Approval Required:** Yes | No
 ```
@@ -138,10 +140,18 @@ If information is missing, ask for it.
 
 ### Tool Selection
 
-- Follow the tool selection hierarchy: MCP-first → CLI-fallback → terminal-last-resort
-- Only use MCP servers declared in `workspace.config.yaml` under `forge.tooling`
-- Do NOT use auto-loaded MCP servers (GitKraken, GitLens)
-- See `.claude/rules/tool-selection.md` for the full decision table
+Follow the MCP-first → CLI-fallback → terminal-last-resort hierarchy:
+
+| Task Category                  | First Choice   | Fallback              | Notes                                      |
+| ------------------------------ | -------------- | --------------------- | ------------------------------------------ |
+| Forge ops (issues, PRs, board) | MCP tool       | CLI tool (`gh`, `az`) | Never raw API calls in terminal            |
+| File read/write                | Editor tooling | —                     | Never terminal for writes                  |
+| Code search                    | Search tools   | Terminal `grep`       | Prefer structured tools                    |
+| Build / test / lint            | Terminal       | —                     | Use `commands.*` from workspace config     |
+| Git operations                 | Terminal       | —                     | `git` CLI is the canonical interface       |
+| Package management             | Terminal       | —                     | `npm`, `dotnet`, `pip` are terminal-native |
+
+**MCP Servers:** Only use servers declared in `forge.tooling.<provider>.mcp-server` in `workspace.config.yaml`. Do NOT use GitKraken or GitLens MCP servers — they are auto-loaded by extensions and are not workspace-approved.
 
 ### Anti-Patterns
 
@@ -157,66 +167,45 @@ If information is missing, ask for it.
 
 ---
 
-## Available Subagents
+## Terminal Commands
 
-> Use the Task tool to delegate work to specialized subagents.
+Commands are categorized by risk level:
 
-| Subagent               | Description                                                        | When to Use                                             |
-| ---------------------- | ------------------------------------------------------------------ | ------------------------------------------------------- |
-| Implementer            | Write code, fix bugs, create docs, manage source control           | Writing code, debugging, documentation, git ops         |
-| Orchestrator           | Issue/project management, workflow coordination, session lifecycle | GitHub issue work, project board ops, session start/end |
-| Planner                | Research, design, analyze trade-offs, plan implementation          | Architecture, research, brainstorming, design           |
-| Reviewer               | Code review, PR assessment, security assessment, quality           | PR reviews, security review, commit verification        |
-| Test                   | Test analysis, coverage assessment, verdict reporting              | Test verdicts, coverage analysis, TDD support           |
-| Workspace Configurator | Workspace setup, forge integration, prompt/agent scaffolding       | Workspace configuration, tool integration               |
+**Read-Only (always OK):** `ls`, `cat`, `grep`, `find`, `git log`, `git status`, `git diff`, `git blame` — no approval needed.
 
-### Available Skills
+**Mutating (explain first):** `git add`, `git commit`, `git push`, `git checkout`, package installs, `mkdir` — explain the purpose before running.
 
-| Skill                 | Description                                           | Invoke                         |
-| --------------------- | ----------------------------------------------------- | ------------------------------ |
-| Issue                 | From issue selection to implementation completion     | `/skill:issue`                 |
-| Review                | Structured review of PRs and feedback verification    | `/skill:review`                |
-| Test                  | Parse test output and produce a structured verdict    | `/skill:test`                  |
-| Planning              | Architecture design, trade-off analysis, decisions    | `/skill:planning`              |
-| PR                    | From committed changes to merged PR                   | `/skill:pr`                    |
-| Issue Create          | Create a new issue from scratch with proper structure | `/skill:issue-create`          |
-| Issue Spawn           | Create follow-up issue linked to existing work        | `/skill:issue-spawn`           |
-| Address Feedback      | Implement review feedback on a PR                     | `/skill:address-feedback`      |
-| Debug                 | Hypothesis-driven debugging and root cause analysis   | `/skill:debug`                 |
-| Docs                  | Documentation creation, maintenance, and review       | `/skill:docs`                  |
-| Commit                | Stage changes and create a Conventional Commit        | `/skill:commit`                |
-| Session Start         | Initialize session with workspace context             | `/skill:session-start`         |
-| Session End           | Clean session closure and handoff                     | `/skill:session-end`           |
-| Setup Workspace       | Configure workspace context for the agentic kernel    | `/skill:setup-workspace`       |
-| Refresh Context       | Update stale workspace context                        | `/skill:refresh-context`       |
-| Recover Context       | Recover from missing workspace context                | `/skill:recover-context`       |
-| Configure Forge       | Generate forge binding prompts from workspace config  | `/skill:configure-forge`       |
-| Configure Integration | Set up a new MCP server or tool integration           | `/skill:configure-integration` |
-| Sync Templates        | Sync workspace content to template repos via manifest | `/skill:sync-templates`        |
-| Scaffold File         | Create or update a scaffold file in `scaffolds/`      | `/skill:scaffold-file`         |
+**Destructive (approval required):** `rm`, `rmdir`, `git push --force`, `git reset --hard`, schema changes, system installs — explain, identify risks, await human approval.
 
-### Technology Rules
+### Terminal Recovery
 
-| Rule       | Applies To                                                                                    | Description                                          |
-| ---------- | --------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
-| angular    | `**/*.component.ts`, `**/*.service.ts`, `**/*.directive.ts`, `**/*.pipe.ts`, `**/*.module.ts` | Conventions for Angular development                  |
-| api        | `**/Controllers/**`, `**/Endpoints/**`                                                        | Guidelines for API design and implementation         |
-| docs       | `docs/**/*.md`                                                                                | Conventions for documentation files                  |
-| dotnet     | `**/*.cs`                                                                                     | Guidelines for C# development                        |
-| jamstack   | `**/jamstack/**`, `**/*.astro`, `**/netlify.toml`, `**/vercel.json`                           | Conventions for Jamstack and static site development |
-| java       | `**/*.java`, `**/pom.xml`                                                                     | Conventions for Java and Maven development           |
-| jfrog      | `**/.jfrog/**`, `**/artifactory/**`, `**/*jfrog*`                                             | Conventions for JFrog Artifactory integration        |
-| migrations | `**/Migrations/**`                                                                            | Guidelines for database schema changes               |
-| testing    | `**/tests/**`, `**/*.test.ts`, `**/*.spec.ts`, `**/*.Tests.csproj`, `**/*Tests.cs`            | Guidelines for writing and running tests             |
-| typescript | `**/*.ts`, `**/*.tsx`                                                                         | Guidelines for TypeScript development                |
+If the terminal appears stuck or garbled: press Ctrl-C → try closing an unclosed construct (type `'`, `"`, or `EOF`) → kill the terminal and start a fresh session → verify `pwd` at workspace root.
 
-### Core Principles
+---
 
-AI proposes, human approves — never act without explicit approval. Work in small, reviewable steps with checkpoints after each logical unit. Every action links to its rationale via Context Anchors. Quality over speed: verify before claiming success. When corrected, acknowledge the error, explain the cause, re-anchor to the correct constraint, and revise the plan.
+## Workspace Structure
 
-### Quick Start
+Key ephemeral directories:
 
-Read `workspace.config.yaml` for build/test/lint commands. Read `docs/workspace/goals.md` for durable priorities and `.tmp/workspace/goals.md` for active sprint state.
+```
+.tmp/workspace/   — Active sprint state (ephemeral, overwritten each session)
+.tmp/sessions/    — Session handoff artifacts (ephemeral, cross-session continuity)
+.tmp/scratch/     — Throwaway: CLI body files, drafts (aggressive cleanup OK)
+```
+
+### File Placement
+
+When deciding where to put a new file:
+
+> **Will someone other than an AI agent benefit from reading this in 3 months?**
+
+| Answer                  | Destination                   | Examples                   |
+| ----------------------- | ----------------------------- | -------------------------- |
+| Yes — durable knowledge | `docs/` (tracked)             | Architecture, ADRs, guides |
+| Yes — project identity  | `docs/workspace/` (tracked)   | Context, goals, overlay    |
+| No — operational state  | `.tmp/workspace/` (ephemeral) | Sprint state, completions  |
+| No — session continuity | `.tmp/sessions/` (ephemeral)  | Handoff artifacts          |
+| No — throwaway          | `.tmp/scratch/` (ephemeral)   | CLI body files, drafts     |
 
 ---
 

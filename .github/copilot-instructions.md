@@ -81,10 +81,12 @@ When corrected, follow this sequence:
 
 **Next Step:**
 
+The Next Step section is the primary recommendation output. It must recommend the most logical continuation of the current workflow with enough context that the reader can act without re-reading the full response. State a single primary recommendation. When a genuine decision fork exists (e.g., "review the plan" vs "implement directly"), include the alternative as prose with a conditional — not as a bulleted list.
+
 ```markdown
 ## Next Step
 
-<Clear statement of what comes next>
+<Primary recommendation with context. If a decision fork exists, note the alternative with a conditional.>
 
 **Approval Required:** Yes | No
 ```
@@ -138,10 +140,18 @@ If information is missing, ask for it.
 
 ### Tool Selection
 
-- Follow the tool selection hierarchy: MCP-first → CLI-fallback → terminal-last-resort
-- Only use MCP servers declared in `workspace.config.yaml` under `forge.tooling`
-- Do NOT use auto-loaded MCP servers (GitKraken, GitLens)
-- See `tool-selection.instructions.md` for the full decision table
+Follow the MCP-first → CLI-fallback → terminal-last-resort hierarchy:
+
+| Task Category                  | First Choice   | Fallback              | Notes                                      |
+| ------------------------------ | -------------- | --------------------- | ------------------------------------------ |
+| Forge ops (issues, PRs, board) | MCP tool       | CLI tool (`gh`, `az`) | Never raw API calls in terminal            |
+| File read/write                | Editor tooling | —                     | Never terminal for writes                  |
+| Code search                    | Search tools   | Terminal `grep`       | Prefer structured tools                    |
+| Build / test / lint            | Terminal       | —                     | Use `commands.*` from workspace config     |
+| Git operations                 | Terminal       | —                     | `git` CLI is the canonical interface       |
+| Package management             | Terminal       | —                     | `npm`, `dotnet`, `pip` are terminal-native |
+
+**MCP Servers:** Only use servers declared in `forge.tooling.<provider>.mcp-server` in `workspace.config.yaml`. Do NOT use GitKraken or GitLens MCP servers — they are auto-loaded by extensions and are not workspace-approved.
 
 ### Anti-Patterns
 
@@ -154,6 +164,48 @@ If information is missing, ask for it.
 - Do NOT use terminal commands to create or edit files (use proper tooling)
 - Do NOT leave board status stale when transitioning between issue lifecycle phases
 - Do NOT create issues without adding them to the project board and setting required fields
+
+---
+
+## Terminal Commands
+
+Commands are categorized by risk level:
+
+**Read-Only (always OK):** `ls`, `cat`, `grep`, `find`, `git log`, `git status`, `git diff`, `git blame` — no approval needed.
+
+**Mutating (explain first):** `git add`, `git commit`, `git push`, `git checkout`, package installs, `mkdir` — explain the purpose before running.
+
+**Destructive (approval required):** `rm`, `rmdir`, `git push --force`, `git reset --hard`, schema changes, system installs — explain, identify risks, await human approval.
+
+### Terminal Recovery
+
+If the terminal appears stuck or garbled: press Ctrl-C → try closing an unclosed construct (type `'`, `"`, or `EOF`) → kill the terminal and start a fresh session → verify `pwd` at workspace root.
+
+---
+
+## Workspace Structure
+
+Key ephemeral directories:
+
+```
+.tmp/workspace/   — Active sprint state (ephemeral, overwritten each session)
+.tmp/sessions/    — Session handoff artifacts (ephemeral, cross-session continuity)
+.tmp/scratch/     — Throwaway: CLI body files, drafts (aggressive cleanup OK)
+```
+
+### File Placement
+
+When deciding where to put a new file:
+
+> **Will someone other than an AI agent benefit from reading this in 3 months?**
+
+| Answer                  | Destination                   | Examples                   |
+| ----------------------- | ----------------------------- | -------------------------- |
+| Yes — durable knowledge | `docs/` (tracked)             | Architecture, ADRs, guides |
+| Yes — project identity  | `docs/workspace/` (tracked)   | Context, goals, overlay    |
+| No — operational state  | `.tmp/workspace/` (ephemeral) | Sprint state, completions  |
+| No — session continuity | `.tmp/sessions/` (ephemeral)  | Handoff artifacts          |
+| No — throwaway          | `.tmp/scratch/` (ephemeral)   | CLI body files, drafts     |
 
 ---
 

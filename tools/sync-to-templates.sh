@@ -176,6 +176,7 @@ find_rule() {
 COPY_COUNT=0
 SCAFFOLD_COUNT=0
 SKIP_COUNT=0
+ORPHAN_COUNT=0
 ERROR_COUNT=0
 
 sync_file() {
@@ -237,6 +238,39 @@ sync_file() {
   fi
 }
 
+# ─── Enumerate target repo files (for orphan detection) ─
+enumerate_target_files() {
+  local target_dir="$1"
+  find "$target_dir" \
+    -path "$target_dir/.git" -prune -o \
+    -type f -print \
+    | sed "s|$target_dir/||" | sort -u
+}
+
+# ─── Detect and remove orphaned copy-action files ────────
+# Walks the template repo and removes any copy-action files
+# that no longer exist at workspace root.
+detect_orphans() {
+  local tid="$1"
+  local tpath="$2"
+  local target_dir="$WORKSPACE_DIR/$tpath"
+
+  while IFS= read -r filepath; do
+    find_rule "$filepath" "$tid"
+    if [[ "$MATCH_ACTION" == "copy" ]]; then
+      if [[ ! -f "$WORKSPACE_DIR/$filepath" ]]; then
+        if $DRY_RUN; then
+          log_dry "ORPHAN $filepath ← $tid"
+        else
+          rm "$target_dir/$filepath"
+          log_warn "DELETED orphan: $filepath ← $tid"
+        fi
+        ORPHAN_COUNT=$((ORPHAN_COUNT + 1))
+      fi
+    fi
+  done < <(enumerate_target_files "$target_dir")
+}
+
 # ─── Enumerate workspace files to sync ───────────────────
 # Walk workspace files and match against rules.
 # We enumerate files that could match any rule pattern.
@@ -294,6 +328,7 @@ for t in "${!TARGET_IDS[@]}"; do
   COPY_COUNT=0
   SCAFFOLD_COUNT=0
   SKIP_COUNT=0
+  ORPHAN_COUNT=0
 
   while IFS= read -r filepath; do
     find_rule "$filepath" "$tid"
@@ -302,7 +337,9 @@ for t in "${!TARGET_IDS[@]}"; do
     fi
   done < <(enumerate_workspace_files)
 
-  echo "  Copied: $COPY_COUNT  Scaffolded: $SCAFFOLD_COUNT  Unchanged: $SKIP_COUNT"
+  detect_orphans "$tid" "$tpath"
+
+  echo "  Copied: $COPY_COUNT  Scaffolded: $SCAFFOLD_COUNT  Unchanged: $SKIP_COUNT  Orphans: $ORPHAN_COUNT"
 done
 
 echo ""

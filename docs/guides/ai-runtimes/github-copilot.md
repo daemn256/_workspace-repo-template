@@ -2,7 +2,7 @@
 
 > Comprehensive reference for the GitHub Copilot AI runtime. Covers delivery surfaces, feature matrices, configuration schemas, and optimization guidance.
 >
-> **Last verified:** March 2026
+> **Last verified:** March 9, 2026
 
 ---
 
@@ -126,6 +126,7 @@ handoffs: # Agent delegation (VS Code/JetBrains only)
     agent: <string>
     prompt: <string> # Pre-filled prompt (optional)
     send: <boolean> # Auto-submit (optional)
+    model: <string> # Override model for the handoff target (optional)
 model: <string|array> # Prioritized model list (optional)
 agents: <string> # Subagent allowlist: "*", "[]" (optional)
 user-invokable: <boolean> # Show in agent picker (default: true)
@@ -174,6 +175,67 @@ applyTo: "<glob-pattern>" # Comma-separated globs (required, must be string)
 
 **Critical:** `applyTo` must be a **comma-separated string**, not a YAML array.
 
+### Skills (`.github/skills/<name>/SKILL.md`)
+
+Skills extend agent capabilities with domain-specific knowledge and workflows. They follow the [Agent Skills](https://agentskills.io/) open standard.
+
+#### Frontmatter Reference
+
+```yaml
+---
+name: <string>                       # Slash-command name (default: directory name)
+description: <string>                # When to use this skill (recommended)
+argument-hint: <string>              # Input placeholder (e.g., "[issue-number]")
+user-invocable: <boolean>            # Show in / menu (default: true)
+disable-model-invocation: <boolean>  # Prevent auto-routing (default: false)
+---
+<Markdown body = skill instructions>
+```
+
+#### Progressive Disclosure Model
+
+Skills use a three-level loading model to manage context efficiently:
+
+| Level          | When Loaded                                         | What's Included                         |
+| -------------- | --------------------------------------------------- | --------------------------------------- |
+| 1 — Discovery  | Always (skill is registered)                        | `name` + `description` only             |
+| 2 — Invocation | When skill is triggered (`/name` or model-selected) | Full SKILL.md body                      |
+| 3 — Resources  | On-demand during execution                          | Supporting files in the skill directory |
+
+#### Invocation Control
+
+| Configuration                    | User Can Invoke | Model Can Invoke | Description in Context |
+| -------------------------------- | --------------- | ---------------- | ---------------------- |
+| (defaults)                       | Yes             | Yes              | Always loaded          |
+| `disable-model-invocation: true` | Yes             | No               | Not loaded             |
+| `user-invocable: false`          | No              | Yes              | Always loaded          |
+
+`disable-model-invocation: true` — Use for workflows with side effects (deploy, commit) that should only run on explicit user command.
+
+`user-invocable: false` — Use for background knowledge (codebase conventions, domain context) that the model should apply automatically but that isn't meaningful as a user command.
+
+### Subagent Behavior
+
+When an agent spawns a sub-agent (via the `agent` tool alias), VS Code creates an isolated execution context:
+
+- **Isolated context:** Sub-agents do NOT inherit the parent agent's instructions, conversation history, or loaded skills. They receive only their own system prompt plus basic environment info.
+- **Summary return:** When a sub-agent completes, its full output is summarized and returned to the parent. The parent sees only the summary, not the full sub-agent conversation.
+- **Synchronous execution:** The parent agent blocks until the sub-agent completes.
+- **Parallel support:** Multiple sub-agents can run in parallel when tasks are independent.
+- **No nesting:** Sub-agents cannot spawn other sub-agents.
+
+#### The `agents` Field
+
+The `agents` field in agent frontmatter controls which sub-agents can be spawned:
+
+| Value                               | Behavior                                                        |
+| ----------------------------------- | --------------------------------------------------------------- |
+| `agents: "*"`                       | Can spawn any registered agent (default if `agents` is omitted) |
+| `agents: "[]"`                      | Cannot spawn any sub-agents                                     |
+| `agents: "['Planner', 'Reviewer']"` | Can only spawn the named agents                                 |
+
+**Override behavior:** Explicitly listing an agent in `agents` overrides that agent's `disable-model-invocation: true` — the parent can still delegate to it even though the model can't auto-invoke it from user chat.
+
 ---
 
 ## Tool Alias Model
@@ -211,6 +273,36 @@ Settings cascade in this order (later overrides earlier):
 4. **Personal** — User profile agents and instructions
 
 All applicable instructions are combined and sent to the model. Higher precedence instructions take priority when conflicting.
+
+---
+
+## Premium Request Billing
+
+GitHub Copilot uses a premium request model for advanced features. Understanding this helps optimize agent design for cost efficiency.
+
+### Billing Unit
+
+One user prompt in Copilot Chat = **one premium request** × the model's multiplier. Sub-agent spawns are internal to the same request — they do not generate additional premium requests.
+
+### Model Multipliers (Paid Plans)
+
+Included models (GPT-5 mini, GPT-4.1, GPT-4o) consume **0 premium requests** on paid plans.
+
+| Model                             | Multiplier |
+| --------------------------------- | ---------- |
+| Claude Haiku 4.5                  | 0.33×      |
+| Claude Sonnet 4 / 4.5 / 4.6       | 1×         |
+| Claude Opus 4.5 / 4.6             | 3×         |
+| Gemini 3 Flash                    | 0.33×      |
+| Gemini 2.5 Pro / 3 Pro / 3.1 Pro  | 1×         |
+| GPT-5.1 / 5.2                     | 1×         |
+| Grok Code Fast 1                  | 0.25×      |
+
+**Auto model selection discount:** Using Copilot's auto model selection provides a 10% multiplier discount on paid plans (e.g., Sonnet 4 at 0.9× instead of 1×).
+
+**Cost optimization:** Use lower-multiplier models (Haiku 0.33×, Gemini Flash 0.33×) for analysis or exploration sub-agents. Reserve high-multiplier models (Opus 3×) for complex reasoning tasks.
+
+For the full multiplier table and plan details, see [GitHub Copilot Billing](https://docs.github.com/en/copilot/concepts/billing/copilot-requests).
 
 ---
 
